@@ -1,0 +1,6 @@
+{
+    "domain": "tutorialedge.eu.auth0.com",
+    "clientID": "35go3x6MIxvQ2Wa01mkpdcnv42xQxzye",
+    "clientSecret": "7kazhRcrFJCBJgkHL6tR_Tys4YtpmedVJGbRZbk0TBCpTSWqqFjEGds5yqvwOSTc",
+    "callbackURL": "http://localhost:3000/callback"
+}
