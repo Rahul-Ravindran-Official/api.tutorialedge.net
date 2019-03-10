@@ -4,6 +4,9 @@ const Auth0Strategy = require("passport-auth0");
 const session = require("express-session");
 const cookieParser = require('cookie-parser');
 
+const jwt = require("jsonwebtoken");
+
+
 const CONFIG = require('./config.json');
 const authRouter = require('./auth/auth.js');
 
