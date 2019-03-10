@@ -52,10 +52,14 @@ app.use(passport.initialize());
 app.use(passport.session());
 
 app.get("/", (req, res) => {
-  // console.log(req);
-  console.log(req.cookies['jwt-token']);
-  console.log(jwt.verify(req.cookies['jwt-token'], 'shhhh'));
-  res.send("hello world");
+  console.log("Home API Endpoint hit");
+  try {
+    console.log(req.cookies['jwt-token']);
+    console.log(jwt.verify(req.cookies['jwt-token'], 'shhhh'));
+    res.send("hello world");
+  } catch (err) {
+    res.send(err)
+  }
 });
 
 app.use('/', authRouter);
