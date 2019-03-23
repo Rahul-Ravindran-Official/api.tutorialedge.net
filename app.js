@@ -3,30 +3,28 @@ const passport = require("passport");
 const Auth0Strategy = require("passport-auth0");
 const session = require("express-session");
 const cookieParser = require('cookie-parser');
-
 const jwt = require("jsonwebtoken");
-
-
-const CONFIG = require('./config.json');
 const authRouter = require('./auth/auth.js');
-
+const userRouter = require('./users/users.js');
+const cors = require('cors');
 const app = express();
-const port = 3000;
+const port = process.env.PORT || 3000;
+const CONFIG = require('./config.json');
 
 const strategy = new Auth0Strategy(
   {
     domain: CONFIG.domain,
     clientID: CONFIG.clientID,
     clientSecret: CONFIG.clientSecret,
-    callbackURL: CONFIG.callbackURL
+    callbackURL: CONFIG.callbackURL,
+    state: true
   },
   function(accessToken, refreshToken, extraParams, profile, done) {
+    console.log(profile);
     return done(null, profile);
   }
 );
 
-passport.use(strategy);
-// You can use this section to keep a smaller payload
 passport.serializeUser(function(user, done) {
   done(null, user);
 });
@@ -37,33 +35,24 @@ passport.deserializeUser(function(user, done) {
 
 var sess = {
   secret: "CHANGE THIS SECRET",
-  cookie: {},
+  cookie: { maxAge: 60000 },
   resave: false,
   saveUninitialized: true
 };
 
-if (app.get("env") === "production") {
-  sess.cookie.secure = true; // serve secure cookies, requires https
-}
-
+passport.use(strategy);
 app.use(cookieParser());
 app.use(session(sess));
+app.use(cors());
 app.use(passport.initialize());
 app.use(passport.session());
 
 app.get("/", (req, res) => {
-  console.log("Home API Endpoint hit");
-  try {
-    console.log(req.cookies['jwt-token']);
-    console.log(jwt.verify(req.cookies['jwt-token'], 'shhhh'));
-    res.send("hello world");
-  } catch (err) {
-    res.send(err)
-  }
+    res.json(jwt.verify(req.cookies['jwt-token'], 'shhhh'));
 });
 
 app.use('/', authRouter);
-
+app.use('/api/v1', userRouter);
 
 app.listen(port, () =>
   console.log(`api.tutorialedge.net listening on port ${port}!`)
