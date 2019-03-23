@@ -8,19 +8,17 @@ const authRouter = require('./auth/auth.js');
 const userRouter = require('./users/users.js');
 const cors = require('cors');
 const app = express();
-const port = process.env.PORT || 3000;
-const CONFIG = require('./config.json');
 
+const CONFIG = require('./config.json');
+const ENV = process.env.NODE_ENV || 'development';
 const strategy = new Auth0Strategy(
   {
     domain: CONFIG.domain,
-    clientID: CONFIG.clientID,
-    clientSecret: CONFIG.clientSecret,
-    callbackURL: CONFIG.callbackURL,
-    state: true
+    clientID: CONFIG[ENV].clientID,
+    clientSecret: process.env.CLIENT_SECRET,
+    callbackURL: CONFIG[ENV].callbackURL
   },
   function(accessToken, refreshToken, extraParams, profile, done) {
-    console.log(profile);
     return done(null, profile);
   }
 );
@@ -54,6 +52,6 @@ app.get("/", (req, res) => {
 app.use('/', authRouter);
 app.use('/api/v1', userRouter);
 
-app.listen(port, () =>
-  console.log(`api.tutorialedge.net listening on port ${port}!`)
+app.listen(CONFIG.port, () =>
+  console.log(`api.tutorialedge.net listening on port ${CONFIG.port}!`)
 );

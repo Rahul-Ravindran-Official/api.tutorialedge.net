@@ -1,6 +1,12 @@
 {
     "domain": "tutorialedge.eu.auth0.com",
-    "clientID": "35go3x6MIxvQ2Wa01mkpdcnv42xQxzye",
-    "clientSecret": "",
-    "callbackURL": "http://localhost:3000/callback"
+    "port": 3000,
+    "development" : {
+        "clientID": "B63BMOpJ3SgxOB2jb6LY7EYEb4dU3J4D",
+        "callbackURL": "http://localhost:3000/callback"
+    },
+    "production": {
+        "clientID": "35go3x6MIxvQ2Wa01mkpdcnv42xQxzye",
+        "callbackURL": "https://api.tutorialedge.net/callback"
+    }
 }
