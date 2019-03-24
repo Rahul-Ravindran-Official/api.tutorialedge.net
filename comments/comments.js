@@ -34,7 +34,6 @@ function verifyJWT(req, res, next) {
 
 function isAdmin(req, res, next) {
     let token = req.headers.authorization.split(' ')[1];
-    console.log(token);
     var privateKey = fs.readFileSync('./private.pem', 'utf8');
     jwt.verify(token, privateKey, { algorithm: 'HS256'}, (err, user) => {
         if (err) {
@@ -83,13 +82,14 @@ router.post("/comments/:slug", verifyJWT, (req, res) => {
 });
 
 router.delete("/comments/:slug/:id", verifyJWT, isAdmin, (req, res) => {
-    Comment.destroy({
-        where: { id: req.params.id }
-    })
-        .then((resp) => {
-            console.log("The Deed Is Done");
-            res.status(200).json({"status": "success"});
-        });
+    // Comment.destroy({
+    //     where: { id: req.params.id }
+    // })
+    //     .then((resp) => {
+    //         console.log("The Deed Is Done");
+    //         res.status(200).json({"status": "success"});
+    //     });
+    res.status(500).json({"status": "not implemented"})
 });
 
 module.exports = router;
