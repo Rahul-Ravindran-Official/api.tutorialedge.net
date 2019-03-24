@@ -12,3 +12,10 @@ Deploying to Production
 ```
 $ nodemon app.js
 ```
+
+# Docker
+
+```
+$ docker build -t api.tutorialedge.net .
+$ docker run -it -p 3000:3000 --env-file=.env.ENV api.tutorialedge.net
+```

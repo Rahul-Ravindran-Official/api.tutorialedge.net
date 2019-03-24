@@ -9,10 +9,12 @@ const authRouter = require('./auth/auth.js');
 const userRouter = require('./users/users.js');
 const commentsRouter = require('./comments/comments.js');
 const cors = require('cors');
-const app = express();
+const dotenv = require('dotenv').config();
 
+const app = express();
 const CONFIG = require('./config.json');
 const ENV = process.env.NODE_ENV || 'development';
+
 const strategy = new Auth0Strategy(
   {
     domain: CONFIG.domain,
