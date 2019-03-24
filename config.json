@@ -3,7 +3,15 @@
     "port": 3000,
     "development" : {
         "clientID": "B63BMOpJ3SgxOB2jb6LY7EYEb4dU3J4D",
-        "callbackURL": "http://localhost:3000/callback"
+        "callbackURL": "http://localhost:3000/callback",
+        "database": {
+            "username": "doadmin",
+            "password": "xclffhc3lz55ubuq",
+            "host": "db-postgresql-nyc1-45572-do-user-1074347-0.db.ondigitalocean.com",
+            "port": 25060,
+            "database": "defaultdb",
+            "sslmode": "require"
+        }
     },
     "production": {
         "clientID": "35go3x6MIxvQ2Wa01mkpdcnv42xQxzye",

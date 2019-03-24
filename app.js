@@ -3,9 +3,11 @@ const passport = require("passport");
 const Auth0Strategy = require("passport-auth0");
 const session = require("express-session");
 const cookieParser = require('cookie-parser');
+const bodyParser = require('body-parser');
 const jwt = require("jsonwebtoken");
 const authRouter = require('./auth/auth.js');
 const userRouter = require('./users/users.js');
+const commentsRouter = require('./comments/comments.js');
 const cors = require('cors');
 const app = express();
 
@@ -40,6 +42,7 @@ var sess = {
 
 passport.use(strategy);
 app.use(cookieParser());
+app.use(bodyParser.json())
 app.use(session(sess));
 app.use(cors());
 app.use(passport.initialize());
@@ -51,6 +54,7 @@ app.get("/", (req, res) => {
 
 app.use('/', authRouter);
 app.use('/api/v1', userRouter);
+app.use('/api/v1', commentsRouter);
 
 app.listen(CONFIG.port, () =>
   console.log(`api.tutorialedge.net listening on port ${CONFIG.port}!`)
