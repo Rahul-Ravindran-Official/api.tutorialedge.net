@@ -3,7 +3,7 @@
     "port": 3000,
     "development" : {
         "clientID": "B63BMOpJ3SgxOB2jb6LY7EYEb4dU3J4D",
-        "callbackURL": "http://localhost:3000/callback",
+        "callbackURL": "http://localhost:3000/api/v1/callback",
         "database": {
             "username": "doadmin",
             "password": "xclffhc3lz55ubuq",
@@ -15,6 +15,6 @@
     },
     "production": {
         "clientID": "35go3x6MIxvQ2Wa01mkpdcnv42xQxzye",
-        "callbackURL": "https://api.tutorialedge.net/callback"
+        "callbackURL": "https://api.tutorialedge.net/api/v1/callback"
     }
 }

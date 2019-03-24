@@ -50,11 +50,11 @@ app.use(cors());
 app.use(passport.initialize());
 app.use(passport.session());
 
-app.get("/", (req, res) => {
-    res.json(jwt.verify(req.cookies['jwt-token'], 'shhhh'));
+app.get("/health", (req, res) => {
+  res.json({ status: "up" });
 });
 
-app.use('/', authRouter);
+app.use('/api/v1', authRouter);
 app.use('/api/v1', userRouter);
 app.use('/api/v1', commentsRouter);
 

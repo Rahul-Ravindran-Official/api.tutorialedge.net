@@ -18,4 +18,10 @@ const sequelize = new Sequelize(
     port: process.env.DB_PORT
 });
 
+
+sequelize.sync({ force: true })
+    .then(() => {
+        console.log("Success");
+    })
+
 module.exports = sequelize;
