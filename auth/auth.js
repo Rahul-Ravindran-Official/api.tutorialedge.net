@@ -27,8 +27,9 @@ router.get("/callback", function(req, res, next) {
       var privateKey = fs.readFileSync('./private.pem', 'utf8');
       let token = jwt.sign({ user: user }, privateKey, { algorithm: 'HS256'});
 
-      res.cookie("jwt-token", token).send();
-      res.redirect(process.env.REDIRECT_URL);
+      // res.header('Authorization', token);
+      // res.cookie("jwt-token", token, { httpOnly: false }).send();
+      res.redirect(process.env.REDIRECT_URL + "?token=" + token);
     });
   })(req, res, next);
 });
