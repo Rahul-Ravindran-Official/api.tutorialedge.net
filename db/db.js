@@ -11,13 +11,12 @@ const sequelize = new Sequelize(
         dialectOptions: {
         ssl: {
             rejectUnauthorized: false,
-            ca: fs.readFileSync("./ca-certificate.crt").toString()
+            ca: fs.readFileSync("./config/ca-certificate.crt").toString()
         }
     },
     host: process.env.DB_HOST,
     port: process.env.DB_PORT
 });
-
 
 sequelize.sync()
     .then(() => {
