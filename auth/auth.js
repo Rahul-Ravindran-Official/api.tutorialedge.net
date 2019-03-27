@@ -19,7 +19,11 @@ router.get("/login",
 router.get("/callback", function(req, res, next) {
   passport.authenticate("auth0", function(err, user, info) {
     if (err) { return next(err); }
-    if (!user) { return res.redirect("/login"); }
+    if (!user) { 
+      var privateKey = fs.readFileSync('./private.pem', 'utf8');
+      let token = jwt.sign({ user: user }, privateKey, { algorithm: 'HS256'});
+      return res.redirect(process.env.REDIRECT_URL + "?token=" + token); 
+    }
     
     req.logIn(user, function(err) {
       if (err) { return next(err); }

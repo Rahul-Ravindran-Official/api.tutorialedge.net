@@ -21,6 +21,6 @@ const sequelize = new Sequelize(
 sequelize.sync()
     .then(() => {
         console.log("Success");
-    })
+    });
 
 module.exports = sequelize;
