@@ -9,6 +9,9 @@ env:
 script:
 - version="0.0.15"
 - docker build --pull --cache-from "$IMAGE_NAME" --tag "$IMAGE_NAME" .
+- curl -LO https://storage.googleapis.com/kubernetes-release/release/$(curl -s https://storage.googleapis.com/kubernetes-release/release/stable.txt)/bin/linux/amd64/kubectl
+- chmod +x ./kubectl
+- sudo mv ./kubectl /usr/local/bin/kubectl
 after_script:
 - docker images
 before_deploy:
