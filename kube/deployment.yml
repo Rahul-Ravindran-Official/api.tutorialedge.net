@@ -4,7 +4,7 @@ kind: Deployment
 metadata:
   name: api.tutorialedge.net
 spec:
-  replicas: 4
+  replicas: 1
   selector:
     matchLabels:
       name: api.tutorialedge.net
@@ -15,7 +15,7 @@ spec:
     spec:
       containers:
       - name: application
-        image: forbsey/api.tutorialedge.net:0.0.14
+        image: forbsey/api.tutorialedge.net:0.0.15
         imagePullPolicy: IfNotPresent
         # volumeMounts:
         #   - name: certs
