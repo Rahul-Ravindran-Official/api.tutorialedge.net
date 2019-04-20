@@ -3,12 +3,13 @@ let router = express.Router();
 const passport = require("passport");
 const jwt = require("jsonwebtoken");
 const fs = require('fs');
+const winston = require('../config/winston');
 
 // Perform the login, after login Auth0 will redirect to callback
 router.get("/login",
   passport.authenticate("auth0", {
     scope: "openid profile read:groups"
-  }), 
+  }),
   (req, res) => { res.redirect("/"); }
 );
 
@@ -19,20 +20,12 @@ router.get("/login",
 router.get("/callback", function(req, res, next) {
   passport.authenticate("auth0", function(err, user, info) {
     if (err) { return next(err); }
-    if (!user) { 
-      var privateKey = fs.readFileSync('./private.pem', 'utf8');
-      let token = jwt.sign({ user: user }, privateKey, { algorithm: 'HS256'});
-      return res.redirect(process.env.REDIRECT_URL + "?token=" + token); 
-    }
-    
+    // if (!user) { return res.redirect("/api/v1/login"); }
+
     req.logIn(user, function(err) {
       if (err) { return next(err); }
-      
       var privateKey = fs.readFileSync('./private.pem', 'utf8');
       let token = jwt.sign({ user: user }, privateKey, { algorithm: 'HS256'});
-
-      // res.header('Authorization', token);
-      // res.cookie("jwt-token", token, { httpOnly: false }).send();
       res.redirect(process.env.REDIRECT_URL + "?token=" + token);
     });
   })(req, res, next);

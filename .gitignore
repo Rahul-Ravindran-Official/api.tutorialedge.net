@@ -3,3 +3,9 @@ config.json
 *.crt
 .env*
 *.pem
+kube/cluster-config.yaml
+logs/
+.DS_Store
+yarn-error.log
+
+package-lock.json

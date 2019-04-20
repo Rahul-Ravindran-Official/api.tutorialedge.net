@@ -4,6 +4,7 @@ const Sequelize = require("sequelize");
 const sequelize = require("../db/db.js");
 const jwt = require("jsonwebtoken");
 const fs = require("fs");
+const winston = require('./../config/winston');
 
 var Comment = sequelize.define("Comment", {
   body: Sequelize.STRING,
@@ -49,6 +50,7 @@ function isAdmin(req, res, next) {
 }
 
 router.get("/comments", (req, res) => {
+  winston.log("info", "Comments endpoint hit");
   Comment.findAll()
     .then(comments => {
       res.json({ comments: comments });
@@ -59,6 +61,7 @@ router.get("/comments", (req, res) => {
 });
 
 router.get("/comments/:slug", (req, res) => {
+  console.log("Request for comments for Article with ID: ", req.params['slug']);
   Comment.findAll({
     where: {
       slug: req.params["slug"]
@@ -69,7 +72,6 @@ router.get("/comments/:slug", (req, res) => {
 });
 
 router.post("/comments/:slug", verifyJWT, (req, res) => {
-  console.log(req.body);
   Comment.create({
     body: req.body.body,
     author: req.body.author,

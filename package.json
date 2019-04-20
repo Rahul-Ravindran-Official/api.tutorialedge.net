@@ -4,12 +4,21 @@
   "description": "",
   "main": "app.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "nodemon app.js",
+    "docker-build": "docker build -t forbsey/api.tutorialedge.net:latest .",
+    "docker-run": "docker run -d -p 3000:3000 api.tutorialedge.net",
+    "docker-push": "docker push forbsey/api.tutorialedge.net",
+    "nodes": "kubectl --kubeconfig=kube/cluster-config.yaml get nodes",
+    "kube-deployment": "kubectl --kubeconfig=kube/cluster-config.yaml apply -f kube/deployment.yml",
+    "kube-service": "kubectl --kubeconfig=kube/cluster-config.yaml apply -f kube/service.yml",
+    "kube-update": "kubectl --kubeconfig=kube/cluster-config.yaml rolling-update api.tutorialedge.net -f kube/service.yml"
   },
   "author": "",
   "license": "ISC",
   "dependencies": {
     "@babel/core": "^7.3.4",
+    "app-root-path": "^2.2.1",
     "auth0": "^2.16.0",
     "babel-core": "^6.26.3",
     "babel-preset-es2015": "^6.24.1",
@@ -19,10 +28,12 @@
     "express": "^4.16.4",
     "express-session": "^1.15.6",
     "jsonwebtoken": "^8.5.0",
+    "morgan": "^1.9.1",
     "passport": "^0.4.0",
     "passport-auth0": "^1.1.0",
     "pg": "^7.9.0",
-    "sequelize": "^5.1.1"
+    "sequelize": "^5.1.1",
+    "winston": "^3.2.1"
   },
   "devDependencies": {
     "babel-cli": "^6.26.0",

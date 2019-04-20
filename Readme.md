@@ -19,3 +19,10 @@ $ nodemon app.js
 $ docker build -t api.tutorialedge.net .
 $ docker run -it -p 3000:3000 --env-file=.env.ENV api.tutorialedge.net
 ```
+
+# Populating Secrets into Kube Cluster:
+
+```
+kubectl create secret generic prod-secrets --from-file=
+
+```

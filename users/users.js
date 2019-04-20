@@ -16,6 +16,7 @@ router.get('/users', (req, res) => {
     auth0.getUsers()
         .then(users => {
             res.json({ users: users })
+
         })
         .catch(err => {
             res.status(500).json({error: err});

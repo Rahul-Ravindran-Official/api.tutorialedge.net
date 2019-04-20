@@ -1,0 +1,28 @@
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: api.tutorialedge.net
+spec:
+  replicas: 4
+  selector:
+    matchLabels:
+      name: api.tutorialedge.net
+  template:
+    metadata:
+      labels:
+        name: api.tutorialedge.net
+    spec:
+      containers:
+      - name: application
+        image: forbsey/api.tutorialedge.net:0.0.14
+        imagePullPolicy: IfNotPresent
+        # volumeMounts:
+        #   - name: certs
+        #     mountPath: "/config"
+        #     readOnly: true
+        envFrom:
+          - secretRef:
+              name: prod-secrets
+        ports:
+          - containerPort: 3000

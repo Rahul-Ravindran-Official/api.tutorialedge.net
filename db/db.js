@@ -9,18 +9,19 @@ const sequelize = new Sequelize(
     {
         dialect: "postgres",
         dialectOptions: {
-        ssl: {
-            rejectUnauthorized: false,
-            ca: fs.readFileSync("./config/ca-certificate.crt").toString()
-        }
+            ssl: {
+                rejectUnauthorized: false,
+                ca: fs.readFileSync("./config/ca-certificate.crt").toString()
+            }
     },
+    logging: false,
     host: process.env.DB_HOST,
     port: process.env.DB_PORT
 });
 
 sequelize.sync()
     .then(() => {
-        console.log("Success");
+        console.log("Successfully Loaded Sequelize Profile");
     });
 
 module.exports = sequelize;
