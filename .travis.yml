@@ -22,11 +22,6 @@ before_deploy:
   -in cluster-config.yaml.enc -out kube/cluster-config.yaml -d
 deploy:
   provider: script
-  script: 
-   - docker push "${IMAGE_NAME}:latest" && docker push "${IMAGE_NAME}:${version}"
-   - ./kubectl
-   - echo "Hello World"
-   - ./kubectl --kubeconfig=kube/cluster-config.yaml apply -f ./kube/deployment.yml
-   - ./kubectl --kubeconfig=kube/cluster-config.yaml apply -f ./kube/service.yml
+  script: bash deploy.sh
   on:
     branch: master
