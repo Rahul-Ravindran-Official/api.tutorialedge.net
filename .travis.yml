@@ -1,0 +1,23 @@
+sudo: required
+services:
+  - docker
+
+env:
+  global:
+    - IMAGE_NAME=forbsey/api.tutorialedge.net
+    - REGISTRY_USER=forbsey
+    - REGISTRY_PASS=
+  
+script:
+  - docker build --pul --cache-from "$IMAGE_NAME" --tage "$IMAGE_NAME" .
+
+after_script:
+  - docker images
+
+before_deploy:
+  - docker login -u "$REGISTRY_USER" -p "$REGISTRY_PASS"
+  - docker tag "$IMAGE_NAME" "${IMAGE_NAME}:latest"
+  - docker tag "$IMAGE_NAME" "${IMAGE_NAME}:${version}"
+
+deploy:
+  - echo "Hello World"
