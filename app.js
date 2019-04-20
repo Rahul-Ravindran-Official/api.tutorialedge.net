@@ -12,15 +12,15 @@ const cors = require('cors');
 const dotenv = require('dotenv').config();
 
 const app = express();
-const CONFIG = require('./config.json');
-const ENV = process.env.NODE_ENV || 'development';
+
+console.log(process.env)
 
 const strategy = new Auth0Strategy(
   {
-    domain: CONFIG.domain,
-    clientID: CONFIG[ENV].clientID,
+    domain: process.env.DOMAIN,
+    clientID: process.env.CLIENT_ID,
     clientSecret: process.env.CLIENT_SECRET,
-    callbackURL: CONFIG[ENV].callbackURL
+    callbackURL: process.env.REDIRECT_URL
   },
   function(accessToken, refreshToken, extraParams, profile, done) {
     return done(null, profile);
@@ -58,6 +58,6 @@ app.use('/api/v1', authRouter);
 app.use('/api/v1', userRouter);
 app.use('/api/v1', commentsRouter);
 
-app.listen(CONFIG.port, () =>
-  console.log(`api.tutorialedge.net listening on port ${CONFIG.port}!`)
+app.listen(process.env.PORT, () =>
+  console.log(`api.tutorialedge.net listening on PORT ${process.env.PORT}!`)
 );
