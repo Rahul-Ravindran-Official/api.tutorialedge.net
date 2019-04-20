@@ -9,7 +9,7 @@ env:
     - REGISTRY_PASS=
   
 script:
-  - docker build --pul --cache-from "$IMAGE_NAME" --tag "$IMAGE_NAME" .
+  - docker build --pull --cache-from "$IMAGE_NAME" --tag "$IMAGE_NAME" .
 
 after_script:
   - docker images
