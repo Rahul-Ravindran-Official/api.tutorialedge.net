@@ -1,0 +1,72 @@
+---
+service: tutorialedge-rest-api
+
+provider:
+  name: aws
+  runtime: go1.x
+  region: eu-west-1
+  memorySize: 128
+
+package:
+  exclude:
+  - ./**
+  include:
+  - ./bin/**
+
+functions:
+
+  achievements:
+    handler: bin/achievements
+    events:
+    - http:
+        path: /achievements
+        method: get
+
+  comments:
+    handler: bin/comments
+    events:
+    - http:
+        path: /comments
+        method: get
+        cors: true # <-- CORS!
+    - http:
+        path: /comments/{id}
+        method: post
+    - http:
+        path: /comments/{id}
+        method: put
+    - http:
+        path: /comments/{id}
+        method: delete
+  
+  challenges:
+    handler: bin/challenges
+    events:
+    - http:
+        path: /challenges
+        method: get
+    - http:
+        path: /challenges
+        method: post
+    - http:
+        path: /challenges
+        method: put
+    - http:
+        path: /challenges
+        method: delete
+  
+  posts:
+    handler: bin/posts
+    events:
+    - http:
+        path: /posts
+        method: get
+    - http:
+        path: /posts
+        method: post
+    - http:
+        path: /posts
+        method: put
+    - http:
+        path: /posts
+        method: delete

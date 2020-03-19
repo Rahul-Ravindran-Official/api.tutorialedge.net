@@ -1,30 +1,16 @@
-The Official Repository for the TutorialEdge API
-=================================================
+TutorialEdge API
+==================
 
-![Build Status](https://travis-ci.org/elliotforbes/api.tutorialedge.net.svg?branch=master)
+# TODO
 
-Deploying to Production
+[] - Simple Endpoint
+[] - Comments System
+[] - Terraform for infrastructure
+[] - Challenge System
+[] - Quiz System
+[] - Awards System
 
-1. process.env.NODE_ENV needs to be 'production'
-2. CLIENT_SECRET needs to be set as an environment variable
-3. App should then start
+# Today
 
-# Running Locally
-
-```
-$ nodemon app.js
-```
-
-# Docker
-
-```
-$ docker build -t api.tutorialedge.net .
-$ docker run -it -p 3000:3000 --env-file=.env.ENV api.tutorialedge.net
-```
-
-# Populating Secrets into Kube Cluster:
-
-```
-kubectl create secret generic prod-secrets --from-file=
-
-```
+[] - Serverless Setup
+[] - Terraform
