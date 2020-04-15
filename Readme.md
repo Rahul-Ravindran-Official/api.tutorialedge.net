@@ -1,30 +1,32 @@
-The Official Repository for the TutorialEdge API
-=================================================
+TutorialEdge API
+==================
 
-![Build Status](https://travis-ci.org/elliotforbes/api.tutorialedge.net.svg?branch=master)
+# TODO
 
-Deploying to Production
+[x] - Simple Endpoint
+[] - Comments System
+[] - Terraform for infrastructure
+[] - Challenge System
+[] - Quiz System
+[] - Awards System
 
-1. process.env.NODE_ENV needs to be 'production'
-2. CLIENT_SECRET needs to be set as an environment variable
-3. App should then start
+# 19/03/20
 
-# Running Locally
+[x] - Serverless Setup
+[x] - Dummy Endpoints set up for comments, achievements and forum posts
 
-```
-$ nodemon app.js
-```
+# 20/03/20
 
-# Docker
+[x] - Database Setup and schema fleshed out for comments
+[x] - Add CRUD functionality to endpoints
 
-```
-$ docker build -t api.tutorialedge.net .
-$ docker run -it -p 3000:3000 --env-file=.env.ENV api.tutorialedge.net
-```
+# 21/03/20
 
-# Populating Secrets into Kube Cluster:
+[x] - Database updated to store upvotes
+[] - Authentication with Auth0
+[] - Original Commenter can delete comment
 
-```
-kubectl create secret generic prod-secrets --from-file=
+## Stretch
 
-```
+[] - migrate api.tutorialedge.net -> new serverless endpoints 
+[] - add CI/CD to api.tutorialedge.net and store secrets safely - database connections in 

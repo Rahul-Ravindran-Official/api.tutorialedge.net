@@ -9,3 +9,9 @@ logs/
 yarn-error.log
 
 package-lock.json
+
+scripts/*
+
+bin/**/*
+
+*.terraform/
