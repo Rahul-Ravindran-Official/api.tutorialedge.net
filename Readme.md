@@ -3,14 +3,30 @@ TutorialEdge API
 
 # TODO
 
-[] - Simple Endpoint
+[x] - Simple Endpoint
 [] - Comments System
 [] - Terraform for infrastructure
 [] - Challenge System
 [] - Quiz System
 [] - Awards System
 
-# Today
+# 19/03/20
 
-[] - Serverless Setup
-[] - Terraform
+[x] - Serverless Setup
+[x] - Dummy Endpoints set up for comments, achievements and forum posts
+
+# 20/03/20
+
+[x] - Database Setup and schema fleshed out for comments
+[x] - Add CRUD functionality to endpoints
+
+# 21/03/20
+
+[x] - Database updated to store upvotes
+[] - Authentication with Auth0
+[] - Original Commenter can delete comment
+
+## Stretch
+
+[] - migrate api.tutorialedge.net -> new serverless endpoints 
+[] - add CI/CD to api.tutorialedge.net and store secrets safely - database connections in 

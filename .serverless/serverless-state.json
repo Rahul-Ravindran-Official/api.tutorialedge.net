@@ -20,28 +20,40 @@
           "ServerlessDeploymentBucket": {
             "Type": "AWS::S3::Bucket"
           },
+          "HealthLogGroup": {
+            "Type": "AWS::Logs::LogGroup",
+            "Properties": {
+              "LogGroupName": "/aws/lambda/tutorialedge-rest-api-production-health"
+            }
+          },
           "AchievementsLogGroup": {
             "Type": "AWS::Logs::LogGroup",
             "Properties": {
-              "LogGroupName": "/aws/lambda/tutorialedge-rest-api-dev-achievements"
+              "LogGroupName": "/aws/lambda/tutorialedge-rest-api-production-achievements"
             }
           },
           "CommentsLogGroup": {
             "Type": "AWS::Logs::LogGroup",
             "Properties": {
-              "LogGroupName": "/aws/lambda/tutorialedge-rest-api-dev-comments"
+              "LogGroupName": "/aws/lambda/tutorialedge-rest-api-production-comments"
             }
           },
           "ChallengesLogGroup": {
             "Type": "AWS::Logs::LogGroup",
             "Properties": {
-              "LogGroupName": "/aws/lambda/tutorialedge-rest-api-dev-challenges"
+              "LogGroupName": "/aws/lambda/tutorialedge-rest-api-production-challenges"
+            }
+          },
+          "UsersLogGroup": {
+            "Type": "AWS::Logs::LogGroup",
+            "Properties": {
+              "LogGroupName": "/aws/lambda/tutorialedge-rest-api-production-users"
             }
           },
           "PostsLogGroup": {
             "Type": "AWS::Logs::LogGroup",
             "Properties": {
-              "LogGroupName": "/aws/lambda/tutorialedge-rest-api-dev-posts"
+              "LogGroupName": "/aws/lambda/tutorialedge-rest-api-production-posts"
             }
           },
           "IamRoleLambdaExecution": {
@@ -69,7 +81,7 @@
                     "Fn::Join": [
                       "-",
                       [
-                        "dev",
+                        "production",
                         "tutorialedge-rest-api",
                         "lambda"
                       ]
@@ -85,16 +97,22 @@
                         ],
                         "Resource": [
                           {
-                            "Fn::Sub": "arn:${AWS::Partition}:logs:${AWS::Region}:${AWS::AccountId}:log-group:/aws/lambda/tutorialedge-rest-api-dev-achievements:*"
+                            "Fn::Sub": "arn:${AWS::Partition}:logs:${AWS::Region}:${AWS::AccountId}:log-group:/aws/lambda/tutorialedge-rest-api-production-health:*"
                           },
                           {
-                            "Fn::Sub": "arn:${AWS::Partition}:logs:${AWS::Region}:${AWS::AccountId}:log-group:/aws/lambda/tutorialedge-rest-api-dev-comments:*"
+                            "Fn::Sub": "arn:${AWS::Partition}:logs:${AWS::Region}:${AWS::AccountId}:log-group:/aws/lambda/tutorialedge-rest-api-production-achievements:*"
                           },
                           {
-                            "Fn::Sub": "arn:${AWS::Partition}:logs:${AWS::Region}:${AWS::AccountId}:log-group:/aws/lambda/tutorialedge-rest-api-dev-challenges:*"
+                            "Fn::Sub": "arn:${AWS::Partition}:logs:${AWS::Region}:${AWS::AccountId}:log-group:/aws/lambda/tutorialedge-rest-api-production-comments:*"
                           },
                           {
-                            "Fn::Sub": "arn:${AWS::Partition}:logs:${AWS::Region}:${AWS::AccountId}:log-group:/aws/lambda/tutorialedge-rest-api-dev-posts:*"
+                            "Fn::Sub": "arn:${AWS::Partition}:logs:${AWS::Region}:${AWS::AccountId}:log-group:/aws/lambda/tutorialedge-rest-api-production-challenges:*"
+                          },
+                          {
+                            "Fn::Sub": "arn:${AWS::Partition}:logs:${AWS::Region}:${AWS::AccountId}:log-group:/aws/lambda/tutorialedge-rest-api-production-users:*"
+                          },
+                          {
+                            "Fn::Sub": "arn:${AWS::Partition}:logs:${AWS::Region}:${AWS::AccountId}:log-group:/aws/lambda/tutorialedge-rest-api-production-posts:*"
                           }
                         ]
                       },
@@ -105,16 +123,22 @@
                         ],
                         "Resource": [
                           {
-                            "Fn::Sub": "arn:${AWS::Partition}:logs:${AWS::Region}:${AWS::AccountId}:log-group:/aws/lambda/tutorialedge-rest-api-dev-achievements:*:*"
+                            "Fn::Sub": "arn:${AWS::Partition}:logs:${AWS::Region}:${AWS::AccountId}:log-group:/aws/lambda/tutorialedge-rest-api-production-health:*:*"
                           },
                           {
-                            "Fn::Sub": "arn:${AWS::Partition}:logs:${AWS::Region}:${AWS::AccountId}:log-group:/aws/lambda/tutorialedge-rest-api-dev-comments:*:*"
+                            "Fn::Sub": "arn:${AWS::Partition}:logs:${AWS::Region}:${AWS::AccountId}:log-group:/aws/lambda/tutorialedge-rest-api-production-achievements:*:*"
                           },
                           {
-                            "Fn::Sub": "arn:${AWS::Partition}:logs:${AWS::Region}:${AWS::AccountId}:log-group:/aws/lambda/tutorialedge-rest-api-dev-challenges:*:*"
+                            "Fn::Sub": "arn:${AWS::Partition}:logs:${AWS::Region}:${AWS::AccountId}:log-group:/aws/lambda/tutorialedge-rest-api-production-comments:*:*"
                           },
                           {
-                            "Fn::Sub": "arn:${AWS::Partition}:logs:${AWS::Region}:${AWS::AccountId}:log-group:/aws/lambda/tutorialedge-rest-api-dev-posts:*:*"
+                            "Fn::Sub": "arn:${AWS::Partition}:logs:${AWS::Region}:${AWS::AccountId}:log-group:/aws/lambda/tutorialedge-rest-api-production-challenges:*:*"
+                          },
+                          {
+                            "Fn::Sub": "arn:${AWS::Partition}:logs:${AWS::Region}:${AWS::AccountId}:log-group:/aws/lambda/tutorialedge-rest-api-production-users:*:*"
+                          },
+                          {
+                            "Fn::Sub": "arn:${AWS::Partition}:logs:${AWS::Region}:${AWS::AccountId}:log-group:/aws/lambda/tutorialedge-rest-api-production-posts:*:*"
                           }
                         ]
                       }
@@ -128,12 +152,48 @@
                   "-",
                   [
                     "tutorialedge-rest-api",
-                    "dev",
+                    "production",
                     "eu-west-1",
                     "lambdaRole"
                   ]
                 ]
               }
+            }
+          },
+          "HealthLambdaFunction": {
+            "Type": "AWS::Lambda::Function",
+            "Properties": {
+              "Code": {
+                "S3Bucket": {
+                  "Ref": "ServerlessDeploymentBucket"
+                },
+                "S3Key": "serverless/tutorialedge-rest-api/production/1586816356683-2020-04-13T22:19:16.683Z/tutorialedge-rest-api.zip"
+              },
+              "FunctionName": "tutorialedge-rest-api-production-health",
+              "Handler": "bin/health",
+              "MemorySize": 128,
+              "Role": {
+                "Fn::GetAtt": [
+                  "IamRoleLambdaExecution",
+                  "Arn"
+                ]
+              },
+              "Runtime": "go1.x",
+              "Timeout": 6
+            },
+            "DependsOn": [
+              "HealthLogGroup",
+              "IamRoleLambdaExecution"
+            ]
+          },
+          "HealthLambdaVersion6vRk2viTcMgSj33wbnzYgIBVRXDrsSD3zFPIsyJQGE": {
+            "Type": "AWS::Lambda::Version",
+            "DeletionPolicy": "Retain",
+            "Properties": {
+              "FunctionName": {
+                "Ref": "HealthLambdaFunction"
+              },
+              "CodeSha256": "D0vYfCLnIafelptbFsnEmA9+PeqASREbYNeNNtwW900="
             }
           },
           "AchievementsLambdaFunction": {
@@ -143,9 +203,9 @@
                 "S3Bucket": {
                   "Ref": "ServerlessDeploymentBucket"
                 },
-                "S3Key": "serverless/tutorialedge-rest-api/dev/1584649107642-2020-03-19T20:18:27.642Z/tutorialedge-rest-api.zip"
+                "S3Key": "serverless/tutorialedge-rest-api/production/1586816356683-2020-04-13T22:19:16.683Z/tutorialedge-rest-api.zip"
               },
-              "FunctionName": "tutorialedge-rest-api-dev-achievements",
+              "FunctionName": "tutorialedge-rest-api-production-achievements",
               "Handler": "bin/achievements",
               "MemorySize": 128,
               "Role": {
@@ -162,14 +222,14 @@
               "IamRoleLambdaExecution"
             ]
           },
-          "AchievementsLambdaVersionIEcZ1IjgmckanJCQCjEiEVHT9qwTmgDlYUlwvQb7Wk": {
+          "AchievementsLambdaVersion42HocwQ8SvYrN1SwkKcCSTjIK8D2NqTDeF2NhUcdLdM": {
             "Type": "AWS::Lambda::Version",
             "DeletionPolicy": "Retain",
             "Properties": {
               "FunctionName": {
                 "Ref": "AchievementsLambdaFunction"
               },
-              "CodeSha256": "NI0xYCKc+qKseAki3Vv0Sv0k80/4d+XQviwRVim6xKs="
+              "CodeSha256": "D0vYfCLnIafelptbFsnEmA9+PeqASREbYNeNNtwW900="
             }
           },
           "CommentsLambdaFunction": {
@@ -179,9 +239,9 @@
                 "S3Bucket": {
                   "Ref": "ServerlessDeploymentBucket"
                 },
-                "S3Key": "serverless/tutorialedge-rest-api/dev/1584649107642-2020-03-19T20:18:27.642Z/tutorialedge-rest-api.zip"
+                "S3Key": "serverless/tutorialedge-rest-api/production/1586816356683-2020-04-13T22:19:16.683Z/tutorialedge-rest-api.zip"
               },
-              "FunctionName": "tutorialedge-rest-api-dev-comments",
+              "FunctionName": "tutorialedge-rest-api-production-comments",
               "Handler": "bin/comments",
               "MemorySize": 128,
               "Role": {
@@ -198,14 +258,14 @@
               "IamRoleLambdaExecution"
             ]
           },
-          "CommentsLambdaVersion0uNzd55H1DCF1KHWIWiByTUPLb4ZCODJqPiCqCyeM": {
+          "CommentsLambdaVersionPOoOErEEKBBQqKt2HEv8hvJjp3SHYOfCWvfOCAYX0": {
             "Type": "AWS::Lambda::Version",
             "DeletionPolicy": "Retain",
             "Properties": {
               "FunctionName": {
                 "Ref": "CommentsLambdaFunction"
               },
-              "CodeSha256": "NI0xYCKc+qKseAki3Vv0Sv0k80/4d+XQviwRVim6xKs="
+              "CodeSha256": "D0vYfCLnIafelptbFsnEmA9+PeqASREbYNeNNtwW900="
             }
           },
           "ChallengesLambdaFunction": {
@@ -215,9 +275,9 @@
                 "S3Bucket": {
                   "Ref": "ServerlessDeploymentBucket"
                 },
-                "S3Key": "serverless/tutorialedge-rest-api/dev/1584649107642-2020-03-19T20:18:27.642Z/tutorialedge-rest-api.zip"
+                "S3Key": "serverless/tutorialedge-rest-api/production/1586816356683-2020-04-13T22:19:16.683Z/tutorialedge-rest-api.zip"
               },
-              "FunctionName": "tutorialedge-rest-api-dev-challenges",
+              "FunctionName": "tutorialedge-rest-api-production-challenges",
               "Handler": "bin/challenges",
               "MemorySize": 128,
               "Role": {
@@ -234,14 +294,50 @@
               "IamRoleLambdaExecution"
             ]
           },
-          "ChallengesLambdaVersion2b9cqNBPypPrLtzYMbnfwzltzMUvJqaicYAkGTrCA2Y": {
+          "ChallengesLambdaVersionbDdMnKNDSGfUeT8vvgHHiDhg1LLfut5KXgX16guRDY": {
             "Type": "AWS::Lambda::Version",
             "DeletionPolicy": "Retain",
             "Properties": {
               "FunctionName": {
                 "Ref": "ChallengesLambdaFunction"
               },
-              "CodeSha256": "NI0xYCKc+qKseAki3Vv0Sv0k80/4d+XQviwRVim6xKs="
+              "CodeSha256": "D0vYfCLnIafelptbFsnEmA9+PeqASREbYNeNNtwW900="
+            }
+          },
+          "UsersLambdaFunction": {
+            "Type": "AWS::Lambda::Function",
+            "Properties": {
+              "Code": {
+                "S3Bucket": {
+                  "Ref": "ServerlessDeploymentBucket"
+                },
+                "S3Key": "serverless/tutorialedge-rest-api/production/1586816356683-2020-04-13T22:19:16.683Z/tutorialedge-rest-api.zip"
+              },
+              "FunctionName": "tutorialedge-rest-api-production-users",
+              "Handler": "bin/users",
+              "MemorySize": 128,
+              "Role": {
+                "Fn::GetAtt": [
+                  "IamRoleLambdaExecution",
+                  "Arn"
+                ]
+              },
+              "Runtime": "go1.x",
+              "Timeout": 6
+            },
+            "DependsOn": [
+              "UsersLogGroup",
+              "IamRoleLambdaExecution"
+            ]
+          },
+          "UsersLambdaVersion000lIi565xsT0obY020yRBXYy9AihqCr0MzLQwbX4": {
+            "Type": "AWS::Lambda::Version",
+            "DeletionPolicy": "Retain",
+            "Properties": {
+              "FunctionName": {
+                "Ref": "UsersLambdaFunction"
+              },
+              "CodeSha256": "D0vYfCLnIafelptbFsnEmA9+PeqASREbYNeNNtwW900="
             }
           },
           "PostsLambdaFunction": {
@@ -251,9 +347,9 @@
                 "S3Bucket": {
                   "Ref": "ServerlessDeploymentBucket"
                 },
-                "S3Key": "serverless/tutorialedge-rest-api/dev/1584649107642-2020-03-19T20:18:27.642Z/tutorialedge-rest-api.zip"
+                "S3Key": "serverless/tutorialedge-rest-api/production/1586816356683-2020-04-13T22:19:16.683Z/tutorialedge-rest-api.zip"
               },
-              "FunctionName": "tutorialedge-rest-api-dev-posts",
+              "FunctionName": "tutorialedge-rest-api-production-posts",
               "Handler": "bin/posts",
               "MemorySize": 128,
               "Role": {
@@ -270,20 +366,20 @@
               "IamRoleLambdaExecution"
             ]
           },
-          "PostsLambdaVersionV1xGqYwDbI4QXAZmu5TvdZ1hZf9ONPlq6Ozch9cNoWw": {
+          "PostsLambdaVersionfKm5yOjnWZgqrPMSAg6dAPCo4J05fLt8YgqNBwCnp1E": {
             "Type": "AWS::Lambda::Version",
             "DeletionPolicy": "Retain",
             "Properties": {
               "FunctionName": {
                 "Ref": "PostsLambdaFunction"
               },
-              "CodeSha256": "NI0xYCKc+qKseAki3Vv0Sv0k80/4d+XQviwRVim6xKs="
+              "CodeSha256": "D0vYfCLnIafelptbFsnEmA9+PeqASREbYNeNNtwW900="
             }
           },
           "ApiGatewayRestApi": {
             "Type": "AWS::ApiGateway::RestApi",
             "Properties": {
-              "Name": "dev-tutorialedge-rest-api",
+              "Name": "production-tutorialedge-rest-api",
               "EndpointConfiguration": {
                 "Types": [
                   "EDGE"
@@ -306,7 +402,7 @@
               }
             }
           },
-          "ApiGatewayResourceComments": {
+          "ApiGatewayResourceV1": {
             "Type": "AWS::ApiGateway::Resource",
             "Properties": {
               "ParentId": {
@@ -314,6 +410,18 @@
                   "ApiGatewayRestApi",
                   "RootResourceId"
                 ]
+              },
+              "PathPart": "v1",
+              "RestApiId": {
+                "Ref": "ApiGatewayRestApi"
+              }
+            }
+          },
+          "ApiGatewayResourceV1Comments": {
+            "Type": "AWS::ApiGateway::Resource",
+            "Properties": {
+              "ParentId": {
+                "Ref": "ApiGatewayResourceV1"
               },
               "PathPart": "comments",
               "RestApiId": {
@@ -321,26 +429,11 @@
               }
             }
           },
-          "ApiGatewayResourceCommentsIdVar": {
+          "ApiGatewayResourceV1Challenges": {
             "Type": "AWS::ApiGateway::Resource",
             "Properties": {
               "ParentId": {
-                "Ref": "ApiGatewayResourceComments"
-              },
-              "PathPart": "{id}",
-              "RestApiId": {
-                "Ref": "ApiGatewayRestApi"
-              }
-            }
-          },
-          "ApiGatewayResourceChallenges": {
-            "Type": "AWS::ApiGateway::Resource",
-            "Properties": {
-              "ParentId": {
-                "Fn::GetAtt": [
-                  "ApiGatewayRestApi",
-                  "RootResourceId"
-                ]
+                "Ref": "ApiGatewayResourceV1"
               },
               "PathPart": "challenges",
               "RestApiId": {
@@ -348,14 +441,23 @@
               }
             }
           },
-          "ApiGatewayResourcePosts": {
+          "ApiGatewayResourceV1User": {
             "Type": "AWS::ApiGateway::Resource",
             "Properties": {
               "ParentId": {
-                "Fn::GetAtt": [
-                  "ApiGatewayRestApi",
-                  "RootResourceId"
-                ]
+                "Ref": "ApiGatewayResourceV1"
+              },
+              "PathPart": "user",
+              "RestApiId": {
+                "Ref": "ApiGatewayRestApi"
+              }
+            }
+          },
+          "ApiGatewayResourceV1Posts": {
+            "Type": "AWS::ApiGateway::Resource",
+            "Properties": {
+              "ParentId": {
+                "Ref": "ApiGatewayResourceV1"
               },
               "PathPart": "posts",
               "RestApiId": {
@@ -363,7 +465,7 @@
               }
             }
           },
-          "ApiGatewayMethodCommentsOptions": {
+          "ApiGatewayMethodV1CommentsOptions": {
             "Type": "AWS::ApiGateway::Method",
             "Properties": {
               "AuthorizationType": "NONE",
@@ -393,7 +495,7 @@
                     "ResponseParameters": {
                       "method.response.header.Access-Control-Allow-Origin": "'*'",
                       "method.response.header.Access-Control-Allow-Headers": "'Content-Type,X-Amz-Date,Authorization,X-Api-Key,X-Amz-Security-Token,X-Amz-User-Agent'",
-                      "method.response.header.Access-Control-Allow-Methods": "'OPTIONS,GET'",
+                      "method.response.header.Access-Control-Allow-Methods": "'OPTIONS,DELETE,PUT,POST,GET'",
                       "method.response.header.Access-Control-Allow-Credentials": "'false'"
                     },
                     "ResponseTemplates": {
@@ -403,11 +505,57 @@
                 ]
               },
               "ResourceId": {
-                "Ref": "ApiGatewayResourceComments"
+                "Ref": "ApiGatewayResourceV1Comments"
               },
               "RestApiId": {
                 "Ref": "ApiGatewayRestApi"
               }
+            }
+          },
+          "ApiGatewayMethodGet": {
+            "Type": "AWS::ApiGateway::Method",
+            "Properties": {
+              "HttpMethod": "GET",
+              "RequestParameters": {},
+              "ResourceId": {
+                "Fn::GetAtt": [
+                  "ApiGatewayRestApi",
+                  "RootResourceId"
+                ]
+              },
+              "RestApiId": {
+                "Ref": "ApiGatewayRestApi"
+              },
+              "ApiKeyRequired": false,
+              "AuthorizationType": "NONE",
+              "Integration": {
+                "IntegrationHttpMethod": "POST",
+                "Type": "AWS_PROXY",
+                "Uri": {
+                  "Fn::Join": [
+                    "",
+                    [
+                      "arn:",
+                      {
+                        "Ref": "AWS::Partition"
+                      },
+                      ":apigateway:",
+                      {
+                        "Ref": "AWS::Region"
+                      },
+                      ":lambda:path/2015-03-31/functions/",
+                      {
+                        "Fn::GetAtt": [
+                          "HealthLambdaFunction",
+                          "Arn"
+                        ]
+                      },
+                      "/invocations"
+                    ]
+                  ]
+                }
+              },
+              "MethodResponses": []
             }
           },
           "ApiGatewayMethodAchievementsGet": {
@@ -453,13 +601,13 @@
               "MethodResponses": []
             }
           },
-          "ApiGatewayMethodCommentsGet": {
+          "ApiGatewayMethodV1CommentsGet": {
             "Type": "AWS::ApiGateway::Method",
             "Properties": {
               "HttpMethod": "GET",
               "RequestParameters": {},
               "ResourceId": {
-                "Ref": "ApiGatewayResourceComments"
+                "Ref": "ApiGatewayResourceV1Comments"
               },
               "RestApiId": {
                 "Ref": "ApiGatewayRestApi"
@@ -496,13 +644,13 @@
               "MethodResponses": []
             }
           },
-          "ApiGatewayMethodCommentsIdVarPost": {
+          "ApiGatewayMethodV1CommentsPost": {
             "Type": "AWS::ApiGateway::Method",
             "Properties": {
               "HttpMethod": "POST",
               "RequestParameters": {},
               "ResourceId": {
-                "Ref": "ApiGatewayResourceCommentsIdVar"
+                "Ref": "ApiGatewayResourceV1Comments"
               },
               "RestApiId": {
                 "Ref": "ApiGatewayRestApi"
@@ -539,13 +687,13 @@
               "MethodResponses": []
             }
           },
-          "ApiGatewayMethodCommentsIdVarPut": {
+          "ApiGatewayMethodV1CommentsPut": {
             "Type": "AWS::ApiGateway::Method",
             "Properties": {
               "HttpMethod": "PUT",
               "RequestParameters": {},
               "ResourceId": {
-                "Ref": "ApiGatewayResourceCommentsIdVar"
+                "Ref": "ApiGatewayResourceV1Comments"
               },
               "RestApiId": {
                 "Ref": "ApiGatewayRestApi"
@@ -582,13 +730,13 @@
               "MethodResponses": []
             }
           },
-          "ApiGatewayMethodCommentsIdVarDelete": {
+          "ApiGatewayMethodV1CommentsDelete": {
             "Type": "AWS::ApiGateway::Method",
             "Properties": {
               "HttpMethod": "DELETE",
               "RequestParameters": {},
               "ResourceId": {
-                "Ref": "ApiGatewayResourceCommentsIdVar"
+                "Ref": "ApiGatewayResourceV1Comments"
               },
               "RestApiId": {
                 "Ref": "ApiGatewayRestApi"
@@ -625,13 +773,13 @@
               "MethodResponses": []
             }
           },
-          "ApiGatewayMethodChallengesGet": {
+          "ApiGatewayMethodV1ChallengesGet": {
             "Type": "AWS::ApiGateway::Method",
             "Properties": {
               "HttpMethod": "GET",
               "RequestParameters": {},
               "ResourceId": {
-                "Ref": "ApiGatewayResourceChallenges"
+                "Ref": "ApiGatewayResourceV1Challenges"
               },
               "RestApiId": {
                 "Ref": "ApiGatewayRestApi"
@@ -668,13 +816,13 @@
               "MethodResponses": []
             }
           },
-          "ApiGatewayMethodChallengesPost": {
+          "ApiGatewayMethodV1ChallengesPost": {
             "Type": "AWS::ApiGateway::Method",
             "Properties": {
               "HttpMethod": "POST",
               "RequestParameters": {},
               "ResourceId": {
-                "Ref": "ApiGatewayResourceChallenges"
+                "Ref": "ApiGatewayResourceV1Challenges"
               },
               "RestApiId": {
                 "Ref": "ApiGatewayRestApi"
@@ -711,13 +859,13 @@
               "MethodResponses": []
             }
           },
-          "ApiGatewayMethodChallengesPut": {
+          "ApiGatewayMethodV1ChallengesPut": {
             "Type": "AWS::ApiGateway::Method",
             "Properties": {
               "HttpMethod": "PUT",
               "RequestParameters": {},
               "ResourceId": {
-                "Ref": "ApiGatewayResourceChallenges"
+                "Ref": "ApiGatewayResourceV1Challenges"
               },
               "RestApiId": {
                 "Ref": "ApiGatewayRestApi"
@@ -754,13 +902,13 @@
               "MethodResponses": []
             }
           },
-          "ApiGatewayMethodChallengesDelete": {
+          "ApiGatewayMethodV1ChallengesDelete": {
             "Type": "AWS::ApiGateway::Method",
             "Properties": {
               "HttpMethod": "DELETE",
               "RequestParameters": {},
               "ResourceId": {
-                "Ref": "ApiGatewayResourceChallenges"
+                "Ref": "ApiGatewayResourceV1Challenges"
               },
               "RestApiId": {
                 "Ref": "ApiGatewayRestApi"
@@ -797,13 +945,56 @@
               "MethodResponses": []
             }
           },
-          "ApiGatewayMethodPostsGet": {
+          "ApiGatewayMethodV1UserPost": {
+            "Type": "AWS::ApiGateway::Method",
+            "Properties": {
+              "HttpMethod": "POST",
+              "RequestParameters": {},
+              "ResourceId": {
+                "Ref": "ApiGatewayResourceV1User"
+              },
+              "RestApiId": {
+                "Ref": "ApiGatewayRestApi"
+              },
+              "ApiKeyRequired": false,
+              "AuthorizationType": "NONE",
+              "Integration": {
+                "IntegrationHttpMethod": "POST",
+                "Type": "AWS_PROXY",
+                "Uri": {
+                  "Fn::Join": [
+                    "",
+                    [
+                      "arn:",
+                      {
+                        "Ref": "AWS::Partition"
+                      },
+                      ":apigateway:",
+                      {
+                        "Ref": "AWS::Region"
+                      },
+                      ":lambda:path/2015-03-31/functions/",
+                      {
+                        "Fn::GetAtt": [
+                          "UsersLambdaFunction",
+                          "Arn"
+                        ]
+                      },
+                      "/invocations"
+                    ]
+                  ]
+                }
+              },
+              "MethodResponses": []
+            }
+          },
+          "ApiGatewayMethodV1PostsGet": {
             "Type": "AWS::ApiGateway::Method",
             "Properties": {
               "HttpMethod": "GET",
               "RequestParameters": {},
               "ResourceId": {
-                "Ref": "ApiGatewayResourcePosts"
+                "Ref": "ApiGatewayResourceV1Posts"
               },
               "RestApiId": {
                 "Ref": "ApiGatewayRestApi"
@@ -840,13 +1031,13 @@
               "MethodResponses": []
             }
           },
-          "ApiGatewayMethodPostsPost": {
+          "ApiGatewayMethodV1PostsPost": {
             "Type": "AWS::ApiGateway::Method",
             "Properties": {
               "HttpMethod": "POST",
               "RequestParameters": {},
               "ResourceId": {
-                "Ref": "ApiGatewayResourcePosts"
+                "Ref": "ApiGatewayResourceV1Posts"
               },
               "RestApiId": {
                 "Ref": "ApiGatewayRestApi"
@@ -883,13 +1074,13 @@
               "MethodResponses": []
             }
           },
-          "ApiGatewayMethodPostsPut": {
+          "ApiGatewayMethodV1PostsPut": {
             "Type": "AWS::ApiGateway::Method",
             "Properties": {
               "HttpMethod": "PUT",
               "RequestParameters": {},
               "ResourceId": {
-                "Ref": "ApiGatewayResourcePosts"
+                "Ref": "ApiGatewayResourceV1Posts"
               },
               "RestApiId": {
                 "Ref": "ApiGatewayRestApi"
@@ -926,13 +1117,13 @@
               "MethodResponses": []
             }
           },
-          "ApiGatewayMethodPostsDelete": {
+          "ApiGatewayMethodV1PostsDelete": {
             "Type": "AWS::ApiGateway::Method",
             "Properties": {
               "HttpMethod": "DELETE",
               "RequestParameters": {},
               "ResourceId": {
-                "Ref": "ApiGatewayResourcePosts"
+                "Ref": "ApiGatewayResourceV1Posts"
               },
               "RestApiId": {
                 "Ref": "ApiGatewayRestApi"
@@ -969,30 +1160,79 @@
               "MethodResponses": []
             }
           },
-          "ApiGatewayDeployment1584649108104": {
+          "ApiGatewayDeployment1586816357733": {
             "Type": "AWS::ApiGateway::Deployment",
             "Properties": {
               "RestApiId": {
                 "Ref": "ApiGatewayRestApi"
               },
-              "StageName": "dev"
+              "StageName": "production"
             },
             "DependsOn": [
-              "ApiGatewayMethodCommentsOptions",
+              "ApiGatewayMethodV1CommentsOptions",
+              "ApiGatewayMethodGet",
               "ApiGatewayMethodAchievementsGet",
-              "ApiGatewayMethodCommentsGet",
-              "ApiGatewayMethodCommentsIdVarPost",
-              "ApiGatewayMethodCommentsIdVarPut",
-              "ApiGatewayMethodCommentsIdVarDelete",
-              "ApiGatewayMethodChallengesGet",
-              "ApiGatewayMethodChallengesPost",
-              "ApiGatewayMethodChallengesPut",
-              "ApiGatewayMethodChallengesDelete",
-              "ApiGatewayMethodPostsGet",
-              "ApiGatewayMethodPostsPost",
-              "ApiGatewayMethodPostsPut",
-              "ApiGatewayMethodPostsDelete"
+              "ApiGatewayMethodV1CommentsGet",
+              "ApiGatewayMethodV1CommentsPost",
+              "ApiGatewayMethodV1CommentsPut",
+              "ApiGatewayMethodV1CommentsDelete",
+              "ApiGatewayMethodV1ChallengesGet",
+              "ApiGatewayMethodV1ChallengesPost",
+              "ApiGatewayMethodV1ChallengesPut",
+              "ApiGatewayMethodV1ChallengesDelete",
+              "ApiGatewayMethodV1UserPost",
+              "ApiGatewayMethodV1PostsGet",
+              "ApiGatewayMethodV1PostsPost",
+              "ApiGatewayMethodV1PostsPut",
+              "ApiGatewayMethodV1PostsDelete"
             ]
+          },
+          "HealthLambdaPermissionApiGateway": {
+            "Type": "AWS::Lambda::Permission",
+            "Properties": {
+              "FunctionName": {
+                "Fn::GetAtt": [
+                  "HealthLambdaFunction",
+                  "Arn"
+                ]
+              },
+              "Action": "lambda:InvokeFunction",
+              "Principal": {
+                "Fn::Join": [
+                  "",
+                  [
+                    "apigateway.",
+                    {
+                      "Ref": "AWS::URLSuffix"
+                    }
+                  ]
+                ]
+              },
+              "SourceArn": {
+                "Fn::Join": [
+                  "",
+                  [
+                    "arn:",
+                    {
+                      "Ref": "AWS::Partition"
+                    },
+                    ":execute-api:",
+                    {
+                      "Ref": "AWS::Region"
+                    },
+                    ":",
+                    {
+                      "Ref": "AWS::AccountId"
+                    },
+                    ":",
+                    {
+                      "Ref": "ApiGatewayRestApi"
+                    },
+                    "/*/*"
+                  ]
+                ]
+              }
+            }
           },
           "AchievementsLambdaPermissionApiGateway": {
             "Type": "AWS::Lambda::Permission",
@@ -1135,6 +1375,53 @@
               }
             }
           },
+          "UsersLambdaPermissionApiGateway": {
+            "Type": "AWS::Lambda::Permission",
+            "Properties": {
+              "FunctionName": {
+                "Fn::GetAtt": [
+                  "UsersLambdaFunction",
+                  "Arn"
+                ]
+              },
+              "Action": "lambda:InvokeFunction",
+              "Principal": {
+                "Fn::Join": [
+                  "",
+                  [
+                    "apigateway.",
+                    {
+                      "Ref": "AWS::URLSuffix"
+                    }
+                  ]
+                ]
+              },
+              "SourceArn": {
+                "Fn::Join": [
+                  "",
+                  [
+                    "arn:",
+                    {
+                      "Ref": "AWS::Partition"
+                    },
+                    ":execute-api:",
+                    {
+                      "Ref": "AWS::Region"
+                    },
+                    ":",
+                    {
+                      "Ref": "AWS::AccountId"
+                    },
+                    ":",
+                    {
+                      "Ref": "ApiGatewayRestApi"
+                    },
+                    "/*/*"
+                  ]
+                ]
+              }
+            }
+          },
           "PostsLambdaPermissionApiGateway": {
             "Type": "AWS::Lambda::Permission",
             "Properties": {
@@ -1189,28 +1476,40 @@
               "Ref": "ServerlessDeploymentBucket"
             }
           },
+          "HealthLambdaFunctionQualifiedArn": {
+            "Description": "Current Lambda function version",
+            "Value": {
+              "Ref": "HealthLambdaVersion6vRk2viTcMgSj33wbnzYgIBVRXDrsSD3zFPIsyJQGE"
+            }
+          },
           "AchievementsLambdaFunctionQualifiedArn": {
             "Description": "Current Lambda function version",
             "Value": {
-              "Ref": "AchievementsLambdaVersionIEcZ1IjgmckanJCQCjEiEVHT9qwTmgDlYUlwvQb7Wk"
+              "Ref": "AchievementsLambdaVersion42HocwQ8SvYrN1SwkKcCSTjIK8D2NqTDeF2NhUcdLdM"
             }
           },
           "CommentsLambdaFunctionQualifiedArn": {
             "Description": "Current Lambda function version",
             "Value": {
-              "Ref": "CommentsLambdaVersion0uNzd55H1DCF1KHWIWiByTUPLb4ZCODJqPiCqCyeM"
+              "Ref": "CommentsLambdaVersionPOoOErEEKBBQqKt2HEv8hvJjp3SHYOfCWvfOCAYX0"
             }
           },
           "ChallengesLambdaFunctionQualifiedArn": {
             "Description": "Current Lambda function version",
             "Value": {
-              "Ref": "ChallengesLambdaVersion2b9cqNBPypPrLtzYMbnfwzltzMUvJqaicYAkGTrCA2Y"
+              "Ref": "ChallengesLambdaVersionbDdMnKNDSGfUeT8vvgHHiDhg1LLfut5KXgX16guRDY"
+            }
+          },
+          "UsersLambdaFunctionQualifiedArn": {
+            "Description": "Current Lambda function version",
+            "Value": {
+              "Ref": "UsersLambdaVersion000lIi565xsT0obY020yRBXYy9AihqCr0MzLQwbX4"
             }
           },
           "PostsLambdaFunctionQualifiedArn": {
             "Description": "Current Lambda function version",
             "Value": {
-              "Ref": "PostsLambdaVersionV1xGqYwDbI4QXAZmu5TvdZ1hZf9ONPlq6Ozch9cNoWw"
+              "Ref": "PostsLambdaVersionfKm5yOjnWZgqrPMSAg6dAPCo4J05fLt8YgqNBwCnp1E"
             }
           },
           "ServiceEndpoint": {
@@ -1227,7 +1526,7 @@
                   {
                     "Ref": "AWS::URLSuffix"
                   },
-                  "/dev"
+                  "/production"
                 ]
               ]
             }
@@ -1254,6 +1553,24 @@
     },
     "pluginsData": {},
     "functions": {
+      "health": {
+        "handler": "bin/health",
+        "events": [
+          {
+            "http": {
+              "path": "",
+              "method": "get",
+              "integration": "AWS_PROXY"
+            }
+          }
+        ],
+        "name": "tutorialedge-rest-api-production-health",
+        "package": {},
+        "memory": 128,
+        "timeout": 6,
+        "runtime": "go1.x",
+        "vpc": {}
+      },
       "achievements": {
         "handler": "bin/achievements",
         "events": [
@@ -1265,7 +1582,7 @@
             }
           }
         ],
-        "name": "tutorialedge-rest-api-dev-achievements",
+        "name": "tutorialedge-rest-api-production-achievements",
         "package": {},
         "memory": 128,
         "timeout": 6,
@@ -1277,7 +1594,7 @@
         "events": [
           {
             "http": {
-              "path": "comments",
+              "path": "v1/comments",
               "method": "get",
               "cors": {
                 "origins": [
@@ -1303,27 +1620,84 @@
           },
           {
             "http": {
-              "path": "comments/{id}",
+              "path": "v1/comments",
               "method": "post",
+              "cors": {
+                "origins": [
+                  "*"
+                ],
+                "origin": "*",
+                "methods": [
+                  "OPTIONS",
+                  "POST"
+                ],
+                "headers": [
+                  "Content-Type",
+                  "X-Amz-Date",
+                  "Authorization",
+                  "X-Api-Key",
+                  "X-Amz-Security-Token",
+                  "X-Amz-User-Agent"
+                ],
+                "allowCredentials": false
+              },
               "integration": "AWS_PROXY"
             }
           },
           {
             "http": {
-              "path": "comments/{id}",
+              "path": "v1/comments",
               "method": "put",
+              "cors": {
+                "origins": [
+                  "*"
+                ],
+                "origin": "*",
+                "methods": [
+                  "OPTIONS",
+                  "PUT"
+                ],
+                "headers": [
+                  "Content-Type",
+                  "X-Amz-Date",
+                  "Authorization",
+                  "X-Api-Key",
+                  "X-Amz-Security-Token",
+                  "X-Amz-User-Agent"
+                ],
+                "allowCredentials": false
+              },
               "integration": "AWS_PROXY"
             }
           },
           {
             "http": {
-              "path": "comments/{id}",
+              "path": "v1/comments",
               "method": "delete",
+              "cors": {
+                "origins": [
+                  "*"
+                ],
+                "origin": "*",
+                "methods": [
+                  "OPTIONS",
+                  "DELETE"
+                ],
+                "headers": [
+                  "Content-Type",
+                  "X-Amz-Date",
+                  "Authorization",
+                  "X-Api-Key",
+                  "X-Amz-Security-Token",
+                  "X-Amz-User-Agent"
+                ],
+                "allowCredentials": false
+              },
               "integration": "AWS_PROXY"
             }
           }
         ],
-        "name": "tutorialedge-rest-api-dev-comments",
+        "name": "tutorialedge-rest-api-production-comments",
         "package": {},
         "memory": 128,
         "timeout": 6,
@@ -1335,34 +1709,52 @@
         "events": [
           {
             "http": {
-              "path": "challenges",
+              "path": "v1/challenges",
               "method": "get",
               "integration": "AWS_PROXY"
             }
           },
           {
             "http": {
-              "path": "challenges",
+              "path": "v1/challenges",
               "method": "post",
               "integration": "AWS_PROXY"
             }
           },
           {
             "http": {
-              "path": "challenges",
+              "path": "v1/challenges",
               "method": "put",
               "integration": "AWS_PROXY"
             }
           },
           {
             "http": {
-              "path": "challenges",
+              "path": "v1/challenges",
               "method": "delete",
               "integration": "AWS_PROXY"
             }
           }
         ],
-        "name": "tutorialedge-rest-api-dev-challenges",
+        "name": "tutorialedge-rest-api-production-challenges",
+        "package": {},
+        "memory": 128,
+        "timeout": 6,
+        "runtime": "go1.x",
+        "vpc": {}
+      },
+      "users": {
+        "handler": "bin/users",
+        "events": [
+          {
+            "http": {
+              "path": "v1/user",
+              "method": "post",
+              "integration": "AWS_PROXY"
+            }
+          }
+        ],
+        "name": "tutorialedge-rest-api-production-users",
         "package": {},
         "memory": 128,
         "timeout": 6,
@@ -1374,34 +1766,34 @@
         "events": [
           {
             "http": {
-              "path": "posts",
+              "path": "v1/posts",
               "method": "get",
               "integration": "AWS_PROXY"
             }
           },
           {
             "http": {
-              "path": "posts",
+              "path": "v1/posts",
               "method": "post",
               "integration": "AWS_PROXY"
             }
           },
           {
             "http": {
-              "path": "posts",
+              "path": "v1/posts",
               "method": "put",
               "integration": "AWS_PROXY"
             }
           },
           {
             "http": {
-              "path": "posts",
+              "path": "v1/posts",
               "method": "delete",
               "integration": "AWS_PROXY"
             }
           }
         ],
-        "name": "tutorialedge-rest-api-dev-posts",
+        "name": "tutorialedge-rest-api-production-posts",
         "package": {},
         "memory": 128,
         "timeout": 6,
@@ -1412,7 +1804,7 @@
     "artifact": "/Users/elliot/Documents/Projects/TutorialEdge/api.tutorialedge.net/.serverless/tutorialedge-rest-api.zip"
   },
   "package": {
-    "artifactDirectoryName": "serverless/tutorialedge-rest-api/dev/1584649107642-2020-03-19T20:18:27.642Z",
+    "artifactDirectoryName": "serverless/tutorialedge-rest-api/production/1586816356683-2020-04-13T22:19:16.683Z",
     "artifact": "tutorialedge-rest-api.zip"
   }
 }

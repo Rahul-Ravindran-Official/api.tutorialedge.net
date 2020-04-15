@@ -1,0 +1,14 @@
+language: node_js
+node_js:
+- 11
+
+jobs:
+  include:
+    - stage: Unit Tests
+      script: ./unit-test
+    - stage: Deploy Test
+      script: ./deploy-test    
+    - stage: Integration Tests       
+      script: ./integration-test
+    # - stage: Production Deploy
+    #   script: ./production-deploy
