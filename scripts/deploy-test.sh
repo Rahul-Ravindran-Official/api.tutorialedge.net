@@ -18,6 +18,8 @@ function build() {
 
 function main() {
     
+    go version
+
     echo "Building The Serverless Binaries..."
     build
     echo "Successfully build binaries..."
