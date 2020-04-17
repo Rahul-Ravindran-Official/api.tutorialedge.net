@@ -4,11 +4,28 @@ node_js:
 
 jobs:
   include:
+    
+    # Unit Test
+    # - Runs any unit tests for the API
     - stage: Unit Tests
-      script: ./unit-test
+      script: ./scripts/unit-test.sh
+
+    # Test Deploy
+    # - Deploys the API to the Test environment
+    # so that it can be further tested and validated
+    # before going into production
     - stage: Deploy Test
-      script: ./deploy-test    
+      script: ./scripts/deploy-test.sh   
+    
+    # Integration Tests
+    # - Runs a series of curl commands against
+    # the deployed test API endpoint in order to validate
+    # functionality
     - stage: Integration Tests       
-      script: ./integration-test
-    # - stage: Production Deploy
-    #   script: ./production-deploy
+      script: ./scripts/integration-test.sh
+    
+    # Production Deployment
+    # - Runs the final production deploy to push changes
+    # live up to the site 
+    - stage: Production Deploy
+      script: ./scripts/production-deploy.sh

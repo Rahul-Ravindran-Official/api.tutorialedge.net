@@ -10,7 +10,7 @@ yarn-error.log
 
 package-lock.json
 
-scripts/*
+misc/*
 
 bin/**/*
 
