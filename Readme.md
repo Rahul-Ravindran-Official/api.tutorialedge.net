@@ -4,7 +4,9 @@ TutorialEdge API
 # TODO
 
 [x] - Simple Endpoint
-[] - Comments System
+[x] - Comments System
+[] - Auth0 Harden Token Verification
+[] - Unit Testing
 [] - Terraform for infrastructure
 [] - Challenge System
 [] - Quiz System
@@ -23,7 +25,7 @@ TutorialEdge API
 # 21/03/20
 
 [x] - Database updated to store upvotes
-[] - Authentication with Auth0
+[x] - Authentication with Auth0
 [] - Original Commenter can delete comment
 
 ## Stretch
