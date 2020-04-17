@@ -1,7 +1,7 @@
 language: node_js
 
 before_script:
-  npm install serverless
+  npm install -g serverless
 
 jobs:
   include:
