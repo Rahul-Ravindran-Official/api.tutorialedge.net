@@ -1,11 +1,5 @@
 language: node_js
 
-node_js:
-- 11
-
-go:
-- 1.14
-
 jobs:
   include:
     
@@ -14,6 +8,8 @@ jobs:
     - stage: Unit Tests
       script: ./scripts/unit-test.sh
       language: go
+      go:
+        - 1.14
     # Test Deploy
     # - Deploys the API to the Test environment
     # so that it can be further tested and validated
@@ -21,6 +17,8 @@ jobs:
     - stage: Deploy Test
       script: ./scripts/deploy-test.sh   
       language: go
+      go:
+        - 1.14
     
     # Integration Tests
     # - Runs a series of curl commands against
@@ -29,6 +27,8 @@ jobs:
     - stage: Integration Tests       
       script: ./scripts/integration-test.sh
       language: node_js
+      node_js:
+        - 11
     
     # Production Deployment
     # - Runs the final production deploy to push changes
@@ -36,3 +36,5 @@ jobs:
     - stage: Production Deploy
       script: ./scripts/production-deploy.sh
       language: node_js
+      node_js:
+        - 11
