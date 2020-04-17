@@ -10,7 +10,7 @@ function build() {
             echo $d
 
             pushd $d
-                go build -o ../../bin/${d}
+                go build -o ../../bin/${d%/}
             popd
         done
     popd
