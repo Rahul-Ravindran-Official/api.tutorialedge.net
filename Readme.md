@@ -7,12 +7,12 @@ TutorialEdge API
 
 [x] - Simple Endpoint
 [x] - Comments System
-[ ] - Auth0 Harden Token Verification
-[ ] - Unit Testing
-[ ] - Terraform for infrastructure
-[ ] - Challenge System
-[ ] - Quiz System
-[ ] - Awards System
+[-] - Auth0 Harden Token Verification
+[-] - Unit Testing
+[-] - Terraform for infrastructure
+[-] - Challenge System
+[-] - Quiz System
+[-] - Awards System
 
 # 19/03/20
 
@@ -28,9 +28,9 @@ TutorialEdge API
 
 [x] - Database updated to store upvotes
 [x] - Authentication with Auth0
-[ ] - Original Commenter can delete comment
+[-] - Original Commenter can delete comment
 
 ## Stretch
 
-[ ] - migrate api.tutorialedge.net -> new serverless endpoints 
-[ ] - add CI/CD to api.tutorialedge.net and store secrets safely - database connections in 
+[-] - migrate api.tutorialedge.net -> new serverless endpoints 
+[-] - add CI/CD to api.tutorialedge.net and store secrets safely - database connections in 
