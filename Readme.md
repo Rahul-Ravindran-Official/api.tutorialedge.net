@@ -1,6 +1,8 @@
 TutorialEdge API
 ==================
 
+![Build Status](https://travis-ci.org/elliotforbes/api.tutorialedge.net.svg?branch=master)
+
 # TODO
 
 [x] - Simple Endpoint
