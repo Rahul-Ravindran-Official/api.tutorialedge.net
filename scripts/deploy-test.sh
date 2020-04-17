@@ -6,7 +6,7 @@ echo "Deploying Test"
 function build() {
     GOOS=linux 
     pushd api
-        for d in */; deploy
+        for d in */; do
             echo $d
 
             pushd $d
