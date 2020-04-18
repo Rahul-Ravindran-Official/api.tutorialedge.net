@@ -38,6 +38,6 @@ jobs:
     # live up to the site 
     - stage: Production Deploy
       script: ./scripts/production-deploy.sh
-      language: node_js
+      language: go
       go:
         - 1.14
