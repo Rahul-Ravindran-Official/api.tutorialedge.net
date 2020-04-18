@@ -1,5 +1,13 @@
 #!/bin/bash
-
 set -eoux pipefail
 
-echo "Hello World!"
+function run_unit_tests() {
+    echo "Running Unit Tests"
+    go test ./...
+}
+
+function main() {
+    run_unit_tests
+}
+
+main
