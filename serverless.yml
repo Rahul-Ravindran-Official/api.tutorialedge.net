@@ -1,12 +1,14 @@
 ---
 service: tutorialedge-rest-api
 
+environment:
+  DB_CONN_STRING: ${env:DB_CONN_STRING}
+
 provider:
   name: aws
   runtime: go1.x
   region: eu-west-1
   memorySize: 128
-
 
 package:
   exclude:
