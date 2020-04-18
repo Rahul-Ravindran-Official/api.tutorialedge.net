@@ -13,18 +13,18 @@ import (
 	_ "github.com/go-sql-driver/mysql"
 )
 
-var mySigningKey = []byte(``)
-
 func Authenticate(request events.APIGatewayProxyRequest) bool {
 	fmt.Println("Attempting to Authenticate Incoming Request...")
 
 	header := request.Headers["Authorization"]
 	tokenString := strings.Split(string(header), " ")[1]
 
+	signingKey := os.Getenv("AUTH0_SIGNING_KEY")
+
 	fmt.Println(tokenString)
 
 	token, err := jwt.Parse(tokenString, func(token *jwt.Token) (interface{}, error) {
-		verifyKey, err := jwt.ParseRSAPublicKeyFromPEM(mySigningKey)
+		verifyKey, err := jwt.ParseRSAPublicKeyFromPEM([]byte(signingKey))
 		if err != nil {
 			panic(err.Error())
 		}
