@@ -5,7 +5,7 @@ echo "Deploying Production"
 
 function build() {
     GOOS=linux 
-    pushd api
+    pushd cmd
         for d in */; do
             echo $d
 

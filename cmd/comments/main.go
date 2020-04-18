@@ -1,48 +1,17 @@
-package main
+package comments
 
 import (
 	"database/sql"
 	"fmt"
 	"os"
 	"strconv"
-	"strings"
 
 	"github.com/aws/aws-lambda-go/events"
 	"github.com/aws/aws-lambda-go/lambda"
-	jwt "github.com/dgrijalva/jwt-go"
+	"github.com/elliotforbes/api.tutorialedge.net/auth"
+	"github.com/elliotforbes/api.tutorialedge.net/comments"
 	_ "github.com/go-sql-driver/mysql"
 )
-
-func Authenticate(request events.APIGatewayProxyRequest) bool {
-	fmt.Println("Attempting to Authenticate Incoming Request...")
-
-	header := request.Headers["Authorization"]
-	tokenString := strings.Split(string(header), " ")[1]
-
-	signingKey := os.Getenv("AUTH0_SIGNING_KEY")
-
-	fmt.Println(tokenString)
-
-	token, err := jwt.Parse(tokenString, func(token *jwt.Token) (interface{}, error) {
-		verifyKey, err := jwt.ParseRSAPublicKeyFromPEM([]byte(signingKey))
-		if err != nil {
-			panic(err.Error())
-		}
-		return verifyKey, nil
-	})
-
-	if err != nil {
-		panic(err.Error())
-	}
-
-	fmt.Println(token)
-
-	if token.Valid {
-		return true
-	}
-
-	return false
-}
 
 func handler(request events.APIGatewayProxyRequest) (events.APIGatewayProxyResponse, error) {
 
@@ -63,11 +32,11 @@ func handler(request events.APIGatewayProxyRequest) (events.APIGatewayProxyRespo
 	defer db.Close()
 
 	if request.HTTPMethod == "GET" {
-		response, _ := GetComments(request, db)
+		response, _ := comments.GetComments(request, db)
 		return response, nil
 	} else if request.HTTPMethod == "POST" {
-		if ok := Authenticate(request); ok {
-			response, _ := PostComment(request, db)
+		if ok := auth.Authenticate(request); ok {
+			response, _ := comments.PostComment(request, db)
 			return response, nil
 		} else {
 			return events.APIGatewayProxyResponse{
@@ -77,8 +46,8 @@ func handler(request events.APIGatewayProxyRequest) (events.APIGatewayProxyRespo
 			}, nil
 		}
 	} else if request.HTTPMethod == "PUT" {
-		if ok := Authenticate(request); ok {
-			response, _ := UpdateComment(request, db)
+		if ok := auth.Authenticate(request); ok {
+			response, _ := comments.UpdateComment(request, db)
 			return response, nil
 		} else {
 			return events.APIGatewayProxyResponse{
@@ -88,8 +57,8 @@ func handler(request events.APIGatewayProxyRequest) (events.APIGatewayProxyRespo
 			}, nil
 		}
 	} else if request.HTTPMethod == "DELETE" {
-		if ok := Authenticate(request); ok {
-			response, _ := DeleteComment(request, db)
+		if ok := auth.Authenticate(request); ok {
+			response, _ := comments.DeleteComment(request, db)
 			return response, nil
 		} else {
 			return events.APIGatewayProxyResponse{

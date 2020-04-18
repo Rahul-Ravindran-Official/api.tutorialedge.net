@@ -1,10 +1,12 @@
-package main
+package achievements
 
 import (
 	"fmt"
 
 	"github.com/aws/aws-lambda-go/events"
 	"github.com/aws/aws-lambda-go/lambda"
+
+	"github.com/elliotforbes/api.tutorialedge.net/achievements"
 )
 
 func handler(request events.APIGatewayProxyRequest) (events.APIGatewayProxyResponse, error) {
@@ -12,16 +14,16 @@ func handler(request events.APIGatewayProxyRequest) (events.APIGatewayProxyRespo
 	fmt.Printf("%+v\n", request)
 
 	if request.HTTPMethod == "GET" {
-		response, _ := GetPosts(request)
+		response, _ := achievements.GetAchievements(request)
 		return response, nil
 	} else if request.HTTPMethod == "POST" {
-		response, _ := PostPost(request)
+		response, _ := achievements.PostAchievement(request)
 		return response, nil
 	} else if request.HTTPMethod == "PUT" {
-		response, _ := UpdatePost(request)
+		response, _ := achievements.UpdateAchievement(request)
 		return response, nil
 	} else if request.HTTPMethod == "DELETE" {
-		response, _ := DeletePost(request)
+		response, _ := achievements.DeleteAchievement(request)
 		return response, nil
 	} else {
 		return events.APIGatewayProxyResponse{

@@ -1,10 +1,11 @@
-package main
+package forum
 
 import (
 	"fmt"
 
 	"github.com/aws/aws-lambda-go/events"
 	"github.com/aws/aws-lambda-go/lambda"
+	"github.com/elliotforbes/api.tutorialedge.net/forum"
 )
 
 func handler(request events.APIGatewayProxyRequest) (events.APIGatewayProxyResponse, error) {
@@ -12,16 +13,16 @@ func handler(request events.APIGatewayProxyRequest) (events.APIGatewayProxyRespo
 	fmt.Printf("%+v\n", request)
 
 	if request.HTTPMethod == "GET" {
-		response, _ := GetAchievements(request)
+		response, _ := forum.GetPosts(request)
 		return response, nil
 	} else if request.HTTPMethod == "POST" {
-		response, _ := PostAchievement(request)
+		response, _ := forum.PostPost(request)
 		return response, nil
 	} else if request.HTTPMethod == "PUT" {
-		response, _ := UpdateAchievement(request)
+		response, _ := forum.UpdatePost(request)
 		return response, nil
 	} else if request.HTTPMethod == "DELETE" {
-		response, _ := DeleteAchievement(request)
+		response, _ := forum.DeletePost(request)
 		return response, nil
 	} else {
 		return events.APIGatewayProxyResponse{
