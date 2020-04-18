@@ -13,8 +13,11 @@ func Authenticate(request events.APIGatewayProxyRequest) bool {
 	fmt.Println("Attempting to Authenticate Incoming Request...")
 
 	header := request.Headers["Authorization"]
-	tokenString := strings.Split(string(header), " ")[1]
+	if header == "" {
+		return false
+	}
 
+	tokenString := strings.Split(string(header), " ")[1]
 	signingKey := os.Getenv("AUTH0_SIGNING_KEY")
 
 	fmt.Println(tokenString)

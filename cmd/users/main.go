@@ -10,8 +10,6 @@ import (
 
 func handler(request events.APIGatewayProxyRequest) (events.APIGatewayProxyResponse, error) {
 
-	fmt.Printf("Request: %v\n", request)
-
 	fmt.Println("Received body: ", request.Body)
 	body, _ := base64.StdEncoding.DecodeString(request.Body)
 	fmt.Println(string(body))
