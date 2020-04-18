@@ -1,7 +1,7 @@
 #!/bin/bash
 set -eoux pipefail
 
-echo "Deploying Test"
+echo "Deploying Production"
 
 function build() {
     GOOS=linux 
@@ -26,9 +26,9 @@ function main() {
 
     export AUTH0_SIGNING_KEY=$(curl https://tutorialedge.eu.auth0.com/pem)
 
-    echo "Deploying Test API..."
-    serverless deploy --stage=prod
-    echo "Successfully Deployed Test Stage"
+    echo "Deploying Production API..."
+    serverless deploy --stage=production
+    echo "Successfully Deployed Production Stage"
 }
 
 main
