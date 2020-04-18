@@ -18,6 +18,8 @@ functions:
 
   health:
     handler: bin/health
+    environment:
+        TRAVIS_BUILD_NUMBER: ${env:TRAVIS_BUILD_NUMBER}
     events:
     - http:
         path: /
