@@ -1,4 +1,4 @@
-package comments
+package main
 
 import (
 	"encoding/base64"
@@ -7,8 +7,6 @@ import (
 	"log"
 
 	"database/sql"
-
-	
 
 	"github.com/aws/aws-lambda-go/events"
 )
