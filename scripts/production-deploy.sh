@@ -4,13 +4,13 @@ set -eoux pipefail
 echo "Deploying Production"
 
 function build() {
-    GOOS=linux 
     pushd cmd
         for d in */; do
             echo $d
 
             pushd $d
-                go build -o ../../bin/${d%/}
+                GOOS=linux go build -o ../../bin/${d%/}
+                chmod +x ../../bin/${d%/}
             popd
         done
     popd

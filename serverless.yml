@@ -1,7 +1,6 @@
 ---
 service: tutorialedge-rest-api
 
-
 provider:
   name: aws
   runtime: go1.x
