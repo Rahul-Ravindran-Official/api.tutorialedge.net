@@ -39,5 +39,5 @@ jobs:
     - stage: Production Deploy
       script: ./scripts/production-deploy.sh
       language: node_js
-      node_js:
-        - 11
+      go:
+        - 1.14
