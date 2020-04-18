@@ -24,6 +24,8 @@ function main() {
     build
     echo "Successfully build binaries..."
 
+    export AUTH0_SIGNING_KEY=$(curl https://tutorialedge.eu.auth0.com/pem)
+
     echo "Deploying Test API..."
     serverless deploy --stage=production
     echo "Successfully Deployed Test Stage"
