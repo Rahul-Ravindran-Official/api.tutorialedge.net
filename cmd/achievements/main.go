@@ -1,4 +1,4 @@
-package achievements
+package main
 
 import (
 	"fmt"
