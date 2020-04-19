@@ -11,7 +11,7 @@ import (
 //  has signed up to the site.
 func SendNewUserEmail(subject, body, recipient string) error {
 	fmt.Println("Sending New User Email Notification...")
-	
+
 	mailgunAPIKey := os.Getenv("MAILGUN_API_KEY")
 	mg := mailgun.NewMailgun("tutorialedge.net", mailgunAPIKey)
 	m := mg.NewMessage(

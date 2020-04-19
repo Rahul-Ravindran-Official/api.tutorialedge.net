@@ -75,11 +75,11 @@ functions:
 
   users:
     handler: bin/users
+    environment:
+        MAILGUN_API_KEY: ${env:MAILGUN_API_KEY}
     events:
     - http:
         path: /v1/user
-        environment:
-            MAILGUN_API_KEY: ${env:MAILGUN_API_KEY}
         method: post
   
   posts:
