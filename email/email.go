@@ -17,7 +17,7 @@ func SendNewUserEmail(body string) {
 	m := mg.NewMessage(
 		"Notifications <admin@tutorialedge.net>",
 		"New User Registration",
-		body,
+		"A New User has registered on the site!",
 		"elliot@tutorialedge.net",
 	)
 	_, id, err := mg.Send(m)
