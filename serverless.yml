@@ -78,6 +78,8 @@ functions:
     events:
     - http:
         path: /v1/user
+        environment:
+            MAILGUN_API_KEY: ${env:MAILGUN_API_KEY}
         method: post
   
   posts:
