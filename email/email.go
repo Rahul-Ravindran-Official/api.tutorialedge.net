@@ -21,7 +21,7 @@ func SendNewUserEmail(body string) {
 		"elliot@tutorialedge.net",
 	)
 	_, id, err := mg.Send(m)
-	fmt.Println("ID: %s", id)
+	fmt.Printf("ID: %s\n", id)
 
 	if err != nil {
 		fmt.Println(err)
