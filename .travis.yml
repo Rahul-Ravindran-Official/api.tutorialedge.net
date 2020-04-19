@@ -29,9 +29,9 @@ jobs:
     # functionality
     - stage: Integration Tests       
       script: ./scripts/integration-test.sh
-      language: node_js
-      node_js:
-        - 11
+      language: go
+      go:
+        - 1.14
     
     # Production Deployment
     # - Runs the final production deploy to push changes

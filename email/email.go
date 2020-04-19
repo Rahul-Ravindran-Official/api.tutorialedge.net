@@ -7,9 +7,9 @@ import (
 	"github.com/mailgun/mailgun-go"
 )
 
-// SendNewUserEmail - Sends a notification to the TutorialEdge email group notifying a new user
+// SendEmail - Sends a notification to the TutorialEdge email group notifying a new user
 //  has signed up to the site.
-func SendNewUserEmail(subject, body, recipient string) error {
+func SendEmail(subject, body, recipient string) error {
 	fmt.Println("Sending New User Email Notification...")
 
 	mailgunAPIKey := os.Getenv("MAILGUN_API_KEY")

@@ -15,7 +15,7 @@ func handler(request events.APIGatewayProxyRequest) (events.APIGatewayProxyRespo
 	body, _ := base64.StdEncoding.DecodeString(request.Body)
 	fmt.Println(string(body))
 
-	err := email.SendNewUserEmail("New User Account Registered!", "A New User has registered on TutorialEdge", "admin@tutorialedge.net")
+	err := email.SendEmail("New User Account Registered!", "A New User has registered on TutorialEdge", "admin@tutorialedge.net")
 
 	if err != nil {
 		return events.APIGatewayProxyResponse{
