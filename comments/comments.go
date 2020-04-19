@@ -1,4 +1,4 @@
-package main
+package comments
 
 import (
 	"encoding/base64"
@@ -9,6 +9,8 @@ import (
 	"database/sql"
 
 	"github.com/aws/aws-lambda-go/events"
+
+	"github.com/elliotforbes/api.tutorialedge.net/email"
 )
 
 type BodyRequest struct {
@@ -204,6 +206,11 @@ func PostComment(request events.APIGatewayProxyRequest, db *sql.DB) (events.APIG
 	err = tx.Commit()
 	if err != nil {
 		log.Fatal(err)
+	}
+
+	err = email.SendEmail("A New Comment Has been Posted!", comment.Body, "admin@tutorialedge.net")
+	if err != nil {
+		fmt.Println("Error Sending Comment Notification Email...")
 	}
 
 	return events.APIGatewayProxyResponse{

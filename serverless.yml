@@ -7,7 +7,6 @@ provider:
   region: eu-west-1
   memorySize: 128
 
-
 package:
   exclude:
   - ./**
@@ -18,6 +17,8 @@ functions:
 
   health:
     handler: bin/health
+    environment:
+        TRAVIS_BUILD_NUMBER: ${env:TRAVIS_BUILD_NUMBER}
     events:
     - http:
         path: /
@@ -32,6 +33,13 @@ functions:
 
   comments:
     handler: bin/comments
+    environment:
+        AUTH0_SIGNING_KEY: ${env:AUTH0_SIGNING_KEY}
+        DB_USERNAME: ${env:DB_USERNAME}
+        DB_PASSWORD: ${env:DB_PASSWORD}
+        DB_HOST: ${env:DB_HOST}
+        DB_TABLE: ${env:DB_TABLE}
+        MAILGUN_API_KEY: ${env:MAILGUN_API_KEY}
     events:
     - http:
         path: /v1/comments
@@ -68,6 +76,8 @@ functions:
 
   users:
     handler: bin/users
+    environment:
+        MAILGUN_API_KEY: ${env:MAILGUN_API_KEY}
     events:
     - http:
         path: /v1/user

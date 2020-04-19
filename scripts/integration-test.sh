@@ -1,5 +1,12 @@
 #!/bin/bash
-
 set -eoux pipefail
 
-echo "Hello World!"
+function run_integration_tests() {
+    go test -tags=integration ./...
+}
+
+function main() {
+    echo "Running Integration Test Suite..."
+}
+
+main

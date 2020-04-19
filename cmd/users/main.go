@@ -6,18 +6,26 @@ import (
 
 	"github.com/aws/aws-lambda-go/events"
 	"github.com/aws/aws-lambda-go/lambda"
+	"github.com/elliotforbes/api.tutorialedge.net/email"
 )
 
 func handler(request events.APIGatewayProxyRequest) (events.APIGatewayProxyResponse, error) {
-
-	fmt.Printf("Request: %v\n", request)
 
 	fmt.Println("Received body: ", request.Body)
 	body, _ := base64.StdEncoding.DecodeString(request.Body)
 	fmt.Println(string(body))
 
+	err := email.SendEmail("New User Account Registered!", "A New User has registered on TutorialEdge", "admin@tutorialedge.net")
+
+	if err != nil {
+		return events.APIGatewayProxyResponse{
+			Body:       "{\"status\": \"error: " + err.Error() + "\"}",
+			StatusCode: 503,
+		}, nil
+	}
+
 	return events.APIGatewayProxyResponse{
-		Body:       "{\"message\": \"hello world\"}",
+		Body:       "{\"status\": \"success\"}",
 		StatusCode: 200,
 	}, nil
 }
