@@ -3,6 +3,8 @@ package email
 import (
 	"fmt"
 	"os"
+
+	"github.com/mailgun/mailgun-go"
 )
 
 // SendNewUserEmail - Sends a notification to the TutorialEdge email group notifying a new user
