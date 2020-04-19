@@ -13,7 +13,7 @@ func SendNewUserEmail(body string) {
 	fmt.Println("Sending New User Email Notification...")
 
 	mailgunAPIKey := os.Getenv("MAILGUN_API_KEY")
-	mg := mailgun.NewMailgun("tutorialedge.net", mailgunAPIKey, "")
+	mg := mailgun.NewMailgun("tutorialedge.net", mailgunAPIKey)
 	m := mg.NewMessage(
 		"Notifications <admin@tutorialedge.net>",
 		"New User Registration",
