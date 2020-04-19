@@ -15,10 +15,10 @@ func handler(request events.APIGatewayProxyRequest) (events.APIGatewayProxyRespo
 	body, _ := base64.StdEncoding.DecodeString(request.Body)
 	fmt.Println(string(body))
 
-	email.SendNewUserEmail(string(body))
+	email.SendNewUserEmail("New User Account Registered!", "A New User has registered on TutorialEdge", "admin@tutorialedge.net")
 
 	return events.APIGatewayProxyResponse{
-		Body:       "{\"message\": \"hello world\"}",
+		Body:       "{\"status\": \"success\"}",
 		StatusCode: 200,
 	}, nil
 }
