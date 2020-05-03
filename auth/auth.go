@@ -39,9 +39,5 @@ func Authenticate(request events.APIGatewayProxyRequest) bool {
 
 	fmt.Println(token)
 
-	if token.Valid {
-		return true
-	}
-
-	return false
+	return token.Valid
 }

@@ -11,6 +11,11 @@ import (
 	"github.com/elliotforbes/api.tutorialedge.net/database"
 )
 
+func TestUpdateComments(t *testing.T) {
+	fmt.Println("Testing Updates to comments")
+	// t.Error()
+}
+
 func TestPostComments(t *testing.T) {
 	fmt.Println("Testing Post Comments...")
 	// t.Error()
@@ -30,6 +35,8 @@ func TestRetrieveComments(t *testing.T) {
 	}
 
 	response := comments.AllComments(&events.APIGatewayProxyRequest{}, db)
+
+	t.Log(response.Body)
 
 	if response.StatusCode != 200 {
 		fmt.Println("Failed to retrieve all comments...")
