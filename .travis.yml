@@ -6,6 +6,14 @@ before_script:
 jobs:
   include:
     
+    # Go Format
+    # - Runs gofmt
+    - stage: gofmt
+      script: ./scripts/gofmt.sh
+      language: go
+      go:
+        - 1.14
+
     # Unit Test
     # - Runs any unit tests for the API
     - stage: Unit Tests
