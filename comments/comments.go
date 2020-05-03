@@ -23,6 +23,7 @@ type Comment struct {
 	Slug       string `json:"slug"`
 	Body       string `json:"body"`
 	Author     string `json:"author"`
+	AuthorID   string `json:"sub"`
 	Posted     string `json:"posted"`
 	Picture    string `json:"picture,omitempty"`
 	ThumbsUp   int    `json:"thumbs_up,omitempty"`
@@ -40,7 +41,11 @@ func GetComments(request events.APIGatewayProxyRequest, db *gorm.DB) (events.API
 	slug := request.QueryStringParameters["slug"]
 
 	var comments []Comment
-	db.Where("slug = ?", slug).Find(&comments)
+	if slug == "" {
+		db.Find(&comments)
+	} else {
+		db.Where("slug = ?", slug).Find(&comments)
+	}
 
 	response := Response{
 		Comments: comments,
@@ -129,29 +134,6 @@ func DeleteComment(request events.APIGatewayProxyRequest, db *gorm.DB) (events.A
 
 	return events.APIGatewayProxyResponse{
 		Body:       "Delete Request!",
-		Headers:    map[string]string{"Content-Type": "application/json", "Access-Control-Allow-Origin": "*"},
-		StatusCode: 200,
-	}, nil
-}
-
-// AllComments -
-// Returns all comments that have been posted to the site
-func AllComments(request events.APIGatewayProxyRequest, db *gorm.DB) (events.APIGatewayProxyResponse, error) {
-	fmt.Println("Getting Comments")
-
-	var comments []Comment
-
-	db.Find(&comments)
-
-	jsonResults, err := json.Marshal(comments)
-	if err != nil {
-		panic(err.Error())
-	}
-
-	fmt.Printf("%+v\n", string(jsonResults))
-
-	return events.APIGatewayProxyResponse{
-		Body:       string(jsonResults),
 		Headers:    map[string]string{"Content-Type": "application/json", "Access-Control-Allow-Origin": "*"},
 		StatusCode: 200,
 	}, nil
