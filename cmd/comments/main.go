@@ -8,7 +8,6 @@ import (
 	"github.com/elliotforbes/api.tutorialedge.net/auth"
 	"github.com/elliotforbes/api.tutorialedge.net/comments"
 	"github.com/elliotforbes/api.tutorialedge.net/database"
-	_ "github.com/go-sql-driver/mysql"
 )
 
 func handler(request events.APIGatewayProxyRequest) (events.APIGatewayProxyResponse, error) {
