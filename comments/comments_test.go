@@ -24,7 +24,7 @@ func TestGetComments(t *testing.T) {
 
 	request.QueryStringParameters["slug"] = "/test/"
 
-	response, err := comments.AllComments(request, db)
+	response, err := comments.GetComments(request, db)
 	if err != nil {
 		t.Error(err)
 		return
