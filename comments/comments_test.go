@@ -21,6 +21,7 @@ func TestGetComments(t *testing.T) {
 	}
 
 	request := events.APIGatewayProxyRequest{}
+	request.QueryStringParameters = make(map[string]string)
 
 	request.QueryStringParameters["slug"] = "/test/"
 
