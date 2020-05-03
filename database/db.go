@@ -9,6 +9,9 @@ import (
 	"github.com/jinzhu/gorm"
 )
 
+// GetDBConn returns a pointer to a database connection
+// calling functions need to ensure they defer the closing
+// of this connection
 func GetDBConn() (*gorm.DB, error) {
 	dbUsername := os.Getenv("DB_USERNAME")
 	dbPassword := os.Getenv("DB_PASSWORD")
@@ -25,6 +28,8 @@ func GetDBConn() (*gorm.DB, error) {
 	return db, nil
 }
 
+// Migrate migrates the database with any changes made
+// to the gorm structs
 func Migrate() {
 	db, err := GetDBConn()
 	if err != nil {

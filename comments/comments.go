@@ -10,31 +10,25 @@ import (
 	"github.com/jinzhu/gorm"
 )
 
-type BodyRequest struct {
-	RequestName string `json:"name"`
-}
-
+// Response a response object
+// used for returning an array of comments
 type Response struct {
 	Comments []Comment `json:"comments"`
 }
 
+// Comment the structure
+// of comments in the database
 type Comment struct {
 	gorm.Model
-	Id          int    `json:"id"`
-	Slug        string `json:"slug"`
-	Body        string `json:"body"`
-	Author      string `json:"author"`
-	Posted      string `json:"posted"`
-	Picture     string `json:"picture,omitempty"`
-	Thumbs_up   int    `json:"thumbs_up,omitempty"`
-	Thumbs_down int    `json:"thumbs_down,omitempty"`
-	Heart       int    `json:"heart,omitempty"`
-	Smile       int    `json:"smile,omitempty"`
-}
-
-type Vote struct {
-	Id   int    `json:"id"`
-	Vote string `json:"vote"`
+	Slug       string `json:"slug"`
+	Body       string `json:"body"`
+	Author     string `json:"author"`
+	Posted     string `json:"posted"`
+	Picture    string `json:"picture,omitempty"`
+	ThumbsUp   int    `json:"thumbs_up,omitempty"`
+	ThumbsDown int    `json:"thumbs_down,omitempty"`
+	Heart      int    `json:"heart,omitempty"`
+	Smile      int    `json:"smile,omitempty"`
 }
 
 // GetComments -

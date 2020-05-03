@@ -9,6 +9,9 @@ import (
 	"github.com/dgrijalva/jwt-go"
 )
 
+// Authenticate -
+// Takes in a request and returns a true or false as to whether or not
+// the incoming request is authenticated
 func Authenticate(request events.APIGatewayProxyRequest) bool {
 	fmt.Println("Attempting to Authenticate Incoming Request...")
 
