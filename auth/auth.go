@@ -23,8 +23,6 @@ func Authenticate(request events.APIGatewayProxyRequest) bool {
 	tokenString := strings.Split(string(header), " ")[1]
 	signingKey := os.Getenv("AUTH0_SIGNING_KEY")
 
-	fmt.Println(tokenString)
-
 	token, err := jwt.Parse(tokenString, func(token *jwt.Token) (interface{}, error) {
 		verifyKey, err := jwt.ParseRSAPublicKeyFromPEM([]byte(signingKey))
 		if err != nil {
@@ -36,8 +34,6 @@ func Authenticate(request events.APIGatewayProxyRequest) bool {
 	if err != nil {
 		panic(err.Error())
 	}
-
-	fmt.Println(token)
 
 	return token.Valid
 }
