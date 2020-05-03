@@ -6,6 +6,7 @@ import (
 	"strconv"
 
 	"github.com/elliotforbes/api.tutorialedge.net/comments"
+	_ "github.com/go-sql-driver/mysql"
 	"github.com/jinzhu/gorm"
 )
 
