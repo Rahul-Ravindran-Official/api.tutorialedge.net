@@ -8,7 +8,7 @@ TutorialEdge API
 - [x] - Simple Endpoint
 - [x] - Comments System
 - [ ] - Auth0 Harden Token Verification
-- [ ] - Unit Testing
+- [x] - Unit Testing
 - [ ] - Terraform for infrastructure
 - [ ] - Challenge System
 - [ ] - Quiz System

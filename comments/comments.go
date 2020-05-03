@@ -78,60 +78,15 @@ func UpdateComment(request events.APIGatewayProxyRequest, db *gorm.DB) (events.A
 	body, _ := base64.StdEncoding.DecodeString(request.Body)
 	fmt.Println(string(body))
 
-	var vote Vote
+	var comment Comment
 
-	err := json.Unmarshal(body, &vote)
+	err := json.Unmarshal(body, &comment)
 	if err != nil {
 		panic(err.Error())
 	}
 
-	// switch vote.Vote {
-	// case "thumbs_up":
-	// 	stmt, err := db.Prepare("UPDATE comments SET thumbs_up = thumbs_up+1 WHERE id=?")
-	// 	if err != nil {
-	// 		panic(err.Error())
-	// 	}
-	// 	defer stmt.Close()
-	// 	_, err = stmt.Exec(vote.Id)
-	// 	if err != nil {
-	// 		panic(err.Error())
-	// 	}
-	// case "thumbs_down":
-	// 	stmt, err := db.Prepare("UPDATE comments SET thumbs_down = thumbs_down+1 WHERE id=?")
-	// 	if err != nil {
-	// 		panic(err.Error())
-	// 	}
-	// 	defer stmt.Close()
-	// 	_, err = stmt.Exec(vote.Id)
-	// 	if err != nil {
-	// 		panic(err.Error())
-	// 	}
-	// case "heart":
-	// 	stmt, err := db.Prepare("UPDATE comments SET heart = heart+1 WHERE id=?")
-	// 	if err != nil {
-	// 		panic(err.Error())
-	// 	}
-	// 	defer stmt.Close()
-	// 	_, err = stmt.Exec(vote.Id)
-	// 	if err != nil {
-	// 		panic(err.Error())
-	// 	}
-	// case "smile":
-	// 	stmt, err := db.Prepare("UPDATE comments SET smile = smile+1 WHERE id=?")
-	// 	if err != nil {
-	// 		panic(err.Error())
-	// 	}
-	// 	defer stmt.Close()
-	// 	_, err = stmt.Exec(vote.Id)
-	// 	if err != nil {
-	// 		panic(err.Error())
-	// 	}
-	// }
-
-	// err = tx.Commit()
-	// if err != nil {
-	// 	log.Fatal(err)
-	// }
+	db.Save(comment)
+	fmt.Println("Comment Saved with new Vote")
 
 	return events.APIGatewayProxyResponse{
 		Body:       "Successfull Vote!",

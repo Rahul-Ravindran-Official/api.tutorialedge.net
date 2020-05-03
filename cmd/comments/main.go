@@ -9,33 +9,25 @@ import (
 	"github.com/aws/aws-lambda-go/lambda"
 	"github.com/elliotforbes/api.tutorialedge.net/auth"
 	"github.com/elliotforbes/api.tutorialedge.net/comments"
+	"github.com/elliotforbes/api.tutorialedge.net/database"
 	_ "github.com/go-sql-driver/mysql"
-	"github.com/jinzhu/gorm"
 )
 
 func handler(request events.APIGatewayProxyRequest) (events.APIGatewayProxyResponse, error) {
 
 	fmt.Printf("%+v\n", request)
-
-	dbUsername := os.Getenv("DB_USERNAME")
-	dbPassword := os.Getenv("DB_PASSWORD")
-	dbHost := os.Getenv("DB_HOST")
-	dbTable := os.Getenv("DB_TABLE")
-	dbPort := 25060
-	dbConnectionString := dbUsername + ":" + dbPassword + "@tcp(" + dbHost + ":" + strconv.Itoa(dbPort) + ")/" + dbTable
-
-	db, err := gorm.Open("mysql", dbConnectionString)
-	db.AutoMigrate(&comments.Comment{})
+	db, err := database.GetDBConn()
 
 	if err != nil {
 		panic(err.Error())
 	}
 	defer db.Close()
 
-	if request.HTTPMethod == "GET" {
+	switch request.HTTPMethod {
+	case "GET":
 		response, _ := comments.GetComments(request, db)
 		return response, nil
-	} else if request.HTTPMethod == "POST" {
+	case "POST":
 		if ok := auth.Authenticate(request); ok {
 			response, _ := comments.PostComment(request, db)
 			return response, nil
@@ -46,7 +38,7 @@ func handler(request events.APIGatewayProxyRequest) (events.APIGatewayProxyRespo
 				StatusCode: 503,
 			}, nil
 		}
-	} else if request.HTTPMethod == "PUT" {
+	case "PUT":
 		if ok := auth.Authenticate(request); ok {
 			response, _ := comments.UpdateComment(request, db)
 			return response, nil
@@ -57,7 +49,7 @@ func handler(request events.APIGatewayProxyRequest) (events.APIGatewayProxyRespo
 				StatusCode: 503,
 			}, nil
 		}
-	} else if request.HTTPMethod == "DELETE" {
+	case "DELETE":
 		if ok := auth.Authenticate(request); ok {
 			response, _ := comments.DeleteComment(request, db)
 			return response, nil
@@ -68,12 +60,13 @@ func handler(request events.APIGatewayProxyRequest) (events.APIGatewayProxyRespo
 				StatusCode: 503,
 			}, nil
 		}
-	} else {
+	default:
 		return events.APIGatewayProxyResponse{
 			Body:       "Invalid HTTP Method",
 			StatusCode: 501,
 		}, nil
 	}
+
 }
 
 func main() {
