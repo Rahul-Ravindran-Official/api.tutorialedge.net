@@ -1,7 +1,6 @@
 package main
 
 import (
-	"database/sql"
 	"fmt"
 	"os"
 	"strconv"
@@ -11,6 +10,7 @@ import (
 	"github.com/elliotforbes/api.tutorialedge.net/auth"
 	"github.com/elliotforbes/api.tutorialedge.net/comments"
 	_ "github.com/go-sql-driver/mysql"
+	"github.com/jinzhu/gorm"
 )
 
 func handler(request events.APIGatewayProxyRequest) (events.APIGatewayProxyResponse, error) {
@@ -24,7 +24,8 @@ func handler(request events.APIGatewayProxyRequest) (events.APIGatewayProxyRespo
 	dbPort := 25060
 	dbConnectionString := dbUsername + ":" + dbPassword + "@tcp(" + dbHost + ":" + strconv.Itoa(dbPort) + ")/" + dbTable
 
-	db, err := sql.Open("mysql", dbConnectionString)
+	db, err := gorm.Open("mysql", dbConnectionString)
+	db.AutoMigrate(&comments.Comment{})
 
 	if err != nil {
 		panic(err.Error())
