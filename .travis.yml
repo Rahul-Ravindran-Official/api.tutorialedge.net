@@ -14,6 +14,14 @@ jobs:
       go:
         - 1.14
 
+    # Go Lint
+    # - Runs golint
+    - stage: golint
+      script: ./scripts/golint.sh
+      language: go
+      go:
+        - 1.14
+
     # Unit Test
     # - Runs any unit tests for the API
     - stage: Unit Tests
