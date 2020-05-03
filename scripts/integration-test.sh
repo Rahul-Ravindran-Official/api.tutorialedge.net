@@ -7,6 +7,7 @@ function run_integration_tests() {
 
 function main() {
     echo "Running Integration Test Suite..."
+    # run_integration_tests
 }
 
 main

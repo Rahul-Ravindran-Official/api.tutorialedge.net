@@ -42,6 +42,10 @@ functions:
         MAILGUN_API_KEY: ${env:MAILGUN_API_KEY}
     events:
     - http:
+        path: /v1/allcomments
+        method: get
+        cors: true # <-- CORS!
+    - http:
         path: /v1/comments
         method: get
         cors: true # <-- CORS!

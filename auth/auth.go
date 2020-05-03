@@ -9,6 +9,9 @@ import (
 	"github.com/dgrijalva/jwt-go"
 )
 
+// Authenticate -
+// Takes in a request and returns a true or false as to whether or not
+// the incoming request is authenticated
 func Authenticate(request events.APIGatewayProxyRequest) bool {
 	fmt.Println("Attempting to Authenticate Incoming Request...")
 
@@ -19,8 +22,6 @@ func Authenticate(request events.APIGatewayProxyRequest) bool {
 
 	tokenString := strings.Split(string(header), " ")[1]
 	signingKey := os.Getenv("AUTH0_SIGNING_KEY")
-
-	fmt.Println(tokenString)
 
 	token, err := jwt.Parse(tokenString, func(token *jwt.Token) (interface{}, error) {
 		verifyKey, err := jwt.ParseRSAPublicKeyFromPEM([]byte(signingKey))
@@ -34,11 +35,5 @@ func Authenticate(request events.APIGatewayProxyRequest) bool {
 		panic(err.Error())
 	}
 
-	fmt.Println(token)
-
-	if token.Valid {
-		return true
-	}
-
-	return false
+	return token.Valid
 }

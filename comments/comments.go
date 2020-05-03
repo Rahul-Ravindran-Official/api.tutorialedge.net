@@ -10,31 +10,25 @@ import (
 	"github.com/jinzhu/gorm"
 )
 
-type BodyRequest struct {
-	RequestName string `json:"name"`
-}
-
+// Response a response object
+// used for returning an array of comments
 type Response struct {
 	Comments []Comment `json:"comments"`
 }
 
+// Comment the structure
+// of comments in the database
 type Comment struct {
 	gorm.Model
-	Id          int    `json:"id"`
-	Slug        string `json:"slug"`
-	Body        string `json:"body"`
-	Author      string `json:"author"`
-	Posted      string `json:"posted"`
-	Picture     string `json:"picture,omitempty"`
-	Thumbs_up   int    `json:"thumbs_up,omitempty"`
-	Thumbs_down int    `json:"thumbs_down,omitempty"`
-	Heart       int    `json:"heart,omitempty"`
-	Smile       int    `json:"smile,omitempty"`
-}
-
-type Vote struct {
-	Id   int    `json:"id"`
-	Vote string `json:"vote"`
+	Slug       string `json:"slug"`
+	Body       string `json:"body"`
+	Author     string `json:"author"`
+	Posted     string `json:"posted"`
+	Picture    string `json:"picture,omitempty"`
+	ThumbsUp   int    `json:"thumbs_up,omitempty"`
+	ThumbsDown int    `json:"thumbs_down,omitempty"`
+	Heart      int    `json:"heart,omitempty"`
+	Smile      int    `json:"smile,omitempty"`
 }
 
 // GetComments -
@@ -78,60 +72,15 @@ func UpdateComment(request events.APIGatewayProxyRequest, db *gorm.DB) (events.A
 	body, _ := base64.StdEncoding.DecodeString(request.Body)
 	fmt.Println(string(body))
 
-	var vote Vote
+	var comment Comment
 
-	err := json.Unmarshal(body, &vote)
+	err := json.Unmarshal(body, &comment)
 	if err != nil {
 		panic(err.Error())
 	}
 
-	// switch vote.Vote {
-	// case "thumbs_up":
-	// 	stmt, err := db.Prepare("UPDATE comments SET thumbs_up = thumbs_up+1 WHERE id=?")
-	// 	if err != nil {
-	// 		panic(err.Error())
-	// 	}
-	// 	defer stmt.Close()
-	// 	_, err = stmt.Exec(vote.Id)
-	// 	if err != nil {
-	// 		panic(err.Error())
-	// 	}
-	// case "thumbs_down":
-	// 	stmt, err := db.Prepare("UPDATE comments SET thumbs_down = thumbs_down+1 WHERE id=?")
-	// 	if err != nil {
-	// 		panic(err.Error())
-	// 	}
-	// 	defer stmt.Close()
-	// 	_, err = stmt.Exec(vote.Id)
-	// 	if err != nil {
-	// 		panic(err.Error())
-	// 	}
-	// case "heart":
-	// 	stmt, err := db.Prepare("UPDATE comments SET heart = heart+1 WHERE id=?")
-	// 	if err != nil {
-	// 		panic(err.Error())
-	// 	}
-	// 	defer stmt.Close()
-	// 	_, err = stmt.Exec(vote.Id)
-	// 	if err != nil {
-	// 		panic(err.Error())
-	// 	}
-	// case "smile":
-	// 	stmt, err := db.Prepare("UPDATE comments SET smile = smile+1 WHERE id=?")
-	// 	if err != nil {
-	// 		panic(err.Error())
-	// 	}
-	// 	defer stmt.Close()
-	// 	_, err = stmt.Exec(vote.Id)
-	// 	if err != nil {
-	// 		panic(err.Error())
-	// 	}
-	// }
-
-	// err = tx.Commit()
-	// if err != nil {
-	// 	log.Fatal(err)
-	// }
+	db.Save(comment)
+	fmt.Println("Comment Saved with new Vote")
 
 	return events.APIGatewayProxyResponse{
 		Body:       "Successfull Vote!",
