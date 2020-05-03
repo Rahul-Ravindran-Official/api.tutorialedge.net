@@ -4,13 +4,10 @@ import (
 	"encoding/base64"
 	"encoding/json"
 	"fmt"
-	"log"
-
-	"database/sql"
 
 	"github.com/aws/aws-lambda-go/events"
-
 	"github.com/elliotforbes/api.tutorialedge.net/email"
+	"github.com/jinzhu/gorm"
 )
 
 type BodyRequest struct {
@@ -22,6 +19,7 @@ type Response struct {
 }
 
 type Comment struct {
+	gorm.Model
 	Id          int    `json:"id"`
 	Slug        string `json:"slug"`
 	Body        string `json:"body"`
@@ -41,30 +39,14 @@ type Vote struct {
 
 // GetComments -
 // Returns the comments for the given post
-func GetComments(request events.APIGatewayProxyRequest, db *sql.DB) (events.APIGatewayProxyResponse, error) {
+func GetComments(request events.APIGatewayProxyRequest, db *gorm.DB) (events.APIGatewayProxyResponse, error) {
 	fmt.Println("Getting Comments")
 
 	fmt.Println(request.QueryStringParameters["slug"])
 	slug := request.QueryStringParameters["slug"]
 
-	results, err := db.Query("SELECT * FROM comments WHERE slug = ?", slug)
-	if err != nil {
-		panic(err.Error())
-	}
-
 	var comments []Comment
-
-	for results.Next() {
-		var comment Comment
-		err = results.Scan(&comment.Id, &comment.Body, &comment.Slug, &comment.Posted, &comment.Author, &comment.Picture, &comment.Thumbs_up, &comment.Thumbs_down, &comment.Heart, &comment.Smile)
-		if err != nil {
-			panic(err.Error())
-		}
-
-		fmt.Printf("%+v\n", comment)
-
-		comments = append(comments, comment)
-	}
+	db.Where("slug = ?", slug).Find(&comments)
 
 	response := Response{
 		Comments: comments,
@@ -88,16 +70,8 @@ func GetComments(request events.APIGatewayProxyRequest, db *sql.DB) (events.APIG
 
 // UpdateComment -
 // Updates the comment
-func UpdateComment(request events.APIGatewayProxyRequest, db *sql.DB) (events.APIGatewayProxyResponse, error) {
-	fmt.Println("Getting Comments")
-
-	tx, err := db.Begin()
-	if err != nil {
-		log.Fatal(err)
-	}
-	defer tx.Rollback()
+func UpdateComment(request events.APIGatewayProxyRequest, db *gorm.DB) (events.APIGatewayProxyResponse, error) {
 	fmt.Println("Adding a Vote to a Comment")
-
 	fmt.Printf("Request: %v\n", request)
 
 	fmt.Println("Received body: ", request.Body)
@@ -106,58 +80,58 @@ func UpdateComment(request events.APIGatewayProxyRequest, db *sql.DB) (events.AP
 
 	var vote Vote
 
-	err = json.Unmarshal(body, &vote)
+	err := json.Unmarshal(body, &vote)
 	if err != nil {
 		panic(err.Error())
 	}
 
-	switch vote.Vote {
-	case "thumbs_up":
-		stmt, err := db.Prepare("UPDATE comments SET thumbs_up = thumbs_up+1 WHERE id=?")
-		if err != nil {
-			panic(err.Error())
-		}
-		defer stmt.Close()
-		_, err = stmt.Exec(vote.Id)
-		if err != nil {
-			panic(err.Error())
-		}
-	case "thumbs_down":
-		stmt, err := db.Prepare("UPDATE comments SET thumbs_down = thumbs_down+1 WHERE id=?")
-		if err != nil {
-			panic(err.Error())
-		}
-		defer stmt.Close()
-		_, err = stmt.Exec(vote.Id)
-		if err != nil {
-			panic(err.Error())
-		}
-	case "heart":
-		stmt, err := db.Prepare("UPDATE comments SET heart = heart+1 WHERE id=?")
-		if err != nil {
-			panic(err.Error())
-		}
-		defer stmt.Close()
-		_, err = stmt.Exec(vote.Id)
-		if err != nil {
-			panic(err.Error())
-		}
-	case "smile":
-		stmt, err := db.Prepare("UPDATE comments SET smile = smile+1 WHERE id=?")
-		if err != nil {
-			panic(err.Error())
-		}
-		defer stmt.Close()
-		_, err = stmt.Exec(vote.Id)
-		if err != nil {
-			panic(err.Error())
-		}
-	}
+	// switch vote.Vote {
+	// case "thumbs_up":
+	// 	stmt, err := db.Prepare("UPDATE comments SET thumbs_up = thumbs_up+1 WHERE id=?")
+	// 	if err != nil {
+	// 		panic(err.Error())
+	// 	}
+	// 	defer stmt.Close()
+	// 	_, err = stmt.Exec(vote.Id)
+	// 	if err != nil {
+	// 		panic(err.Error())
+	// 	}
+	// case "thumbs_down":
+	// 	stmt, err := db.Prepare("UPDATE comments SET thumbs_down = thumbs_down+1 WHERE id=?")
+	// 	if err != nil {
+	// 		panic(err.Error())
+	// 	}
+	// 	defer stmt.Close()
+	// 	_, err = stmt.Exec(vote.Id)
+	// 	if err != nil {
+	// 		panic(err.Error())
+	// 	}
+	// case "heart":
+	// 	stmt, err := db.Prepare("UPDATE comments SET heart = heart+1 WHERE id=?")
+	// 	if err != nil {
+	// 		panic(err.Error())
+	// 	}
+	// 	defer stmt.Close()
+	// 	_, err = stmt.Exec(vote.Id)
+	// 	if err != nil {
+	// 		panic(err.Error())
+	// 	}
+	// case "smile":
+	// 	stmt, err := db.Prepare("UPDATE comments SET smile = smile+1 WHERE id=?")
+	// 	if err != nil {
+	// 		panic(err.Error())
+	// 	}
+	// 	defer stmt.Close()
+	// 	_, err = stmt.Exec(vote.Id)
+	// 	if err != nil {
+	// 		panic(err.Error())
+	// 	}
+	// }
 
-	err = tx.Commit()
-	if err != nil {
-		log.Fatal(err)
-	}
+	// err = tx.Commit()
+	// if err != nil {
+	// 	log.Fatal(err)
+	// }
 
 	return events.APIGatewayProxyResponse{
 		Body:       "Successfull Vote!",
@@ -168,16 +142,9 @@ func UpdateComment(request events.APIGatewayProxyRequest, db *sql.DB) (events.AP
 
 // PostComment -
 // Adds a new comment to the site
-func PostComment(request events.APIGatewayProxyRequest, db *sql.DB) (events.APIGatewayProxyResponse, error) {
-	tx, err := db.Begin()
-	if err != nil {
-		log.Fatal(err)
-	}
-	defer tx.Rollback()
+func PostComment(request events.APIGatewayProxyRequest, db *gorm.DB) (events.APIGatewayProxyResponse, error) {
+
 	fmt.Println("Posting a Comment")
-
-	fmt.Printf("Request: %v\n", request)
-
 	fmt.Println("Received body: ", request.Body)
 	body, err := base64.StdEncoding.DecodeString(request.Body)
 	if err != nil {
@@ -192,21 +159,7 @@ func PostComment(request events.APIGatewayProxyRequest, db *sql.DB) (events.APIG
 		panic(err.Error())
 	}
 
-	stmt, err := db.Prepare("INSERT INTO comments(body, slug, posted, author, picture, thumbs_up, thumbs_down, heart, smile) VALUES (?, ?, current_timestamp(), ?, ?, 0, 0, 0, 0)")
-	if err != nil {
-		panic(err.Error())
-	}
-	defer stmt.Close()
-
-	_, err = stmt.Exec(comment.Body, comment.Slug, comment.Author, comment.Picture)
-	if err != nil {
-		panic(err.Error())
-	}
-
-	err = tx.Commit()
-	if err != nil {
-		log.Fatal(err)
-	}
+	db.Create(comment)
 
 	err = email.SendEmail("A New Comment Has been Posted!", comment.Body, "admin@tutorialedge.net")
 	if err != nil {
@@ -222,7 +175,7 @@ func PostComment(request events.APIGatewayProxyRequest, db *sql.DB) (events.APIG
 
 // DeleteComment -
 // Deletes the comment with the ID
-func DeleteComment(request events.APIGatewayProxyRequest, db *sql.DB) (events.APIGatewayProxyResponse, error) {
+func DeleteComment(request events.APIGatewayProxyRequest, db *gorm.DB) (events.APIGatewayProxyResponse, error) {
 	fmt.Println("Getting Comments")
 
 	return events.APIGatewayProxyResponse{
@@ -234,11 +187,22 @@ func DeleteComment(request events.APIGatewayProxyRequest, db *sql.DB) (events.AP
 
 // AllComments -
 // Returns all comments that have been posted to the site
-func AllComments(request events.APIGatewayProxyRequest, db *sql.DB) (events.APIGatewayProxyResponse, error) {
+func AllComments(request events.APIGatewayProxyRequest, db *gorm.DB) (events.APIGatewayProxyResponse, error) {
 	fmt.Println("Getting Comments")
 
+	var comments []Comment
+
+	db.Find(&comments)
+
+	jsonResults, err := json.Marshal(comments)
+	if err != nil {
+		panic(err.Error())
+	}
+
+	fmt.Printf("%+v\n", string(jsonResults))
+
 	return events.APIGatewayProxyResponse{
-		Body:       "Get All Comments!",
+		Body:       string(jsonResults),
 		Headers:    map[string]string{"Content-Type": "application/json", "Access-Control-Allow-Origin": "*"},
 		StatusCode: 200,
 	}, nil
