@@ -32,6 +32,7 @@ func TestRetrieveComments(t *testing.T) {
 
 	db, err := database.GetDBConn()
 	if err != nil {
+		t.Log(err)
 		t.Error("Could not get DB Connection")
 		return
 	}
