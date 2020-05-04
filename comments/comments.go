@@ -24,11 +24,11 @@ type Comment struct {
 	Body       string `json:"body"`
 	Author     string `json:"author"`
 	AuthorID   string `json:"sub"`
-	Picture    string `json:"picture,omitempty"`
-	ThumbsUp   int    `json:"thumbs_up,omitempty"`
-	ThumbsDown int    `json:"thumbs_down,omitempty"`
-	Heart      int    `json:"heart,omitempty"`
-	Smile      int    `json:"smile,omitempty"`
+	Picture    string `json:"picture"`
+	ThumbsUp   int    `json:"thumbs_up"`
+	ThumbsDown int    `json:"thumbs_down"`
+	Heart      int    `json:"heart"`
+	Smile      int    `json:"smile"`
 }
 
 type User struct {

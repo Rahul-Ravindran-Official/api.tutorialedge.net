@@ -37,3 +37,13 @@ func Authenticate(request events.APIGatewayProxyRequest) bool {
 
 	return token.Valid
 }
+
+// UnauthorizedResponse returns a pre-defined
+// unauthorized APIGatewayProxyResponse
+func UnauthorizedResponse() events.APIGatewayProxyResponse {
+	return events.APIGatewayProxyResponse{
+		Body:       "Not Authorized",
+		Headers:    map[string]string{"Content-Type": "application/json", "Access-Control-Allow-Origin": "*"},
+		StatusCode: 503,
+	}
+}

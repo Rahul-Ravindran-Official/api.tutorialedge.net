@@ -15,13 +15,10 @@ func handler(request events.APIGatewayProxyRequest) (events.APIGatewayProxyRespo
 	fmt.Printf("%+v\n", request)
 
 	db, err := database.GetDBConn()
-
 	if err != nil {
 		panic(err.Error())
 	}
 	defer db.Close()
-
-	db.AutoMigrate(&comments.Comment{})
 
 	switch request.HTTPMethod {
 	case "GET":
@@ -32,41 +29,25 @@ func handler(request events.APIGatewayProxyRequest) (events.APIGatewayProxyRespo
 			response, _ := comments.PostComment(request, db)
 			return response, nil
 		}
-		return events.APIGatewayProxyResponse{
-			Body:       "Not Authorized",
-			Headers:    map[string]string{"Content-Type": "application/json", "Access-Control-Allow-Origin": "*"},
-			StatusCode: 503,
-		}, nil
+		return auth.UnauthorizedResponse(), nil
 	case "PUT":
 		if ok := auth.Authenticate(request); ok {
 			response, _ := comments.UpdateComment(request, db)
 			return response, nil
 		}
-
-		return events.APIGatewayProxyResponse{
-			Body:       "Not Authorized",
-			Headers:    map[string]string{"Content-Type": "application/json", "Access-Control-Allow-Origin": "*"},
-			StatusCode: 503,
-		}, nil
+		return auth.UnauthorizedResponse(), nil
 	case "DELETE":
 		if ok := auth.Authenticate(request); ok {
 			response, _ := comments.DeleteComment(request, db)
 			return response, nil
 		}
-
-		return events.APIGatewayProxyResponse{
-			Body:       "Not Authorized",
-			Headers:    map[string]string{"Content-Type": "application/json", "Access-Control-Allow-Origin": "*"},
-			StatusCode: 503,
-		}, nil
-
+		return auth.UnauthorizedResponse(), nil
 	default:
 		return events.APIGatewayProxyResponse{
 			Body:       "Invalid HTTP Method",
 			StatusCode: 501,
 		}, nil
 	}
-
 }
 
 func main() {
