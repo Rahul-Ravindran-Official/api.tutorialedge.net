@@ -24,12 +24,14 @@ type Comment struct {
 	Body       string `json:"body"`
 	Author     string `json:"author"`
 	AuthorID   string `json:"sub"`
-	Posted     string `json:"posted"`
 	Picture    string `json:"picture,omitempty"`
 	ThumbsUp   int    `json:"thumbs_up,omitempty"`
 	ThumbsDown int    `json:"thumbs_down,omitempty"`
 	Heart      int    `json:"heart,omitempty"`
 	Smile      int    `json:"smile,omitempty"`
+}
+
+type User struct {
 }
 
 // GetComments -
@@ -113,7 +115,7 @@ func PostComment(request events.APIGatewayProxyRequest, db *gorm.DB) (events.API
 		panic(err.Error())
 	}
 
-	db.Create(comment)
+	db.Create(&comment)
 
 	err = email.SendEmail("A New Comment Has been Posted!", comment.Body, "admin@tutorialedge.net")
 	if err != nil {
