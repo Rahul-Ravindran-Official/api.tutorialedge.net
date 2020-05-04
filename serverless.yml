@@ -77,6 +77,11 @@ functions:
   users:
     handler: bin/users
     environment:
+        AUTH0_SIGNING_KEY: ${env:AUTH0_SIGNING_KEY}
+        DB_USERNAME: ${env:DB_USERNAME}
+        DB_PASSWORD: ${env:DB_PASSWORD}
+        DB_HOST: ${env:DB_HOST}
+        DB_TABLE: ${env:DB_TABLE}
         MAILGUN_API_KEY: ${env:MAILGUN_API_KEY}
     events:
     - http:
@@ -90,6 +95,13 @@ functions:
   
   posts:
     handler: bin/posts
+    environment:
+        AUTH0_SIGNING_KEY: ${env:AUTH0_SIGNING_KEY}
+        DB_USERNAME: ${env:DB_USERNAME}
+        DB_PASSWORD: ${env:DB_PASSWORD}
+        DB_HOST: ${env:DB_HOST}
+        DB_TABLE: ${env:DB_TABLE}
+        MAILGUN_API_KEY: ${env:MAILGUN_API_KEY}
     events:
     - http:
         path: /v1/posts
