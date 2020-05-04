@@ -44,11 +44,11 @@ functions:
     - http:
         path: /v1/comments
         method: get
-        cors: true # <-- CORS!
+        cors: true
     - http:
         path: /v1/comments
         method: post
-        cors: true # <-- CORS!
+        cors: true
     - http:
         path: /v1/comments
         method: put
@@ -82,9 +82,11 @@ functions:
     - http:
         path: /v1/user
         method: get
+        cors: true
     - http:
         path: /v1/user
         method: post
+        cors: true
   
   posts:
     handler: bin/posts
