@@ -81,6 +81,9 @@ functions:
     events:
     - http:
         path: /v1/user
+        method: get
+    - http:
+        path: /v1/user
         method: post
   
   posts:

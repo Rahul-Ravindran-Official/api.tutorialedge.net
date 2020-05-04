@@ -1,27 +1,27 @@
 package main
 
 import (
-	"encoding/base64"
-	"fmt"
-
 	"github.com/aws/aws-lambda-go/events"
 	"github.com/aws/aws-lambda-go/lambda"
-	"github.com/elliotforbes/api.tutorialedge.net/email"
+	"github.com/elliotforbes/api.tutorialedge.net/database"
+	"github.com/elliotforbes/api.tutorialedge.net/users"
 )
 
 func handler(request events.APIGatewayProxyRequest) (events.APIGatewayProxyResponse, error) {
 
-	fmt.Println("Received body: ", request.Body)
-	body, _ := base64.StdEncoding.DecodeString(request.Body)
-	fmt.Println(string(body))
-
-	err := email.SendEmail("New User Account Registered!", "A New User has registered on TutorialEdge", "admin@tutorialedge.net")
-
+	db, err := database.GetDBConn()
 	if err != nil {
-		return events.APIGatewayProxyResponse{
-			Body:       "{\"status\": \"error: " + err.Error() + "\"}",
-			StatusCode: 503,
-		}, nil
+		panic(err.Error())
+	}
+	defer db.Close()
+
+	switch request.HTTPMethod {
+	case "GET":
+		response, _ := users.GetUser(request, db)
+		return response, nil
+	case "POST":
+		response, _ := users.NewUser(request, db)
+		return response, nil
 	}
 
 	return events.APIGatewayProxyResponse{
