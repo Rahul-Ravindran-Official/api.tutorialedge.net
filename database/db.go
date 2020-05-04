@@ -3,11 +3,11 @@ package database
 import (
 	"fmt"
 	"os"
-	"strconv"
 
 	"github.com/elliotforbes/api.tutorialedge.net/comments"
-	_ "github.com/go-sql-driver/mysql"
+
 	"github.com/jinzhu/gorm"
+	_ "github.com/jinzhu/gorm/dialects/postgres"
 )
 
 // GetDBConn returns a pointer to a database connection
@@ -19,18 +19,23 @@ func GetDBConn() (*gorm.DB, error) {
 	dbHost := os.Getenv("DB_HOST")
 	dbTable := os.Getenv("DB_TABLE")
 	dbPort := 25060
-	dbConnectionString := dbUsername + ":" + dbPassword + "@tcp(" + dbHost + ":" + strconv.Itoa(dbPort) + ")/" + dbTable
 
-	db, err := gorm.Open("mysql", dbConnectionString)
+	postgresConn := fmt.Sprintf("host=%s port=%d user=%s dbname=%s password=%s", dbHost, dbPort, dbUsername, dbTable, dbPassword)
+
+	// dbConnectionString := dbUsername + ":" + dbPassword + "@tcp(" + dbHost + ":" + strconv.Itoa(dbPort) + ")/" + dbTable
+
+	db, err := gorm.Open("postgres", postgresConn)
 	if err != nil {
 		return nil, err
 	}
+
+	db.AutoMigrate(&comments.Comment{})
 
 	return db, nil
 }
 
 // Migrate migrates the database with any changes made
-// to the gorm structs
+// the
 func Migrate() {
 	db, err := GetDBConn()
 	if err != nil {

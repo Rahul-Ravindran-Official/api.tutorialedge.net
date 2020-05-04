@@ -21,6 +21,8 @@ func handler(request events.APIGatewayProxyRequest) (events.APIGatewayProxyRespo
 	}
 	defer db.Close()
 
+	db.AutoMigrate(&comments.Comment{})
+
 	switch request.HTTPMethod {
 	case "GET":
 		response, _ := comments.GetComments(request, db)
