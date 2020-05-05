@@ -46,13 +46,13 @@ func Authenticate(request events.APIGatewayProxyRequest) bool {
 		aud := os.Getenv("API_AUDIENCE_ID")
 		checkAud := token.Claims.(jwt.MapClaims).VerifyAudience(aud, false)
 		if !checkAud {
-			return token, errors.New("Invalid audience.")
+			return token, errors.New("Invalid audience")
 		}
 
 		iss := "https://tutorialedge.eu.auth0.com/"
 		checkIss := token.Claims.(jwt.MapClaims).VerifyIssuer(iss, false)
 		if !checkIss {
-			return token, errors.New("Invalid issuer.")
+			return token, errors.New("Invalid issuer")
 		}
 
 		cert, err := getPemCert(token)
@@ -68,7 +68,7 @@ func Authenticate(request events.APIGatewayProxyRequest) bool {
 	})
 
 	if err != nil {
-		panic(err.Error())
+		fmt.Println(err.Error())
 		return false
 	}
 
@@ -91,14 +91,14 @@ func getPemCert(token *jwt.Token) (string, error) {
 		return cert, err
 	}
 
-	for k, _ := range jwks.Keys {
+	for k := range jwks.Keys {
 		if token.Header["kid"] == jwks.Keys[k].Kid {
 			cert = "-----BEGIN CERTIFICATE-----\n" + jwks.Keys[k].X5c[0] + "\n-----END CERTIFICATE-----"
 		}
 	}
 
 	if cert == "" {
-		err := errors.New("Unable to find appropriate key.")
+		err := errors.New("Unable to find appropriate key")
 		return cert, err
 	}
 
