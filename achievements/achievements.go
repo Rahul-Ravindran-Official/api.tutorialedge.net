@@ -4,7 +4,13 @@ import (
 	"fmt"
 
 	"github.com/aws/aws-lambda-go/events"
+	"github.com/jinzhu/gorm"
 )
+
+type Achievement struct {
+	gorm.Model
+	Title string `json:"title"`
+}
 
 // GetAchievements -
 // Returns the Achievements for the given post

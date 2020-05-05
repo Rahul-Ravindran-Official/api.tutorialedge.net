@@ -31,9 +31,6 @@ type Comment struct {
 	Smile      int    `json:"smile"`
 }
 
-type User struct {
-}
-
 // GetComments -
 // Returns the comments for the given post
 func GetComments(request events.APIGatewayProxyRequest, db *gorm.DB) (events.APIGatewayProxyResponse, error) {

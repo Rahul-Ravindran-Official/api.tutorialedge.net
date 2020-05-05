@@ -34,6 +34,7 @@ functions:
   comments:
     handler: bin/comments
     environment:
+        API_AUDIENCE_ID: ${env:API_AUDIENCE_ID}
         AUTH0_SIGNING_KEY: ${env:AUTH0_SIGNING_KEY}
         DB_USERNAME: ${env:DB_USERNAME}
         DB_PASSWORD: ${env:DB_PASSWORD}
@@ -77,6 +78,7 @@ functions:
   users:
     handler: bin/users
     environment:
+        API_AUDIENCE_ID: ${env:API_AUDIENCE_ID}
         AUTH0_SIGNING_KEY: ${env:AUTH0_SIGNING_KEY}
         DB_USERNAME: ${env:DB_USERNAME}
         DB_PASSWORD: ${env:DB_PASSWORD}
@@ -96,6 +98,7 @@ functions:
   posts:
     handler: bin/posts
     environment:
+        API_AUDIENCE_ID: ${env:API_AUDIENCE_ID}
         AUTH0_SIGNING_KEY: ${env:AUTH0_SIGNING_KEY}
         DB_USERNAME: ${env:DB_USERNAME}
         DB_PASSWORD: ${env:DB_PASSWORD}
