@@ -90,10 +90,65 @@ func TestPostComments(t *testing.T) {
 	// 	db.Delete(&comment)
 }
 
-func TestDeleteComments(t *testing.T) {
+func TestFailedDeleteComments(t *testing.T) {
 	fmt.Println("Testing Delete Comments...")
 	// t.Error()
+	db, err := database.GetDBConn()
+	if err != nil {
+		t.Log(err)
+		t.Error("Could not get DB Connection")
+		return
+	}
+
+	request := events.APIGatewayProxyRequest{}
+	request.QueryStringParameters = make(map[string]string)
+
+	request.QueryStringParameters["id"] = "-1"
+
+	response, err := comments.DeleteComment(request, db)
+	if err != nil {
+		t.Error(err)
+		return
+	}
+
+	t.Log(response.Body)
+
+	if response.StatusCode != 503 {
+		fmt.Println("Did not receive expected 503 response")
+		t.Error("Failed Delete Comment test did not return 503 expected")
+	}
+
 }
+
+// func TestDeleteComments(t *testing.T) {
+// 	fmt.Println("Testing Delete Comments...")
+// 	// t.Error()
+// 	db, err := database.GetDBConn()
+// 	if err != nil {
+// 		t.Log(err)
+// 		t.Error("Could not get DB Connection")
+// 		return
+// 	}
+
+// 	request := events.APIGatewayProxyRequest{}
+// 	request.QueryStringParameters = make(map[string]string)
+
+// 	request.QueryStringParameters["id"] = "29"
+
+// 	response, err := comments.DeleteComment(request, db)
+// 	if err != nil {
+// 		t.Error(err)
+// 		return
+// 	}
+
+// 	t.Log(response.Body)
+
+// 	if response.StatusCode != 200 {
+// 		fmt.Println("Failed to delete comment...")
+// 		t.Error("Deleting comment returned unexpected status code")
+// 	}
+
+// }
 
 func TestRetrieveComments(t *testing.T) {
 	fmt.Println("Testing We can retrieve all comments")
