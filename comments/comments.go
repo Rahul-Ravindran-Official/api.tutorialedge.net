@@ -83,9 +83,15 @@ func UpdateComment(request events.APIGatewayProxyRequest, db *gorm.DB) (events.A
 		panic(err.Error())
 	}
 
-	db.Save(comment)
-	fmt.Println("Comment Saved with new Vote")
+	if err = db.Save(comment).Error; err != nil {
+		return events.APIGatewayProxyResponse{
+			Body:       "Could not update comment",
+			Headers:    map[string]string{"Content-Type": "application/json", "Access-Control-Allow-Origin": "*"},
+			StatusCode: 503,
+		}, nil
+	}
 
+	fmt.Println("Comment Saved with new Vote")
 	return events.APIGatewayProxyResponse{
 		Body:       "Successfull Vote!",
 		Headers:    map[string]string{"Content-Type": "application/json", "Access-Control-Allow-Origin": "*"},
@@ -112,7 +118,13 @@ func PostComment(request events.APIGatewayProxyRequest, db *gorm.DB) (events.API
 		panic(err.Error())
 	}
 
-	db.Create(&comment)
+	if err = db.Create(&comment).Error; err != nil {
+		return events.APIGatewayProxyResponse{
+			Body:       "Could not post comment",
+			Headers:    map[string]string{"Content-Type": "application/json", "Access-Control-Allow-Origin": "*"},
+			StatusCode: 503,
+		}, nil
+	}
 
 	err = email.SendEmail("A New Comment Has been Posted!", comment.Body, "admin@tutorialedge.net")
 	if err != nil {
@@ -129,7 +141,27 @@ func PostComment(request events.APIGatewayProxyRequest, db *gorm.DB) (events.API
 // DeleteComment -
 // Deletes the comment with the ID
 func DeleteComment(request events.APIGatewayProxyRequest, db *gorm.DB) (events.APIGatewayProxyResponse, error) {
-	fmt.Println("Getting Comments")
+	fmt.Println("Deleting a comment")
+
+	fmt.Println(request.QueryStringParameters["id"])
+	id := request.QueryStringParameters["id"]
+
+	var comment Comment
+	if err := db.First(&comment, id).Error; err != nil {
+		return events.APIGatewayProxyResponse{
+			Body:       "Could not delete comment!",
+			Headers:    map[string]string{"Content-Type": "application/json", "Access-Control-Allow-Origin": "*"},
+			StatusCode: 503,
+		}, nil
+	}
+
+	if err := db.Delete(&comment).Error; err != nil {
+		return events.APIGatewayProxyResponse{
+			Body:       "Could not delete found comment!",
+			Headers:    map[string]string{"Content-Type": "application/json", "Access-Control-Allow-Origin": "*"},
+			StatusCode: 503,
+		}, nil
+	}
 
 	return events.APIGatewayProxyResponse{
 		Body:       "Delete Request!",
