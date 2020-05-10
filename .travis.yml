@@ -1,9 +1,5 @@
 language: node_js
 
-before_script:
-  - npm install -g serverless
-  - curl -sSfL https://raw.githubusercontent.com/golangci/golangci-lint/master/install.sh | sh -s -- -b $(go env GOPATH)/bin v1.26.0
-
 jobs:
   include:
     
