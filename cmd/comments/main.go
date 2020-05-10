@@ -25,20 +25,20 @@ func handler(request events.APIGatewayProxyRequest) (events.APIGatewayProxyRespo
 		response, _ := comments.GetComments(request, db)
 		return response, nil
 	case "POST":
-		if ok := auth.Authenticate(request); ok {
-			response, _ := comments.PostComment(request, db)
+		if ok, tokenInfo := auth.Authenticate(request); ok {
+			response, _ := comments.PostComment(request, tokenInfo, db)
 			return response, nil
 		}
 		return auth.UnauthorizedResponse(), nil
 	case "PUT":
-		if ok := auth.Authenticate(request); ok {
-			response, _ := comments.UpdateComment(request, db)
+		if ok, tokenInfo := auth.Authenticate(request); ok {
+			response, _ := comments.UpdateComment(request, tokenInfo, db)
 			return response, nil
 		}
 		return auth.UnauthorizedResponse(), nil
 	case "DELETE":
-		if ok := auth.Authenticate(request); ok {
-			response, _ := comments.DeleteComment(request, db)
+		if ok, tokenInfo := auth.Authenticate(request); ok {
+			response, _ := comments.DeleteComment(request, tokenInfo, db)
 			return response, nil
 		}
 		return auth.UnauthorizedResponse(), nil
