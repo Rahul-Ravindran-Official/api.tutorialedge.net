@@ -113,6 +113,14 @@ func PostComment(request events.APIGatewayProxyRequest, tokenInfo auth.TokenInfo
 
 	var comment Comment
 
+	if tokenInfo.Sub == "" {
+		return events.APIGatewayProxyResponse{
+			Body:       "Could not post comment with no Sub",
+			Headers:    map[string]string{"Content-Type": "application/json", "Access-Control-Allow-Origin": "*"},
+			StatusCode: 503,
+		}, nil
+	}
+
 	err = json.Unmarshal([]byte(request.Body), &comment)
 	if err != nil {
 		panic(err.Error())
