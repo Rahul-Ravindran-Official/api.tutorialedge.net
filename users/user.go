@@ -13,8 +13,16 @@ import (
 // User - A user on TutorialEdge! :D
 type User struct {
 	gorm.Model
-	Name     string             `json:"name"`
-	Comments []comments.Comment `json:"comments"`
+	Name       string             `json:"name"`
+	Sub        string             `json:"sub"`
+	GivenName  string             `json:"given_name"`
+	FamilyName string             `json:"family_name"`
+	Nickname   string             `json:"nickname"`
+	Picture    string             `json:"picture"`
+	Aud        string             `json:"aud"`
+	Locale     string             `json:"locale"`
+	UpdatedAt  string             `json:"update_at"`
+	Comments   []comments.Comment `json:"comments"`
 }
 
 // GetComments - returns all the comments that a

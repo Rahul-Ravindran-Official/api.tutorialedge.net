@@ -3,6 +3,11 @@ set -eoux pipefail
 
 echo "Deploying Test"
 
+function setup() {
+    npm install -g serverless
+    serverless version
+}
+
 function build() {
     pushd cmd
         for d in */; do
@@ -20,6 +25,10 @@ function main() {
     
     go version
 
+    echo "Downloading serverless CLI"
+    setup
+    echo "Successfull downloaded the serverless cli"
+
     echo "Building The Serverless Binaries..."
     build
     echo "Successfully build binaries..."
@@ -30,5 +39,6 @@ function main() {
     serverless deploy --stage=test
     echo "Successfully Deployed Test Stage"
 }
+
 
 main

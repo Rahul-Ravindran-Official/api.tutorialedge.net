@@ -6,6 +6,7 @@ import (
 	"fmt"
 
 	"github.com/aws/aws-lambda-go/events"
+	"github.com/elliotforbes/api.tutorialedge.net/auth"
 	"github.com/elliotforbes/api.tutorialedge.net/email"
 	"github.com/jinzhu/gorm"
 )
@@ -68,7 +69,7 @@ func GetComments(request events.APIGatewayProxyRequest, db *gorm.DB) (events.API
 
 // UpdateComment -
 // Updates the comment
-func UpdateComment(request events.APIGatewayProxyRequest, db *gorm.DB) (events.APIGatewayProxyResponse, error) {
+func UpdateComment(request events.APIGatewayProxyRequest, tokenInfo auth.TokenInfo, db *gorm.DB) (events.APIGatewayProxyResponse, error) {
 	fmt.Println("Adding a Vote to a Comment")
 	fmt.Printf("Request: %v\n", request)
 
@@ -77,7 +78,6 @@ func UpdateComment(request events.APIGatewayProxyRequest, db *gorm.DB) (events.A
 	fmt.Println(string(body))
 
 	var comment Comment
-
 	err := json.Unmarshal(body, &comment)
 	if err != nil {
 		panic(err.Error())
@@ -101,7 +101,7 @@ func UpdateComment(request events.APIGatewayProxyRequest, db *gorm.DB) (events.A
 
 // PostComment -
 // Adds a new comment to the site
-func PostComment(request events.APIGatewayProxyRequest, db *gorm.DB) (events.APIGatewayProxyResponse, error) {
+func PostComment(request events.APIGatewayProxyRequest, tokenInfo auth.TokenInfo, db *gorm.DB) (events.APIGatewayProxyResponse, error) {
 
 	fmt.Println("Posting a Comment")
 	fmt.Println("Received body: ", request.Body)
@@ -112,6 +112,14 @@ func PostComment(request events.APIGatewayProxyRequest, db *gorm.DB) (events.API
 	fmt.Println(string(body))
 
 	var comment Comment
+
+	if tokenInfo.Sub == "" {
+		return events.APIGatewayProxyResponse{
+			Body:       "Could not post comment with no Sub",
+			Headers:    map[string]string{"Content-Type": "application/json", "Access-Control-Allow-Origin": "*"},
+			StatusCode: 503,
+		}, nil
+	}
 
 	err = json.Unmarshal([]byte(request.Body), &comment)
 	if err != nil {
@@ -140,7 +148,7 @@ func PostComment(request events.APIGatewayProxyRequest, db *gorm.DB) (events.API
 
 // DeleteComment -
 // Deletes the comment with the ID
-func DeleteComment(request events.APIGatewayProxyRequest, db *gorm.DB) (events.APIGatewayProxyResponse, error) {
+func DeleteComment(request events.APIGatewayProxyRequest, tokenInfo auth.TokenInfo, db *gorm.DB) (events.APIGatewayProxyResponse, error) {
 	fmt.Println("Deleting a comment")
 
 	fmt.Println(request.QueryStringParameters["id"])
@@ -150,6 +158,14 @@ func DeleteComment(request events.APIGatewayProxyRequest, db *gorm.DB) (events.A
 	if err := db.First(&comment, id).Error; err != nil {
 		return events.APIGatewayProxyResponse{
 			Body:       "Could not delete comment!",
+			Headers:    map[string]string{"Content-Type": "application/json", "Access-Control-Allow-Origin": "*"},
+			StatusCode: 503,
+		}, nil
+	}
+
+	if tokenInfo.Sub != comment.AuthorID {
+		return events.APIGatewayProxyResponse{
+			Body:       "Not Authorized to delete other comment!",
 			Headers:    map[string]string{"Content-Type": "application/json", "Access-Control-Allow-Origin": "*"},
 			StatusCode: 503,
 		}, nil
