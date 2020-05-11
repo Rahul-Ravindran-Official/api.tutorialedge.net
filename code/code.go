@@ -3,7 +3,6 @@ package code
 import (
 	"encoding/base64"
 	"fmt"
-	"io/ioutil"
 	"log"
 	"os/exec"
 
@@ -32,15 +31,15 @@ func ExecuteCode(request events.APIGatewayProxyRequest) (events.APIGatewayProxyR
 		fmt.Println(err.Error())
 		log.Fatalf("cmd.Run() failed with %s\n", err)
 	}
-	fmt.Printf("%+v/n", string(out))
+	fmt.Println(out)
 
 	// the WriteFile method returns an error if unsuccessful
-	err = ioutil.WriteFile("temp/main.go", body, 0777)
-	// handle this error
-	if err != nil {
-		// print it out
-		fmt.Println(err)
-	}
+	// err = ioutil.WriteFile("temp/main.go", body, 0777)
+	// // handle this error
+	// if err != nil {
+	// 	// print it out
+	// 	fmt.Println(err)
+	// }
 
 	return events.APIGatewayProxyResponse{
 		Body:       "Hello World",
