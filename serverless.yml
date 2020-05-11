@@ -12,6 +12,7 @@ package:
   - ./**
   include:
   - ./bin/**
+  - ./resources/**
 
 functions:
 
