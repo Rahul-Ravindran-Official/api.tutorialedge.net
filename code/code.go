@@ -19,27 +19,30 @@ type CodeResponse struct {
 
 func setupGo() {
 	cmd := exec.Command("ls")
-	err := cmd.Run()
+	out, err := cmd.CombinedOutput()
 	if err != nil {
 		fmt.Println(err.Error())
 		log.Fatalf("cmd.Run() failed with %s\n", err)
 	}
-	fmt.Println("ls ran")
 
-	tar := exec.Command("tar", "-C", "/usr/local", "-xzf", "resources/go1.14.2.linux-amd64.tar.gz")
-	err = tar.Run()
+	fmt.Printf("%+v/n", out)
+
+	tarCmd := exec.Command("tar", "-C", "/usr/local", "-xzf", "resources/go1.14.2.linux-amd64.tar.gz")
+	out, err = tarCmd.CombinedOutput()
 	if err != nil {
 		fmt.Println(err.Error())
 		log.Fatalf("cmd.Run() failed with %s\n", err)
 	}
-	fmt.Println("ls ran")
+	fmt.Printf("%+v/n", out)
 
 	goVersion := exec.Command("go", "version")
-	err = goVersion.Run()
+	out, err = goVersion.CombinedOutput()
 	if err != nil {
 		fmt.Println(err.Error())
 		log.Fatalf("cmd.Run() failed with %s\n", err)
 	}
+	fmt.Printf("%+v/n", out)
+
 }
 
 // ExecuteCode does the job of taking the Go code that has
