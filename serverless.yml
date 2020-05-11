@@ -97,9 +97,6 @@ functions:
   
   code:
     handler: bin/code
-    package:
-        include:
-        - go
     environment:
         AUTH0_SIGNING_KEY: ${env:AUTH0_SIGNING_KEY}
     events:

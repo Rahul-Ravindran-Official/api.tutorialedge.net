@@ -28,7 +28,7 @@ func ExecuteCode(request events.APIGatewayProxyRequest) (events.APIGatewayProxyR
 	fmt.Println(string(body))
 
 	path := os.Getenv("PATH")
-	os.Setenv("PATH", path+":"+os.Getenv("LAMBDA_TASK_ROOT"))
+	os.Setenv("PATH", path+":"+os.Getenv("LAMBDA_TASK_ROOT")+"/bin")
 
 	out, err := exec.Command("go", "version").CombinedOutput()
 	if err != nil {
