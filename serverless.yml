@@ -103,6 +103,7 @@ functions:
     - http:
         path: /v1/code
         method: post
+        cors: true
 
   posts:
     handler: bin/posts
