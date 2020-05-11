@@ -12,7 +12,6 @@ package:
   - ./**
   include:
   - ./bin/**
-  - ./go-bin/**
 
 functions:
 
