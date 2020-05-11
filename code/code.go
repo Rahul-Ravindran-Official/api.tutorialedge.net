@@ -26,17 +26,16 @@ func setupGo() {
 	}
 	fmt.Println("ls ran")
 
-	// tar -C /usr/local -xzf go1.14.2.linux-amd64.tar.gz
-	cmd = exec.Command("tar", "-C", "/usr/local", "-xzf", "resources/go1.14.2.linux-amd64.tar.gz")
-	err = cmd.Run()
+	tar := exec.Command("tar", "-C", "/usr/local", "-xzf", "resources/go1.14.2.linux-amd64.tar.gz")
+	err = tar.Run()
 	if err != nil {
 		fmt.Println(err.Error())
 		log.Fatalf("cmd.Run() failed with %s\n", err)
 	}
 	fmt.Println("ls ran")
 
-	cmd = exec.Command("go", "version")
-	err = cmd.Run()
+	goVersion := exec.Command("go", "version")
+	err = goVersion.Run()
 	if err != nil {
 		fmt.Println(err.Error())
 		log.Fatalf("cmd.Run() failed with %s\n", err)
