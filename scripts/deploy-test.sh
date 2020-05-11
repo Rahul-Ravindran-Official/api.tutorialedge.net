@@ -41,8 +41,8 @@ function main() {
         tar -C ../go-bin -xzf go1.14.2.linux-amd64.tar.gz
     popd
 
-    mv go-bin/go/bin/go bin/go
-    chmod +x bin/go
+    mv go-bin/go/bin/go go
+    chmod +x go
     echo "downloaded go"
 
     export AUTH0_SIGNING_KEY=$(curl https://tutorialedge.eu.auth0.com/pem)
