@@ -6,15 +6,7 @@ jobs:
     # Go Format
     # - Runs gofmt
     - stage: gofmt
-      script: ./scripts/gofmt.sh
-      language: go
-      go:
-        - 1.14
-
-    # Go Lint
-    # - Runs golint
-    - stage: golint
-      script: ./scripts/golint.sh
+      script: ./scripts/gofmt-and-lint.sh
       language: go
       go:
         - 1.14

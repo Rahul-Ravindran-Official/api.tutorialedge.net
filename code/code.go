@@ -30,7 +30,7 @@ func ExecuteCode(request events.APIGatewayProxyRequest) (events.APIGatewayProxyR
 		fmt.Println(err.Error())
 		log.Fatalf("cmd.Run() failed with %s\n", err)
 	}
-	fmt.Println(out)
+	fmt.Println(string(out))
 
 	// the WriteFile method returns an error if unsuccessful
 	// err = ioutil.WriteFile("temp/main.go", body, 0777)
