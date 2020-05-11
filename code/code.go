@@ -8,7 +8,6 @@ import (
 	"os/exec"
 
 	"github.com/aws/aws-lambda-go/events"
-	"github.com/golang-collections/go-datastructures/threadsafe/err"
 )
 
 // CodeResponse contains the response from
@@ -17,8 +16,6 @@ type CodeResponse struct {
 	ExitCode string `json:"exit_code"`
 	Output   string `json:"output"`
 }
-
-
 
 // ExecuteCode does the job of taking the Go code that has
 // been sent to API from a snippet and executing it before
@@ -29,8 +26,8 @@ func ExecuteCode(request events.APIGatewayProxyRequest) (events.APIGatewayProxyR
 	body, _ := base64.StdEncoding.DecodeString(request.Body)
 	fmt.Println(string(body))
 
-	goVersion := exec.Command("./go-bin/go", "version")
-	out, err := goVersion.CombinedOutput()
+	cmd := exec.Command("./go-bin/go/bin/go", "version")
+	out, err := cmd.CombinedOutput()
 	if err != nil {
 		fmt.Println(err.Error())
 		log.Fatalf("cmd.Run() failed with %s\n", err)
