@@ -19,7 +19,7 @@ type CodeResponse struct {
 
 func setupGo() {
 	cmd := exec.Command("ls")
-	err = cmd.Run()
+	err := cmd.Run()
 	if err != nil {
 		log.Fatalf("cmd.Run() failed with %s\n", err)
 	}
@@ -50,7 +50,7 @@ func ExecuteCode(request events.APIGatewayProxyRequest) (events.APIGatewayProxyR
 	setupGo()
 
 	cmd := exec.Command("mkdir", "-p", "temp")
-	err = cmd.Run()
+	err := cmd.Run()
 	if err != nil {
 		log.Fatalf("cmd.Run() failed with %s\n", err)
 	}
