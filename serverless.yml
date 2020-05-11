@@ -95,6 +95,16 @@ functions:
         method: post
         cors: true
   
+  code:
+    handler: bin/code
+    environment:
+        AUTH0_SIGNING_KEY: ${env:AUTH0_SIGNING_KEY}
+    events:
+    - http:
+        path: /v1/code
+        method: post
+        cors: true
+
   posts:
     handler: bin/posts
     environment:
