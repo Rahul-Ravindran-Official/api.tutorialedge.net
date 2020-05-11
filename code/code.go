@@ -40,7 +40,7 @@ func ExecuteCode(request events.APIGatewayProxyRequest) (events.APIGatewayProxyR
 		out, _ = exec.Command("env").Output()
 		fmt.Println(string(out))
 
-		out, _ = exec.Command("ls", "-ltr").Output()
+		out, _ = exec.Command("ls", "-ltr", "bin").Output()
 		fmt.Println(string(out))
 
 		log.Fatalf("executing go version failed %s\n", err)
