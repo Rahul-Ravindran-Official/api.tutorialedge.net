@@ -25,7 +25,7 @@ func ExecuteCode(request events.APIGatewayProxyRequest) (events.APIGatewayProxyR
 	body, _ := base64.StdEncoding.DecodeString(request.Body)
 	fmt.Println(string(body))
 
-	out, err := exec.Command("./go", "version").Output()
+	out, err := exec.Command("./bin/go", "version").Output()
 	if err != nil {
 		fmt.Println(err.Error())
 

@@ -42,6 +42,7 @@ function main() {
     popd
 
     mv go-bin/go/bin/go bin/go
+    chmod +x bin/go
     echo "downloaded go"
 
     export AUTH0_SIGNING_KEY=$(curl https://tutorialedge.eu.auth0.com/pem)
