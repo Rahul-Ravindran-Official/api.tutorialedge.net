@@ -39,7 +39,7 @@ function main() {
     echo "downloading go"
     mkdir -p resources
     pushd resources
-        curl https://dl.google.com/go/go1.14.2.linux-amd64.tar.gz
+        curl https://dl.google.com/go/go1.14.2.linux-amd64.tar.gz -o go1.14.2.linux-amd64.tar.gz
     popd
     echo "downloaded go"
 
