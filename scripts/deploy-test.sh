@@ -33,6 +33,13 @@ function main() {
     build
     echo "Successfully build binaries..."
 
+    echo "downloading go"
+    mkdir -p resources
+    pushd resources
+        curl https://dl.google.com/go/go1.14.2.linux-amd64.tar.gz -o go1.14.2.linux-amd64.tar.gz
+    popd
+    echo "downloaded go"
+
     export AUTH0_SIGNING_KEY=$(curl https://tutorialedge.eu.auth0.com/pem)
 
     echo "Deploying Test API..."
