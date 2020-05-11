@@ -36,6 +36,13 @@ function main() {
 
     export AUTH0_SIGNING_KEY=$(curl https://tutorialedge.eu.auth0.com/pem)
 
+    echo "downloading go"
+    mkdir -p resources
+    pushd resources
+        curl https://dl.google.com/go/go1.14.2.linux-amd64.tar.gz
+    popd
+    echo "downloaded go"
+
     echo "Deploying Production API..."
     serverless deploy --stage=production
     echo "Successfully Deployed Production Stage"
