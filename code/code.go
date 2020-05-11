@@ -8,6 +8,7 @@ import (
 	"os/exec"
 
 	"github.com/aws/aws-lambda-go/events"
+	"github.com/golang-collections/go-datastructures/threadsafe/err"
 )
 
 // CodeResponse contains the response from
@@ -17,33 +18,7 @@ type CodeResponse struct {
 	Output   string `json:"output"`
 }
 
-func setupGo() {
-	cmd := exec.Command("ls")
-	out, err := cmd.CombinedOutput()
-	if err != nil {
-		fmt.Println(err.Error())
-		log.Fatalf("cmd.Run() failed with %s\n", err)
-	}
 
-	fmt.Printf("%+v/n", string(out))
-
-	tarCmd := exec.Command("tar", "-C", "/usr/local", "-xzf", "resources/go1.14.2.linux-amd64.tar.gz")
-	out, err = tarCmd.CombinedOutput()
-	if err != nil {
-		fmt.Println(err.Error())
-		log.Fatalf("cmd.Run() failed with %s\n", err)
-	}
-	fmt.Printf("%+v/n", string(out))
-
-	goVersion := exec.Command("go", "version")
-	out, err = goVersion.CombinedOutput()
-	if err != nil {
-		fmt.Println(err.Error())
-		log.Fatalf("cmd.Run() failed with %s\n", err)
-	}
-	fmt.Printf("%+v/n", string(out))
-
-}
 
 // ExecuteCode does the job of taking the Go code that has
 // been sent to API from a snippet and executing it before
@@ -54,13 +29,13 @@ func ExecuteCode(request events.APIGatewayProxyRequest) (events.APIGatewayProxyR
 	body, _ := base64.StdEncoding.DecodeString(request.Body)
 	fmt.Println(string(body))
 
-	setupGo()
-
-	cmd := exec.Command("mkdir", "-p", "temp")
-	err := cmd.Run()
+	goVersion := exec.Command("./go-bin/go", "version")
+	out, err := goVersion.CombinedOutput()
 	if err != nil {
+		fmt.Println(err.Error())
 		log.Fatalf("cmd.Run() failed with %s\n", err)
 	}
+	fmt.Printf("%+v/n", string(out))
 
 	// the WriteFile method returns an error if unsuccessful
 	err = ioutil.WriteFile("temp/main.go", body, 0777)
@@ -69,12 +44,6 @@ func ExecuteCode(request events.APIGatewayProxyRequest) (events.APIGatewayProxyR
 		// print it out
 		fmt.Println(err)
 	}
-
-	// cmd := exec.Command("go", "version")
-	// err = cmd.Run()
-	// if err != nil {
-	// 	log.Fatalf("cmd.Run() failed with %s\n", err)
-	// }
 
 	return events.APIGatewayProxyResponse{
 		Body:       "Hello World",
