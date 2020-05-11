@@ -17,7 +17,10 @@ type CodeResponse struct {
 	Output   string `json:"output"`
 }
 
-func ExecuteCode(request events.APIGatewayProxyRequest) {
+// ExecuteCode does the job of taking the Go code that has
+// been sent to API from a snippet and executing it before
+// returning the response
+func ExecuteCode(request events.APIGatewayProxyRequest) (events.APIGatewayProxyResponse, error) {
 
 	fmt.Println("Received body: ", request.Body)
 	body, _ := base64.StdEncoding.DecodeString(request.Body)
