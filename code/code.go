@@ -30,20 +30,11 @@ func ExecuteCode(request events.APIGatewayProxyRequest) (events.APIGatewayProxyR
 	path := os.Getenv("PATH")
 	os.Setenv("PATH", path+":"+os.Getenv("LAMBDA_TASK_ROOT")+"/bin")
 
-	out, err := exec.Command("go", "version").CombinedOutput()
+	out, err := exec.Command("bin/go", "version").CombinedOutput()
 	if err != nil {
 		fmt.Println(err.Error())
 
 		out, _ := exec.Command("pwd").Output()
-		fmt.Println(string(out))
-
-		out, _ = exec.Command("env").Output()
-		fmt.Println(string(out))
-
-		out, _ = exec.Command("where", "go").Output()
-		fmt.Println(string(out))
-
-		out, _ = exec.Command("type", "go").Output()
 		fmt.Println(string(out))
 
 		out, _ = exec.Command("ls", "-ltr", "bin").Output()
