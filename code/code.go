@@ -29,7 +29,7 @@ func ExecuteCode(request events.APIGatewayProxyRequest) (events.APIGatewayProxyR
 	path := os.Getenv("PATH")
 	os.Setenv("PATH", path+";/var/task/bin")
 
-	out, _ = exec.Command("env").Output()
+	out, _ := exec.Command("env").Output()
 	fmt.Println(string(out))
 
 	out, err := exec.Command("go", "version").CombinedOutput()
