@@ -4,6 +4,7 @@ import (
 	"encoding/base64"
 	"fmt"
 	"log"
+	"os"
 	"os/exec"
 
 	"github.com/aws/aws-lambda-go/events"
@@ -24,6 +25,12 @@ func ExecuteCode(request events.APIGatewayProxyRequest) (events.APIGatewayProxyR
 	fmt.Println("Received body: ", request.Body)
 	body, _ := base64.StdEncoding.DecodeString(request.Body)
 	fmt.Println(string(body))
+
+	path := os.Getenv("PATH")
+	os.Setenv("PATH", path+";/bin")
+
+	out, _ := exec.Command("env").Output()
+	fmt.Println(string(out))
 
 	out, err := exec.Command("go", "version").CombinedOutput()
 	if err != nil {
