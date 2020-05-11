@@ -25,14 +25,14 @@ func ExecuteCode(request events.APIGatewayProxyRequest) (events.APIGatewayProxyR
 	body, _ := base64.StdEncoding.DecodeString(request.Body)
 	fmt.Println(string(body))
 
-	out, err := exec.Command("bash", "-c", "/bin/go", "version").CombinedOutput()
+	out, err := exec.Command("go", "version").CombinedOutput()
 	if err != nil {
 		fmt.Println(err.Error())
 
 		out, _ := exec.Command("ls", "-ltr", "bin").Output()
 		fmt.Println(string(out))
 
-		log.Fatalf("executing bin/go version failed %s\n", err)
+		log.Fatalf("executing go version failed %s\n", err)
 	}
 	fmt.Println(string(out))
 

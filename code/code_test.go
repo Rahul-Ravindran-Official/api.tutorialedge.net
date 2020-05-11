@@ -1,32 +1,40 @@
 package code_test
 
-// func TestExecuteCode(t *testing.T) {
-// 	body := []byte(`package main
+import (
+	"fmt"
+	"testing"
 
-// 	import "fmt"
+	"github.com/aws/aws-lambda-go/events"
+	"github.com/elliotforbes/api.tutorialedge.net/code"
+)
 
-// 	func main() {
+func TestExecuteCode(t *testing.T) {
+	body := []byte(`package main
 
-// 		mymap := make(map[string]int)
+	import "fmt"
 
-// 		mymap["elliot"] = 25
+	func main() {
 
-// 		// we can use this if statement to check to see if
-// 		// a given key "elliot" exists within a map in Go
-// 		if _, ok := mymap["elliot"]; ok {
-// 			// the key 'elliot' exists within the map
-// 			fmt.Println(mymap["elliot"])
-// 		}
-// 	}
-// 	`)
+		mymap := make(map[string]int)
 
-// 	request := events.APIGatewayProxyRequest{}
-// 	request.Body = string(body)
+		mymap["elliot"] = 25
 
-// 	response, err := code.ExecuteCode(request)
-// 	if err != nil {
-// 		t.Fail()
-// 	}
-// 	fmt.Println(response)
+		// we can use this if statement to check to see if
+		// a given key "elliot" exists within a map in Go
+		if _, ok := mymap["elliot"]; ok {
+			// the key 'elliot' exists within the map
+			fmt.Println(mymap["elliot"])
+		}
+	}
+	`)
 
-// }
+	request := events.APIGatewayProxyRequest{}
+	request.Body = string(body)
+
+	response, err := code.ExecuteCode(request)
+	if err != nil {
+		t.Fail()
+	}
+	fmt.Println(response)
+
+}
