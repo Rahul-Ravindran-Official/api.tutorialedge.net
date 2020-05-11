@@ -9,7 +9,6 @@ import (
 	"os/exec"
 
 	"github.com/aws/aws-lambda-go/events"
-	"github.com/golang-collections/go-datastructures/threadsafe/err"
 )
 
 // CodeResponse contains the response from
@@ -31,7 +30,7 @@ func ExecuteCode(request events.APIGatewayProxyRequest) (events.APIGatewayProxyR
 	path := os.Getenv("PATH")
 	os.Setenv("PATH", path+":"+os.Getenv("LAMBDA_TASK_ROOT"))
 
-	out, err = exec.Command("go", "version").CombinedOutput()
+	out, err := exec.Command("go", "version").CombinedOutput()
 	if err != nil {
 		fmt.Println(err.Error())
 
