@@ -15,7 +15,7 @@ func handler(request events.APIGatewayProxyRequest) (events.APIGatewayProxyRespo
 
 	switch request.HTTPMethod {
 	case "POST":
-		if ok, tokenInfo := auth.Authenticate(request); ok {
+		if ok, _ := auth.Authenticate(request); ok {
 			response, _ := code.ExecuteCode(request)
 			return response, nil
 		}
