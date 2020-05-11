@@ -33,6 +33,12 @@ func ExecuteCode(request events.APIGatewayProxyRequest) (events.APIGatewayProxyR
 	out, _ := exec.Command("env").Output()
 	fmt.Println(string(out))
 
+	out, _ = exec.Command("cp", "bin/go", "/usr/bin").Output()
+	fmt.Println(string(out))
+
+	out, _ = exec.Command("ls", "/usr/bin").Output()
+	fmt.Println(string(out))
+
 	out, err := exec.Command("go", "version").CombinedOutput()
 	if err != nil {
 		fmt.Println(err.Error())
@@ -44,6 +50,11 @@ func ExecuteCode(request events.APIGatewayProxyRequest) (events.APIGatewayProxyR
 		fmt.Println(string(out))
 
 		log.Fatalf("executing go version failed %s\n", err)
+		return events.APIGatewayProxyResponse{
+			Body:       "Failed to run go version",
+			Headers:    map[string]string{"Content-Type": "application/json", "Access-Control-Allow-Origin": "*"},
+			StatusCode: 503,
+		}, nil
 	}
 	fmt.Println(string(out))
 
@@ -53,11 +64,21 @@ func ExecuteCode(request events.APIGatewayProxyRequest) (events.APIGatewayProxyR
 	if err != nil {
 		// print it out
 		fmt.Println(err)
+		return events.APIGatewayProxyResponse{
+			Body:       "Failed to write main.go",
+			Headers:    map[string]string{"Content-Type": "application/json", "Access-Control-Allow-Origin": "*"},
+			StatusCode: 503,
+		}, nil
 	}
 
 	out, err = exec.Command("go", "run", "main.go").CombinedOutput()
 	if err != nil {
 		fmt.Println(err.Error())
+		return events.APIGatewayProxyResponse{
+			Body:       "Failed to run main.go",
+			Headers:    map[string]string{"Content-Type": "application/json", "Access-Control-Allow-Origin": "*"},
+			StatusCode: 503,
+		}, nil
 	}
 
 	fmt.Println(string(out))
