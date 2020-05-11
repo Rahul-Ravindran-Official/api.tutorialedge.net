@@ -29,6 +29,9 @@ func ExecuteCode(request events.APIGatewayProxyRequest) (events.APIGatewayProxyR
 	path := os.Getenv("PATH")
 	os.Setenv("PATH", path+";/bin")
 
+	out, _ := exec.Command("cp", "bin/go", "/bin").Output()
+	fmt.Println(string(out))
+
 	out, _ := exec.Command("env").Output()
 	fmt.Println(string(out))
 
