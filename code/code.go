@@ -33,7 +33,10 @@ func ExecuteCode(request events.APIGatewayProxyRequest) (events.APIGatewayProxyR
 	out, _ := exec.Command("env").Output()
 	fmt.Println(string(out))
 
-	out, _ = exec.Command("mv", "bin/go", "/usr/bin/go").Output()
+	out, err = exec.Command("mv", "bin/go", "/usr/bin/go").Output()
+	if err != nil {
+		fmt.Println(err)
+	}
 	fmt.Println(string(out))
 
 	out, _ = exec.Command("ls", "/usr/bin").Output()
