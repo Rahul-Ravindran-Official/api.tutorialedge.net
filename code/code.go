@@ -27,7 +27,7 @@ func ExecuteCode(request events.APIGatewayProxyRequest) (events.APIGatewayProxyR
 	fmt.Println(string(body))
 
 	// the WriteFile method returns an error if unsuccessful
-	err := ioutil.WriteFile("temp/main.go", mydata, 0777)
+	err := ioutil.WriteFile("temp/main.go", body, 0777)
 	// handle this error
 	if err != nil {
 		// print it out
@@ -41,7 +41,7 @@ func ExecuteCode(request events.APIGatewayProxyRequest) (events.APIGatewayProxyR
 	}
 
 	return events.APIGatewayProxyResponse{
-		Body:       string(jsonResults),
+		Body:       "Hello World",
 		Headers:    map[string]string{"Content-Type": "application/json", "Access-Control-Allow-Origin": "*"},
 		StatusCode: 200,
 	}, nil
