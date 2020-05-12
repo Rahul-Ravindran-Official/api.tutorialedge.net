@@ -34,7 +34,9 @@ def run_go_code(temp_file):
         args = ["go", "version"]
         popen = subprocess.Popen(args, stdout=subprocess.PIPE, env=my_env)
         popen.wait()
-            
+        
+        print("Go Version")
+
         args = ["go", "run", temp_file.name]
         popen = subprocess.Popen(args, stdout=subprocess.PIPE, env=my_env)
         popen.wait()
