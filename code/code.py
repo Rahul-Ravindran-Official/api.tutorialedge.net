@@ -22,7 +22,7 @@ def run_go_code(temp_file):
     print(os.listdir("/tmp/go"))
 
     my_env = os.environ.copy()
-    my_env["PATH"] = "/usr/sbin:/sbin:/tmp/go
+    my_env["PATH"] = "/usr/sbin:/sbin:/tmp/go"
     my_env["GOROOT"] = "/tmp/go"
     my_env["GOPATH"] = "/tmp/go"
 
