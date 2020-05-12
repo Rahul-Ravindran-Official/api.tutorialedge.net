@@ -4,8 +4,11 @@ import tempfile
 import os
 
 def create_temp_file(event):
-    with open("/tmp/main.go", "x+") as fp:
-        fp.write(event["body"])
+    tempFile = tempfile.NamedTemporaryFile(delete=False, dir="/tmp", suffix=".go")
+    with tempFile as fp:
+        tempFile.write(bytes(event["body"], 'utf-8'))
+
+    return tempFile
 
 def run_go_code(temp_file):
     my_env = os.environ.copy()
@@ -16,7 +19,7 @@ def run_go_code(temp_file):
     popen = subprocess.Popen(args, stdout=subprocess.PIPE, env=my_env)
     popen.wait()
         
-    args = ["./bin/go", "run", "/tmp/main.go"]
+    args = ["./bin/go", "run", temp_file.name]
     popen = subprocess.Popen(args, stdout=subprocess.PIPE, env=my_env)
     popen.wait()
 
