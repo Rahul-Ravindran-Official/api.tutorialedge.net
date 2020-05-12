@@ -19,9 +19,12 @@ def run_go_code(temp_file):
         go_code.extractall("/tmp/go")
         go_code.close()
     
+    print(os.listdir("/tmp/go"))
+
     my_env = os.environ.copy()
-    my_env["PATH"] = "/usr/sbin:/sbin:" + my_env["LAMBDA_TASK_ROOT"]
+    my_env["PATH"] = "/usr/sbin:/sbin:/tmp/go
     my_env["GOROOT"] = "/tmp/go"
+    my_env["GOPATH"] = "/tmp/go"
 
     args = ["./bin/go", "version"]
     popen = subprocess.Popen(args, stdout=subprocess.PIPE, env=my_env)
