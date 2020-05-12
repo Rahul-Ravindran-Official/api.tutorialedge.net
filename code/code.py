@@ -33,13 +33,19 @@ def run_go_code(temp_file):
         
         args = ["go", "version"]
         popen = subprocess.Popen(args, stdout=subprocess.PIPE, env=my_env)
+        output = popen.stdout.read()
         popen.wait()
         
+        print(output)
+
         print("Go Version")
 
         args = ["go", "run", temp_file.name]
         popen = subprocess.Popen(args, stdout=subprocess.PIPE, env=my_env)
+        output = popen.stdout.read()
         popen.wait()
+
+        print(output)
     except Exception as e:
         print(e)
 
