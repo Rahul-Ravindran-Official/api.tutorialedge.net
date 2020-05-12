@@ -45,18 +45,19 @@ def run_go_code(temp_file):
         output = popen.stdout.read()
         popen.wait()
 
-        print(output)
+        print(string(output))
+        return string(output)
     except Exception as e:
         print(e)
 
 
 def lambda_handler(event, context):
     temp_file = create_temp_file(event)
-    run_go_code(temp_file)
+    output = run_go_code(temp_file)
 
     return {
         'statusCode': 200,
-        'body': json.dumps('Hello from Lambda!')
+        'body': output
     }
 
 # def main():
