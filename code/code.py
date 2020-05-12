@@ -9,7 +9,7 @@ def create_temp_file(event):
     return temp_file
 
 def run_go_code(temp_file):
-    args = ["GOROOT=./bin/go","./bin/go", "version"]
+    args = ["./bin/go", "version"]
     # args = ["go", "run", temp_file.name]
     popen = subprocess.Popen(args, stdout=subprocess.PIPE)
     popen.wait()
@@ -17,7 +17,7 @@ def run_go_code(temp_file):
     
 
     
-    args = ["GOROOT=./bin/go", "./bin/go", "run", temp_file.name]
+    args = ["./bin/go", "run", temp_file.name]
     # args = ["go", "run", temp_file.name]
     popen = subprocess.Popen(args, stdout=subprocess.PIPE)
     popen.wait()
