@@ -14,18 +14,12 @@ def create_temp_file(event):
 
 def run_go_code(temp_file):
     print(os.listdir())
-    try:
-        if not os.path.exists("/tmp/go"):
-            go_code = tarfile.open("./code/go.tar.gz", "r:gz")
-            print(go_code.getmembers())
-            print(go_code.getnames())
-            go_code.extractall("/tmp")
-            go_code.close()
-        print(os.listdir("/tmp/go"))
-    except:
-        e = sys.exc_info()[0]
-        print(e)
-
+    if not os.path.exists("/tmp/go"):
+        go_code = tarfile.open("./code/go.tar.gz", "r:gz")
+        go_code.extractall("/tmp")
+        go_code.close()
+    print(os.listdir("/tmp/go"))
+    
     my_env = os.environ.copy()
     my_env["PATH"] = "/usr/sbin:/sbin:/tmp/go/bin"
     my_env["GOROOT"] = "/tmp/go"
