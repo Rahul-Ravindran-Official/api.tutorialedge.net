@@ -4,10 +4,8 @@ import tempfile
 import os
 
 def create_temp_file(event):
-    temp_file = tempfile.NamedTemporaryFile(suffix=".go")
-    with temp_file as fp:
+    with open("main.go", "x+") as fp:
         fp.write(bytes(event["body"], 'utf-8'))
-    return temp_file
 
 def run_go_code(temp_file):
     my_env = os.environ.copy()
@@ -15,12 +13,14 @@ def run_go_code(temp_file):
     my_env["GOROOT"] = my_env["LAMBDA_TASK_ROOT"]
 
     args = ["./bin/go", "version"]
-    # args = ["go", "run", temp_file.name]
     popen = subprocess.Popen(args, stdout=subprocess.PIPE, env=my_env)
     popen.wait()
     
-    args = ["./bin/go", "run", temp_file.name]
-    # args = ["go", "run", temp_file.name]
+    args = ["ls", "version"]
+    popen = subprocess.Popen(args, stdout=subprocess.PIPE, env=my_env)
+    popen.wait()
+    
+    args = ["./bin/go", "run", "main.go"]
     popen = subprocess.Popen(args, stdout=subprocess.PIPE, env=my_env)
     popen.wait()
 

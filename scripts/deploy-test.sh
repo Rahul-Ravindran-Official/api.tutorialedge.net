@@ -41,7 +41,7 @@ function main() {
         tar -C ../go-bin -xzf go1.14.2.linux-amd64.tar.gz
     popd 
 
-    mv go-bin/go/bin/go bin/go
+    cp go-bin/go/bin/go bin/go
     chmod +x bin/go
     echo "downloaded go"
 
