@@ -96,7 +96,8 @@ functions:
         cors: true
   
   code:
-    handler: bin/code
+    handler: code/code.lambda_handler
+    runtime: python3.6
     environment:
         AUTH0_SIGNING_KEY: ${env:AUTH0_SIGNING_KEY}
     events:
