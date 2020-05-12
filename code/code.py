@@ -16,15 +16,21 @@ def run_go_code(temp_file):
 
     if not os.path.exists("/tmp/go"):
         go_code = tarfile.open("./code/go.tar.gz", "r:gz")
+        print(go_code.getmembers())
+        print(go_code.getnames())
         go_code.extractall("/tmp")
         go_code.close()
-    
     print(os.listdir("/tmp/go"))
 
     my_env = os.environ.copy()
     my_env["PATH"] = "/usr/sbin:/sbin:/tmp/go/bin"
     my_env["GOROOT"] = "/tmp/go"
     my_env["GOPATH"] = "/tmp"
+
+    args = ["tar", "-C", "/tmp/go2", "./code/go.tar.gz"]
+    popen = subprocess.Popen(args, stdout=subprocess.PIPE, env=my_env)
+    popen.wait()
+    print(os.listdir("/tmp/go2"))
 
     args = ["go", "version"]
     popen = subprocess.Popen(args, stdout=subprocess.PIPE, env=my_env)
