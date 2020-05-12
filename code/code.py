@@ -45,8 +45,8 @@ def run_go_code(temp_file):
         output = popen.stdout.read()
         popen.wait()
 
-        print(string(output))
-        return string(output)
+        print(str(output))
+        return str(output)
     except Exception as e:
         print(e)
 
