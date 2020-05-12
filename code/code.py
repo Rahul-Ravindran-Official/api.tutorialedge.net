@@ -22,14 +22,15 @@ def run_go_code(temp_file):
     print(os.listdir("/tmp/go"))
 
     my_env = os.environ.copy()
-    my_env["PATH"] = "/usr/sbin:/sbin:/tmp/go"
+    my_env["PATH"] = "/usr/sbin:/sbin:/tmp/go/bin"
     my_env["GOROOT"] = "/tmp/go"
+    my_env["GOPATH"] = "/tmp"
 
-    args = ["./bin/go", "version"]
+    args = ["go", "version"]
     popen = subprocess.Popen(args, stdout=subprocess.PIPE, env=my_env)
     popen.wait()
         
-    args = ["./bin/go", "run", temp_file.name]
+    args = ["go", "run", temp_file.name]
     popen = subprocess.Popen(args, stdout=subprocess.PIPE, env=my_env)
     popen.wait()
 
