@@ -24,7 +24,6 @@ def run_go_code(temp_file):
     my_env = os.environ.copy()
     my_env["PATH"] = "/usr/sbin:/sbin:/tmp/go"
     my_env["GOROOT"] = "/tmp/go"
-    my_env["GOPATH"] = "/tmp/go"
 
     args = ["./bin/go", "version"]
     popen = subprocess.Popen(args, stdout=subprocess.PIPE, env=my_env)
