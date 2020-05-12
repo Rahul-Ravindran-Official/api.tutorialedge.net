@@ -15,3 +15,6 @@ misc/*
 bin/**/*
 
 *.terraform/
+
+resources/*
+go-bin/*

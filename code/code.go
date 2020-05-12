@@ -5,6 +5,7 @@ import (
 	"fmt"
 	"io/ioutil"
 	"log"
+	"os"
 	"os/exec"
 
 	"github.com/aws/aws-lambda-go/events"
@@ -17,29 +18,6 @@ type CodeResponse struct {
 	Output   string `json:"output"`
 }
 
-func setupGo() {
-	cmd := exec.Command("ls")
-	err := cmd.Run()
-	if err != nil {
-		log.Fatalf("cmd.Run() failed with %s\n", err)
-	}
-	fmt.Println("ls ran")
-
-	// tar -C /usr/local -xzf go1.14.2.linux-amd64.tar.gz
-	cmd = exec.Command("tar", "-C", "/usr/local", "-xzf", "resources/go1.14.2.linux-amd64.tar.gz")
-	err = cmd.Run()
-	if err != nil {
-		log.Fatalf("cmd.Run() failed with %s\n", err)
-	}
-	fmt.Println("ls ran")
-
-	cmd = exec.Command("go", "version")
-	err = cmd.Run()
-	if err != nil {
-		log.Fatalf("cmd.Run() failed with %s\n", err)
-	}
-}
-
 // ExecuteCode does the job of taking the Go code that has
 // been sent to API from a snippet and executing it before
 // returning the response
@@ -49,30 +27,55 @@ func ExecuteCode(request events.APIGatewayProxyRequest) (events.APIGatewayProxyR
 	body, _ := base64.StdEncoding.DecodeString(request.Body)
 	fmt.Println(string(body))
 
-	setupGo()
+	path := os.Getenv("PATH")
+	os.Setenv("PATH", path+":"+os.Getenv("LAMBDA_TASK_ROOT")+"/bin")
 
-	cmd := exec.Command("mkdir", "-p", "temp")
-	err := cmd.Run()
+	out, err := exec.Command("bin/go", "version").CombinedOutput()
 	if err != nil {
-		log.Fatalf("cmd.Run() failed with %s\n", err)
+		fmt.Println(err.Error())
+
+		out, _ := exec.Command("pwd").Output()
+		fmt.Println(string(out))
+
+		out, _ = exec.Command("ls", "-ltr", "bin").Output()
+		fmt.Println(string(out))
+
+		log.Fatalf("executing go version failed %s\n", err)
+		return events.APIGatewayProxyResponse{
+			Body:       "Failed to run go version",
+			Headers:    map[string]string{"Content-Type": "application/json", "Access-Control-Allow-Origin": "*"},
+			StatusCode: 503,
+		}, nil
 	}
+	fmt.Println(string(out))
 
 	// the WriteFile method returns an error if unsuccessful
-	err = ioutil.WriteFile("temp/main.go", body, 0777)
+	err = ioutil.WriteFile("main.go", body, 0777)
 	// handle this error
 	if err != nil {
 		// print it out
 		fmt.Println(err)
+		return events.APIGatewayProxyResponse{
+			Body:       "Failed to write main.go",
+			Headers:    map[string]string{"Content-Type": "application/json", "Access-Control-Allow-Origin": "*"},
+			StatusCode: 503,
+		}, nil
 	}
 
-	// cmd := exec.Command("go", "version")
-	// err = cmd.Run()
-	// if err != nil {
-	// 	log.Fatalf("cmd.Run() failed with %s\n", err)
-	// }
+	out, err = exec.Command("go", "run", "main.go").CombinedOutput()
+	if err != nil {
+		fmt.Println(err.Error())
+		return events.APIGatewayProxyResponse{
+			Body:       "Failed to run main.go",
+			Headers:    map[string]string{"Content-Type": "application/json", "Access-Control-Allow-Origin": "*"},
+			StatusCode: 503,
+		}, nil
+	}
+
+	fmt.Println(string(out))
 
 	return events.APIGatewayProxyResponse{
-		Body:       "Hello World",
+		Body:       string(out),
 		Headers:    map[string]string{"Content-Type": "application/json", "Access-Control-Allow-Origin": "*"},
 		StatusCode: 200,
 	}, nil

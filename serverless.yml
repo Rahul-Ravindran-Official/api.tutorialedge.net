@@ -5,14 +5,14 @@ provider:
   name: aws
   runtime: go1.x
   region: eu-west-1
-  memorySize: 128
+  memorySize: 512
 
 package:
   exclude:
   - ./**
   include:
+  - ./code/**
   - ./bin/**
-  - ./resources/**
 
 functions:
 
@@ -97,9 +97,14 @@ functions:
         cors: true
   
   code:
-    handler: bin/code
-    environment:
-        AUTH0_SIGNING_KEY: ${env:AUTH0_SIGNING_KEY}
+    handler: code/code.lambda_handler
+    runtime: python3.6
+    timeout: 900
+    vpc:
+      securityGroupIds:
+        - sg-0f7b6fded566b53bf
+      subnetIds:
+        - subnet-0cbb13cb6e95802a5 
     events:
     - http:
         path: /v1/code
