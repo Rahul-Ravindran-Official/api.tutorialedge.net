@@ -46,7 +46,7 @@ def run_go_code(temp_file):
         popen.wait()
 
         print(str(output))
-        return str(output)
+        return str(output.decode("utf-8"))
     except Exception as e:
         print(e)
 
