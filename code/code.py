@@ -4,7 +4,7 @@ import tempfile
 import os
 
 def create_temp_file(event):
-    with open("main.go", "x+") as fp:
+    with open("/tmp/main.go", "x+") as fp:
         fp.write(bytes(event["body"], 'utf-8'))
 
 def run_go_code(temp_file):
@@ -20,7 +20,7 @@ def run_go_code(temp_file):
     popen = subprocess.Popen(args, stdout=subprocess.PIPE, env=my_env)
     popen.wait()
     
-    args = ["./bin/go", "run", "main.go"]
+    args = ["./bin/go", "run", "/tmp/main.go"]
     popen = subprocess.Popen(args, stdout=subprocess.PIPE, env=my_env)
     popen.wait()
 
