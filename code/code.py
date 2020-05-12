@@ -4,6 +4,8 @@ import tempfile
 import sys
 import os
 import tarfile
+import urllib.request
+
 
 def create_temp_file(event):
     tempFile = tempfile.NamedTemporaryFile(delete=False, dir="/tmp", suffix=".go")
@@ -12,27 +14,25 @@ def create_temp_file(event):
 
     return tempFile
 
+def download_and_untar():
+    thetarfile = "https://dl.google.com/go/go1.14.2.linux-amd64.tar.gz"
+    ftpstream = urllib.request.urlopen(thetarfile)
+    thetarfile = tarfile.open(fileobj=ftpstream, mode="r|gz")
+    thetarfile.extractall("/tmp")
+
 def run_go_code(temp_file):
-    print(os.listdir())
-    if not os.path.exists("/tmp/go"):
-        go_code = tarfile.open("./code/go.tar.gz", "r:gz")
-        go_code.extractall("/tmp")
-        go_code.close()
-    print(os.listdir("/tmp/go"))
+    download_and_untar()
+    # print(os.listdir())
+    # if not os.path.exists("/tmp/go"):
+    #     go_code = tarfile.open("./code/go.tar.gz", "r:gz")
+    #     go_code.extractall("/tmp")
+    #     go_code.close()
+    # print(os.listdir("/tmp/go"))
     
     my_env = os.environ.copy()
     my_env["PATH"] = "/usr/sbin:/sbin:/tmp/go/bin"
     my_env["GOROOT"] = "/tmp/go"
     my_env["GOPATH"] = "/tmp"
-
-    try:
-        args = ["tar", "-C", "/tmp/go2", "code/go.tar.gz"]
-        popen = subprocess.Popen(args, stdout=subprocess.PIPE, env=my_env)
-        popen.wait()
-        print(os.listdir("/tmp/go2"))
-    except:
-        e = sys.exc_info()[0]
-        print(e)
 
     args = ["go", "version"]
     popen = subprocess.Popen(args, stdout=subprocess.PIPE, env=my_env)
