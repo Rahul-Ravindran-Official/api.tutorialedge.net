@@ -15,7 +15,7 @@ def run_go_code(temp_file):
     print(os.listdir())
 
     if not os.path.exists("/tmp/go"):
-        go_code = tarfile.open("./code/go.tar.gz")
+        go_code = tarfile.open("./code/go.tar.gz", "r:gz")
         go_code.extractall("/tmp")
         go_code.close()
     
