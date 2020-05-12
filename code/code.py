@@ -15,11 +15,7 @@ def run_go_code(temp_file):
     args = ["./bin/go", "version"]
     popen = subprocess.Popen(args, stdout=subprocess.PIPE, env=my_env)
     popen.wait()
-    
-    args = ["ls", "version"]
-    popen = subprocess.Popen(args, stdout=subprocess.PIPE, env=my_env)
-    popen.wait()
-    
+        
     args = ["./bin/go", "run", "/tmp/main.go"]
     popen = subprocess.Popen(args, stdout=subprocess.PIPE, env=my_env)
     popen.wait()
