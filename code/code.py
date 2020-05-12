@@ -5,7 +5,7 @@ import tempfile
 def create_temp_file(event):
     temp_file = tempfile.NamedTemporaryFile(suffix=".go")
     with temp_file as fp:
-        fp.write(event["body"])
+        fp.write(bytes(event["body"]))
     return temp_file
 
 def run_go_code(temp_file):
