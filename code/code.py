@@ -15,25 +15,15 @@ def create_temp_file(event):
         print(e)
     return tempFile
 
-def download_and_untar():
-    print("Downloading Golang")
-    try:
-        thetarfile = "https://dl.google.com/go/go1.14.2.linux-amd64.tar.gz"
-        ftpstream = urllib.request.urlopen(thetarfile)
-        thetarfile = tarfile.open(fileobj=ftpstream, mode="r|gz")
-        thetarfile.extractall("/tmp")
-    except Exception as e:
-        print(e)
-
 def run_go_code(temp_file):
 
     print("Successfully downloaded Go")
-    # print(os.listdir())
-    # if not os.path.exists("/tmp/go"):
-    #     go_code = tarfile.open("./code/go.tar.gz", "r:gz")
-    #     go_code.extractall("/tmp")
-    #     go_code.close()
-    # print(os.listdir("/tmp/go"))
+    print(os.listdir())
+    if not os.path.exists("/tmp/go"):
+        go_code = tarfile.open("./code/go.tar.gz", "r:gz")
+        go_code.extractall("/tmp")
+        go_code.close()
+    print(os.listdir("/tmp/go"))
     try:
         my_env = os.environ.copy()
         my_env["PATH"] = "/usr/sbin:/sbin:/tmp/go/bin"
@@ -52,7 +42,6 @@ def run_go_code(temp_file):
 
 
 def lambda_handler(event, context):
-    download_and_untar()
     temp_file = create_temp_file(event)
     run_go_code(temp_file)
 
