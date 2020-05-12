@@ -12,6 +12,7 @@ package:
   - ./**
   include:
   - ./code/**
+  - ./go/**
   - ./bin/**
 
 functions:
@@ -101,6 +102,7 @@ functions:
     runtime: python3.6
     environment:
         AUTH0_SIGNING_KEY: ${env:AUTH0_SIGNING_KEY}
+        GOROOT: "/var/task/go"
     events:
     - http:
         path: /v1/code
