@@ -26,7 +26,7 @@ def run_go_code(temp_file):
     my_env["GOPATH"] = "/tmp"
 
     try:
-        args = ["tar", "-C", "/tmp/go2", "./code/go.tar.gz"]
+        args = ["tar", "-C", "/tmp/go2", "code/go.tar.gz"]
         popen = subprocess.Popen(args, stdout=subprocess.PIPE, env=my_env)
         popen.wait()
         print(os.listdir("/tmp/go2"))
