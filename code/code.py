@@ -15,6 +15,10 @@ def run_go_code(temp_file):
     my_env["PATH"] = "/usr/sbin:/sbin:" + my_env["LAMBDA_TASK_ROOT"]
     my_env["GOROOT"] = my_env["LAMBDA_TASK_ROOT"]
 
+    args = ["ls"]
+    popen = subprocess.Popen(args, stdout=subprocess.PIPE, env=my_env)
+    popen.wait()
+
     args = ["./bin/go", "version"]
     popen = subprocess.Popen(args, stdout=subprocess.PIPE, env=my_env)
     popen.wait()
