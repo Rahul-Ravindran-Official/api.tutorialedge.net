@@ -2,7 +2,7 @@ import subprocess
 import json
 
 def lambda_handler(event, context):
-    popen = subprocess.Popen("./go", stdout=subprocess.PIPE)
+    popen = subprocess.Popen("./bin/go", stdout=subprocess.PIPE)
     popen.wait()
 
 
