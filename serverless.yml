@@ -100,9 +100,6 @@ functions:
     handler: code/code.lambda_handler
     runtime: python3.6
     timeout: 900
-    environment:
-        AUTH0_SIGNING_KEY: ${env:AUTH0_SIGNING_KEY}
-        GOROOT: "/var/task/go"
     events:
     - http:
         path: /v1/code

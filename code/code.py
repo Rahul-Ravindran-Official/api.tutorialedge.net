@@ -54,11 +54,17 @@ def run_go_code(temp_file):
 def lambda_handler(event, context):
     temp_file = create_temp_file(event)
     output = run_go_code(temp_file)
-
-    return {
+    
+    response = {
         'statusCode': 200,
         'body': output
+        'headers': {
+            'Content-Type': 'application/json', 
+            'Access-Control-Allow-Origin': '*' 
+        }
     }
+
+    return response
 
 # def main():
 #     event = {}
