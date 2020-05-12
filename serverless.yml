@@ -6,10 +6,7 @@ provider:
   runtime: go1.x
   region: eu-west-1
   memorySize: 512
-  vpc:
-    subnetIds:
-      - subnet-0cbb13cb6e95802a5 
-      
+
 package:
   exclude:
   - ./**
@@ -103,6 +100,9 @@ functions:
     handler: code/code.lambda_handler
     runtime: python3.6
     timeout: 900
+    vpc:
+      subnetIds:
+        - subnet-0cbb13cb6e95802a5 
     events:
     - http:
         path: /v1/code
