@@ -99,11 +99,6 @@ functions:
   code:
     handler: code/code.lambda_handler
     runtime: python3.6
-    package:
-        exclude:
-        - ./**
-        include:
-        - ./go-bin/**
     environment:
         AUTH0_SIGNING_KEY: ${env:AUTH0_SIGNING_KEY}
         GOROOT: "/var/task/go"
