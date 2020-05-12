@@ -10,7 +10,7 @@ def create_temp_file(event):
 
 def run_go_code(temp_file):
     args = ["./../bin/go", "run", temp_file.name]
-    args = ["go", "run", temp_file.name]
+    # args = ["go", "run", temp_file.name]
     popen = subprocess.Popen(args, stdout=subprocess.PIPE)
     popen.wait()
 
