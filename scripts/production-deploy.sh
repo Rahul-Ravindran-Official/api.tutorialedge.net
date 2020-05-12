@@ -38,9 +38,15 @@ function main() {
 
     echo "downloading go"
     mkdir -p resources
+    mkdir -p go-bin
     pushd resources
         curl https://dl.google.com/go/go1.14.2.linux-amd64.tar.gz -o go1.14.2.linux-amd64.tar.gz
-    popd
+        cp go1.14.2.linux-amd64.tar.gz ../code/go.tar.gz
+        tar -C ../go-bin -xzf go1.14.2.linux-amd64.tar.gz
+    popd 
+
+    cp go-bin/go/bin/go bin/go
+    chmod +x bin/go
     echo "downloaded go"
 
     echo "Deploying Production API..."
