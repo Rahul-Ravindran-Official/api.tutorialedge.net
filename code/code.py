@@ -2,6 +2,7 @@ import subprocess
 import json
 import tempfile
 import os
+import tarfile
 
 def create_temp_file(event):
     tempFile = tempfile.NamedTemporaryFile(delete=False, dir="/tmp", suffix=".go")
@@ -13,9 +14,13 @@ def create_temp_file(event):
 def run_go_code(temp_file):
     print(os.listdir())
 
+    go_code = tarfile.open("./code/go.tar.gz")
+    go_code.extractall("./go")
+    go_code.close()
+
     my_env = os.environ.copy()
     my_env["PATH"] = "/usr/sbin:/sbin:" + my_env["LAMBDA_TASK_ROOT"]
-    my_env["GOROOT"] = my_env["LAMBDA_TASK_ROOT"]
+    my_env["GOROOT"] = my_env["LAMBDA_TASK_ROOT"] + "/go"
 
     args = ["./bin/go", "version"]
     popen = subprocess.Popen(args, stdout=subprocess.PIPE, env=my_env)
