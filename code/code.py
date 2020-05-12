@@ -5,7 +5,7 @@ import os
 
 def create_temp_file(event):
     with open("/tmp/main.go", "x+") as fp:
-        fp.write(bytes(event["body"], 'utf-8'))
+        fp.write(event["body"])
 
 def run_go_code(temp_file):
     my_env = os.environ.copy()
