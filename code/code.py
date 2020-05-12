@@ -6,44 +6,53 @@ import os
 import tarfile
 import urllib.request
 
-
 def create_temp_file(event):
-    tempFile = tempfile.NamedTemporaryFile(delete=False, dir="/tmp", suffix=".go")
-    with tempFile as fp:
-        tempFile.write(bytes(event["body"], 'utf-8'))
-
+    try:
+        tempFile = tempfile.NamedTemporaryFile(delete=False, dir="/tmp", suffix=".go")
+        with tempFile as fp:
+            tempFile.write(bytes(event["body"], 'utf-8'))
+    except Exception as e:
+        print(e)
     return tempFile
 
 def download_and_untar():
-    thetarfile = "https://dl.google.com/go/go1.14.2.linux-amd64.tar.gz"
-    ftpstream = urllib.request.urlopen(thetarfile)
-    thetarfile = tarfile.open(fileobj=ftpstream, mode="r|gz")
-    thetarfile.extractall("/tmp")
+    print("Downloading Golang")
+    try:
+        thetarfile = "https://dl.google.com/go/go1.14.2.linux-amd64.tar.gz"
+        ftpstream = urllib.request.urlopen(thetarfile)
+        thetarfile = tarfile.open(fileobj=ftpstream, mode="r|gz")
+        thetarfile.extractall("/tmp")
+    except Exception as e:
+        print(e)
 
 def run_go_code(temp_file):
-    download_and_untar()
+
+    print("Successfully downloaded Go")
     # print(os.listdir())
     # if not os.path.exists("/tmp/go"):
     #     go_code = tarfile.open("./code/go.tar.gz", "r:gz")
     #     go_code.extractall("/tmp")
     #     go_code.close()
     # print(os.listdir("/tmp/go"))
-    
-    my_env = os.environ.copy()
-    my_env["PATH"] = "/usr/sbin:/sbin:/tmp/go/bin"
-    my_env["GOROOT"] = "/tmp/go"
-    my_env["GOPATH"] = "/tmp"
-
-    args = ["go", "version"]
-    popen = subprocess.Popen(args, stdout=subprocess.PIPE, env=my_env)
-    popen.wait()
+    try:
+        my_env = os.environ.copy()
+        my_env["PATH"] = "/usr/sbin:/sbin:/tmp/go/bin"
+        my_env["GOROOT"] = "/tmp/go"
+        my_env["GOPATH"] = "/tmp"
         
-    args = ["go", "run", temp_file.name]
-    popen = subprocess.Popen(args, stdout=subprocess.PIPE, env=my_env)
-    popen.wait()
+        args = ["go", "version"]
+        popen = subprocess.Popen(args, stdout=subprocess.PIPE, env=my_env)
+        popen.wait()
+            
+        args = ["go", "run", temp_file.name]
+        popen = subprocess.Popen(args, stdout=subprocess.PIPE, env=my_env)
+        popen.wait()
+    except Exception as e:
+        print(e)
 
 
 def lambda_handler(event, context):
+    download_and_untar()
     temp_file = create_temp_file(event)
     run_go_code(temp_file)
 
