@@ -25,8 +25,13 @@ func setupGoEnvironment() error {
 	os.Setenv("GOPATH", "/tmp")
 	os.Setenv("GOCACHE", "/tmp/go-cache")
 
+	err := os.Mkdir("/tmp/go", 0777)
+	if err != nil {
+		fmt.Println(err)
+	}
+
 	// untar ./code/go.tar.gz -> /tmp/go
-	output, err := exec.Command("tar", "-C", "/tmp/go", "-xzf", "./code/go.tar.gz").CombinedOutput()
+	output, err := exec.Command("tar", "-xzf", "./code/go.tar.gz", "-C", "/tmp/go").CombinedOutput()
 	if err != nil {
 		fmt.Println("Failed to Execute tar command")
 		fmt.Println(err.Error())
