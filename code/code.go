@@ -84,7 +84,7 @@ func ExecuteCode(request events.APIGatewayProxyRequest) (events.APIGatewayProxyR
 
 	defer os.Remove(tmpfile.Name()) // clean up
 
-	if _, err := tmpfile.Write(request.Body); err != nil {
+	if _, err := tmpfile.Write([]byte(request.Body)); err != nil {
 		log.Fatal(err)
 	}
 	if err := tmpfile.Close(); err != nil {
