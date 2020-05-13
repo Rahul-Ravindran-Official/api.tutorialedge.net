@@ -24,18 +24,20 @@ func setupGoEnvironment() error {
 	os.Setenv("GOPATH", "/tmp")
 	os.Setenv("GOCACHE", "/tmp/go-cache")
 
-	err := os.Mkdir("/tmp/go", 0777)
-	if err != nil {
-		fmt.Println(err)
-	}
+	if _, err := os.Stat("/tmp/go"); os.IsNotExist(err) {
+		err := os.Mkdir("/tmp/go", 0777)
+		if err != nil {
+			fmt.Println(err)
+		}
 
-	// untar ./code/go.tar.gz -> /tmp/go
-	output, err := exec.Command("tar", "-xzf", "./code/go.tar.gz", "-C", "/tmp").CombinedOutput()
-	if err != nil {
-		fmt.Println("Failed to Execute tar command")
-		fmt.Println(err.Error())
-		fmt.Println(string(output))
-		return err
+		// untar ./code/go.tar.gz -> /tmp/go
+		output, err := exec.Command("tar", "-xzf", "./code/go.tar.gz", "-C", "/tmp").CombinedOutput()
+		if err != nil {
+			fmt.Println("Failed to Execute tar command")
+			fmt.Println(err.Error())
+			fmt.Println(string(output))
+			return err
+		}
 	}
 
 	return nil
