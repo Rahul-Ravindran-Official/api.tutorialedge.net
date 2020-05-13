@@ -74,20 +74,21 @@ func ExecuteCode(request events.APIGatewayProxyRequest) (events.APIGatewayProxyR
 	}
 	fmt.Println(string(out))
 
-	// the WriteFile method returns an error if unsuccessful
-	err = ioutil.WriteFile("/tmp/main.go", body, 0777)
-	// handle this error
+	tmpfile, err := ioutil.TempFile("/tmp", "main.*.go")
 	if err != nil {
-		// print it out
-		fmt.Println(err)
-		return events.APIGatewayProxyResponse{
-			Body:       "Failed to write main.go",
-			Headers:    map[string]string{"Content-Type": "application/json", "Access-Control-Allow-Origin": "*"},
-			StatusCode: 503,
-		}, nil
+		log.Fatal(err)
 	}
 
-	out, err = exec.Command("go", "run", "/tmp/main.go").CombinedOutput()
+	defer os.Remove(tmpfile.Name()) // clean up
+
+	if _, err := tmpfile.Write(body); err != nil {
+		log.Fatal(err)
+	}
+	if err := tmpfile.Close(); err != nil {
+		log.Fatal(err)
+	}
+
+	out, err = exec.Command("go", "run", tmpfile.Name()).CombinedOutput()
 	if err != nil {
 		fmt.Println(err.Error())
 		return events.APIGatewayProxyResponse{
