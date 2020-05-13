@@ -53,7 +53,7 @@ func ExecuteCode(request events.APIGatewayProxyRequest) (events.APIGatewayProxyR
 	// }
 	// fmt.Println(string(body))
 
-	err = setupGoEnvironment()
+	err := setupGoEnvironment()
 	if err != nil {
 		log.Fatalf("Setting up Go Env Failed")
 		return events.APIGatewayProxyResponse{
