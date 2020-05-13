@@ -39,7 +39,6 @@ func setupGoEnvironment() error {
 			return err
 		}
 	}
-
 	return nil
 }
 
