@@ -49,7 +49,7 @@ function main() {
     export AUTH0_SIGNING_KEY=$(curl https://tutorialedge.eu.auth0.com/pem)
 
     echo "Deploying Test API..."
-    serverless deploy --stage=test --force
+    serverless deploy --stage=development --force
     echo "Successfully Deployed Test Stage"
 }
 
