@@ -21,21 +21,14 @@ type CodeResponse struct {
 	Output   string `json:"output"`
 }
 
-func extractGoCode() error {
-	f, err := os.Open("./code/go.tar.gz")
+func ExtractTarGz(gzipStream io.Reader) {
+	uncompressedStream, err := gzip.NewReader(gzipStream)
 	if err != nil {
-		fmt.Println(err)
-		return err
-	}
-	defer f.Close()
-
-	gzf, err := gzip.NewReader(f)
-	if err != nil {
-		fmt.Println(err)
-		return err
+		log.Fatal("ExtractTarGz: NewReader failed")
 	}
 
-	tarReader := tar.NewReader(gzf)
+	tarReader := tar.NewReader(uncompressedStream)
+
 	for true {
 		header, err := tarReader.Next()
 
@@ -68,8 +61,8 @@ func extractGoCode() error {
 				header.Typeflag,
 				header.Name)
 		}
+
 	}
-	return nil
 }
 
 func setupGoEnvironment() error {
@@ -79,10 +72,13 @@ func setupGoEnvironment() error {
 	os.Setenv("GOPATH", "/tmp")
 	os.Setenv("GOCACHE", "/tmp/go-cache")
 
-	err := extractGoCode()
+	r, err := os.Open("./code/go.tar.gz")
 	if err != nil {
+		fmt.Println("error")
 		return err
 	}
+	ExtractTarGz(r)
+
 	return nil
 }
 
@@ -95,7 +91,15 @@ func ExecuteCode(request events.APIGatewayProxyRequest) (events.APIGatewayProxyR
 	body, _ := base64.StdEncoding.DecodeString(request.Body)
 	fmt.Println(string(body))
 
-	setupGoEnvironment()
+	err := setupGoEnvironment()
+	if err != nil {
+		log.Fatalf("Setting up Go Env Failed")
+		return events.APIGatewayProxyResponse{
+			Body:       "Failed to setup Go Environment",
+			Headers:    map[string]string{"Content-Type": "application/json", "Access-Control-Allow-Origin": "*"},
+			StatusCode: 503,
+		}, nil
+	}
 
 	out, err := exec.Command("go", "version").CombinedOutput()
 	if err != nil {
