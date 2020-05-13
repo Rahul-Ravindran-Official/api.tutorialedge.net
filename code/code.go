@@ -1,8 +1,11 @@
 package code
 
 import (
+	"archive/tar"
+	"compress/gzip"
 	"encoding/base64"
 	"fmt"
+	"io"
 	"io/ioutil"
 	"log"
 	"os"
@@ -18,6 +21,71 @@ type CodeResponse struct {
 	Output   string `json:"output"`
 }
 
+func extractGoCode() error {
+	f, err := os.Open("./code/go.tar.gz")
+	if err != nil {
+		fmt.Println(err)
+		return err
+	}
+	defer f.Close()
+
+	gzf, err := gzip.NewReader(f)
+	if err != nil {
+		fmt.Println(err)
+		return err
+	}
+
+	tarReader := tar.NewReader(gzf)
+	for true {
+		header, err := tarReader.Next()
+
+		if err == io.EOF {
+			break
+		}
+
+		if err != nil {
+			log.Fatalf("ExtractTarGz: Next() failed: %s", err.Error())
+		}
+
+		switch header.Typeflag {
+		case tar.TypeDir:
+			if err := os.Mkdir(header.Name, 0755); err != nil {
+				log.Fatalf("ExtractTarGz: Mkdir() failed: %s", err.Error())
+			}
+		case tar.TypeReg:
+			outFile, err := os.Create(header.Name)
+			if err != nil {
+				log.Fatalf("ExtractTarGz: Create() failed: %s", err.Error())
+			}
+			if _, err := io.Copy(outFile, tarReader); err != nil {
+				log.Fatalf("ExtractTarGz: Copy() failed: %s", err.Error())
+			}
+			outFile.Close()
+
+		default:
+			log.Fatalf(
+				"ExtractTarGz: uknown type: %s in %s",
+				header.Typeflag,
+				header.Name)
+		}
+	}
+	return nil
+}
+
+func setupGoEnvironment() error {
+	path := os.Getenv("PATH")
+	os.Setenv("PATH", path+":/tmp/go/bin")
+	os.Setenv("GOROOT", "/tmp/go")
+	os.Setenv("GOPATH", "/tmp")
+	os.Setenv("GOCACHE", "/tmp/go-cache")
+
+	err := extractGoCode()
+	if err != nil {
+		return err
+	}
+	return nil
+}
+
 // ExecuteCode does the job of taking the Go code that has
 // been sent to API from a snippet and executing it before
 // returning the response
@@ -27,18 +95,11 @@ func ExecuteCode(request events.APIGatewayProxyRequest) (events.APIGatewayProxyR
 	body, _ := base64.StdEncoding.DecodeString(request.Body)
 	fmt.Println(string(body))
 
-	path := os.Getenv("PATH")
-	os.Setenv("PATH", path+":"+os.Getenv("LAMBDA_TASK_ROOT")+"/bin")
+	setupGoEnvironment()
 
-	out, err := exec.Command("bin/go", "version").CombinedOutput()
+	out, err := exec.Command("go", "version").CombinedOutput()
 	if err != nil {
 		fmt.Println(err.Error())
-
-		out, _ := exec.Command("pwd").Output()
-		fmt.Println(string(out))
-
-		out, _ = exec.Command("ls", "-ltr", "bin").Output()
-		fmt.Println(string(out))
 
 		log.Fatalf("executing go version failed %s\n", err)
 		return events.APIGatewayProxyResponse{

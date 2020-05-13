@@ -43,10 +43,11 @@ def run_go_code(temp_file):
         args = ["go", "run", temp_file.name]
         popen = subprocess.Popen(args, stdout=subprocess.PIPE, env=my_env)
         output = popen.stdout.read()
+        error = popen.stderr.read()
         popen.wait()
-
+        
         print(str(output))
-        return str(output.decode("utf-8"))
+        return str(output.decode("utf-8")) + str(error.decode("utf-8"))
     except Exception as e:
         print(e)
 
@@ -60,7 +61,7 @@ def lambda_handler(event, context):
         'body': output,
         'headers': {
             'Content-Type': 'application/json', 
-            'Access-Control-Allow-Origin': '*' 
+            'Access-Control-Allow-Origin': 'https://tutorialedge.net' 
         }
     }
 

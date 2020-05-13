@@ -96,6 +96,20 @@ functions:
         method: post
         cors: true
   
+  execute-go:
+    handler: bin/code
+    timeout: 900
+    vpc:
+      securityGroupIds:
+        - sg-0f7b6fded566b53bf
+      subnetIds:
+        - subnet-0cbb13cb6e95802a5 
+    events:
+    - http:
+        path: /v1/executego
+        method: post
+        cors: true
+
   code:
     handler: code/code.lambda_handler
     runtime: python3.6
