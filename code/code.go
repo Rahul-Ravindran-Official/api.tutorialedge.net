@@ -1,7 +1,6 @@
 package code
 
 import (
-	"encoding/base64"
 	"fmt"
 	"io/ioutil"
 	"log"
@@ -18,27 +17,56 @@ type CodeResponse struct {
 	Output   string `json:"output"`
 }
 
+func setupGoEnvironment() error {
+	path := os.Getenv("PATH")
+	os.Setenv("PATH", path+":/tmp/go/bin")
+	os.Setenv("GOROOT", "/tmp/go")
+	os.Setenv("GOPATH", "/tmp")
+	os.Setenv("GOCACHE", "/tmp/go-cache")
+
+	if _, err := os.Stat("/tmp/go"); os.IsNotExist(err) {
+		err := os.Mkdir("/tmp/go", 0777)
+		if err != nil {
+			fmt.Println(err)
+		}
+
+		// untar ./code/go.tar.gz -> /tmp/go
+		output, err := exec.Command("tar", "-xzf", "./code/go.tar.gz", "-C", "/tmp").CombinedOutput()
+		if err != nil {
+			fmt.Println("Failed to Execute tar command")
+			fmt.Println(err.Error())
+			fmt.Println(string(output))
+			return err
+		}
+	}
+	return nil
+}
+
 // ExecuteCode does the job of taking the Go code that has
 // been sent to API from a snippet and executing it before
 // returning the response
 func ExecuteCode(request events.APIGatewayProxyRequest) (events.APIGatewayProxyResponse, error) {
 
 	fmt.Println("Received body: ", request.Body)
-	body, _ := base64.StdEncoding.DecodeString(request.Body)
-	fmt.Println(string(body))
+	// body, err := base64.StdEncoding.DecodeString(request.Body)
+	// if err != nil {
+	// 	fmt.Println("Issue decoding request body from base64")
+	// }
+	// fmt.Println(string(body))
 
-	path := os.Getenv("PATH")
-	os.Setenv("PATH", path+":"+os.Getenv("LAMBDA_TASK_ROOT")+"/bin")
+	err := setupGoEnvironment()
+	if err != nil {
+		log.Fatalf("Setting up Go Env Failed")
+		return events.APIGatewayProxyResponse{
+			Body:       "Failed to setup Go Environment",
+			Headers:    map[string]string{"Content-Type": "application/json", "Access-Control-Allow-Origin": "*"},
+			StatusCode: 503,
+		}, nil
+	}
 
-	out, err := exec.Command("bin/go", "version").CombinedOutput()
+	out, err := exec.Command("go", "version").CombinedOutput()
 	if err != nil {
 		fmt.Println(err.Error())
-
-		out, _ := exec.Command("pwd").Output()
-		fmt.Println(string(out))
-
-		out, _ = exec.Command("ls", "-ltr", "bin").Output()
-		fmt.Println(string(out))
 
 		log.Fatalf("executing go version failed %s\n", err)
 		return events.APIGatewayProxyResponse{
@@ -47,32 +75,34 @@ func ExecuteCode(request events.APIGatewayProxyRequest) (events.APIGatewayProxyR
 			StatusCode: 503,
 		}, nil
 	}
-	fmt.Println(string(out))
+	fmt.Printf("Go Version Output: %s", string(out))
 
-	// the WriteFile method returns an error if unsuccessful
-	err = ioutil.WriteFile("main.go", body, 0777)
-	// handle this error
+	tmpfile, err := ioutil.TempFile("/tmp", "main.*.go")
 	if err != nil {
-		// print it out
+		log.Fatal(err)
+	}
+	fmt.Println("Created File: " + tmpfile.Name())
+
+	defer os.Remove(tmpfile.Name()) // clean up
+
+	if _, err := tmpfile.Write([]byte(request.Body)); err != nil {
+		log.Fatal(err)
+	}
+	if err := tmpfile.Close(); err != nil {
+		log.Fatal(err)
+	}
+
+	out, err = exec.Command("go", "run", tmpfile.Name()).CombinedOutput()
+	if err != nil {
 		fmt.Println(err)
 		return events.APIGatewayProxyResponse{
-			Body:       "Failed to write main.go",
+			Body:       string(out),
 			Headers:    map[string]string{"Content-Type": "application/json", "Access-Control-Allow-Origin": "*"},
-			StatusCode: 503,
+			StatusCode: 200,
 		}, nil
 	}
 
-	out, err = exec.Command("go", "run", "main.go").CombinedOutput()
-	if err != nil {
-		fmt.Println(err.Error())
-		return events.APIGatewayProxyResponse{
-			Body:       "Failed to run main.go",
-			Headers:    map[string]string{"Content-Type": "application/json", "Access-Control-Allow-Origin": "*"},
-			StatusCode: 503,
-		}, nil
-	}
-
-	fmt.Println(string(out))
+	fmt.Printf("go run output: %s\n", string(out))
 
 	return events.APIGatewayProxyResponse{
 		Body:       string(out),
