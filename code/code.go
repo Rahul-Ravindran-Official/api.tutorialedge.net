@@ -96,7 +96,7 @@ func ExecuteCode(request events.APIGatewayProxyRequest) (events.APIGatewayProxyR
 	if err != nil {
 		fmt.Println(err)
 		return events.APIGatewayProxyResponse{
-			Body:       "Failed to run main.go",
+			Body:       string(out),
 			Headers:    map[string]string{"Content-Type": "application/json", "Access-Control-Allow-Origin": "*"},
 			StatusCode: 503,
 		}, nil
