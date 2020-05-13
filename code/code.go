@@ -75,7 +75,7 @@ func ExecuteCode(request events.APIGatewayProxyRequest) (events.APIGatewayProxyR
 	fmt.Println(string(out))
 
 	// the WriteFile method returns an error if unsuccessful
-	err = ioutil.WriteFile("main.go", body, 0777)
+	err = ioutil.WriteFile("/tmp/main.go", body, 0777)
 	// handle this error
 	if err != nil {
 		// print it out
@@ -87,7 +87,7 @@ func ExecuteCode(request events.APIGatewayProxyRequest) (events.APIGatewayProxyR
 		}, nil
 	}
 
-	out, err = exec.Command("go", "run", "main.go").CombinedOutput()
+	out, err = exec.Command("go", "run", "/tmp/main.go").CombinedOutput()
 	if err != nil {
 		fmt.Println(err.Error())
 		return events.APIGatewayProxyResponse{
