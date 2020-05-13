@@ -1,11 +1,8 @@
 package code
 
 import (
-	"archive/tar"
-	"compress/gzip"
 	"encoding/base64"
 	"fmt"
-	"io"
 	"io/ioutil"
 	"log"
 	"os"
@@ -21,47 +18,6 @@ type CodeResponse struct {
 	Output   string `json:"output"`
 }
 
-func ExtractTarGz(gzipStream io.Reader) {
-	uncompressedStream, err := gzip.NewReader(gzipStream)
-	if err != nil {
-		log.Fatal("ExtractTarGz: NewReader failed")
-	}
-
-	tarReader := tar.NewReader(uncompressedStream)
-
-	for {
-		header, err := tarReader.Next()
-
-		if err == io.EOF {
-			break
-		}
-
-		if err != nil {
-			log.Fatalf("ExtractTarGz: Next() failed: %s", err.Error())
-		}
-
-		switch header.Typeflag {
-		case tar.TypeDir:
-			if err := os.Mkdir(header.Name, 0755); err != nil {
-				log.Fatalf("ExtractTarGz: Mkdir() failed: %s", err.Error())
-			}
-		case tar.TypeReg:
-			outFile, err := os.Create(header.Name)
-			if err != nil {
-				log.Fatalf("ExtractTarGz: Create() failed: %s", err.Error())
-			}
-			if _, err := io.Copy(outFile, tarReader); err != nil {
-				log.Fatalf("ExtractTarGz: Copy() failed: %s", err.Error())
-			}
-			outFile.Close()
-
-		default:
-			log.Fatalf("ExtractTarGz: uknown type")
-		}
-
-	}
-}
-
 func setupGoEnvironment() error {
 	path := os.Getenv("PATH")
 	os.Setenv("PATH", path+":/tmp/go/bin")
@@ -74,7 +30,12 @@ func setupGoEnvironment() error {
 		fmt.Println("error")
 		return err
 	}
-	ExtractTarGz(r)
+	// untar ./code/go.tar.gz -> /tmp/go
+	out, err = exec.Command("tar", "-C", "/tmp/go", "-xzf", "./code/go.tar.gz").CombinedOutput()
+	if err != nil {
+		fmt.Println(err)
+		return err
+	}
 
 	return nil
 }
