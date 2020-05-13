@@ -31,7 +31,7 @@ func setupGoEnvironment() error {
 		return err
 	}
 	// untar ./code/go.tar.gz -> /tmp/go
-	out, err = exec.Command("tar", "-C", "/tmp/go", "-xzf", "./code/go.tar.gz").CombinedOutput()
+	out, err := exec.Command("tar", "-C", "/tmp/go", "-xzf", "./code/go.tar.gz").CombinedOutput()
 	if err != nil {
 		fmt.Println(err)
 		return err
