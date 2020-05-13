@@ -48,7 +48,10 @@ func setupGoEnvironment() error {
 func ExecuteCode(request events.APIGatewayProxyRequest) (events.APIGatewayProxyResponse, error) {
 
 	fmt.Println("Received body: ", request.Body)
-	body, _ := base64.StdEncoding.DecodeString(request.Body)
+	body, err := base64.StdEncoding.DecodeString(request.Body)
+	if err != nil {
+		fmt.Println("Issue decoding request bode from base64")
+	}
 	fmt.Println(string(body))
 
 	err := setupGoEnvironment()
@@ -72,12 +75,13 @@ func ExecuteCode(request events.APIGatewayProxyRequest) (events.APIGatewayProxyR
 			StatusCode: 503,
 		}, nil
 	}
-	fmt.Println(string(out))
+	fmt.Printf("Go Version Output: %s", string(out))
 
 	tmpfile, err := ioutil.TempFile("/tmp", "main.*.go")
 	if err != nil {
 		log.Fatal(err)
 	}
+	fmt.Println("Created File: " + tmpfile.Name())
 
 	defer os.Remove(tmpfile.Name()) // clean up
 
@@ -90,7 +94,7 @@ func ExecuteCode(request events.APIGatewayProxyRequest) (events.APIGatewayProxyR
 
 	out, err = exec.Command("go", "run", tmpfile.Name()).CombinedOutput()
 	if err != nil {
-		fmt.Println(err.Error())
+		fmt.Println(err)
 		return events.APIGatewayProxyResponse{
 			Body:       "Failed to run main.go",
 			Headers:    map[string]string{"Content-Type": "application/json", "Access-Control-Allow-Origin": "*"},
@@ -98,7 +102,7 @@ func ExecuteCode(request events.APIGatewayProxyRequest) (events.APIGatewayProxyR
 		}, nil
 	}
 
-	fmt.Println(string(out))
+	fmt.Printf("go run output: %s\n", string(out))
 
 	return events.APIGatewayProxyResponse{
 		Body:       string(out),
