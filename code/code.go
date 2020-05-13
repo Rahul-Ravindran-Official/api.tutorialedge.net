@@ -1,7 +1,6 @@
 package code
 
 import (
-	"encoding/base64"
 	"fmt"
 	"io/ioutil"
 	"log"
@@ -48,11 +47,11 @@ func setupGoEnvironment() error {
 func ExecuteCode(request events.APIGatewayProxyRequest) (events.APIGatewayProxyResponse, error) {
 
 	fmt.Println("Received body: ", request.Body)
-	body, err := base64.StdEncoding.DecodeString(request.Body)
-	if err != nil {
-		fmt.Println("Issue decoding request bode from base64")
-	}
-	fmt.Println(string(body))
+	// body, err := base64.StdEncoding.DecodeString(request.Body)
+	// if err != nil {
+	// 	fmt.Println("Issue decoding request body from base64")
+	// }
+	// fmt.Println(string(body))
 
 	err = setupGoEnvironment()
 	if err != nil {
@@ -85,7 +84,7 @@ func ExecuteCode(request events.APIGatewayProxyRequest) (events.APIGatewayProxyR
 
 	defer os.Remove(tmpfile.Name()) // clean up
 
-	if _, err := tmpfile.Write(body); err != nil {
+	if _, err := tmpfile.Write(request.Body); err != nil {
 		log.Fatal(err)
 	}
 	if err := tmpfile.Close(); err != nil {
