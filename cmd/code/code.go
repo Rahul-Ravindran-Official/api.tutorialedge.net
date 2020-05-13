@@ -5,7 +5,6 @@ import (
 
 	"github.com/aws/aws-lambda-go/events"
 	"github.com/aws/aws-lambda-go/lambda"
-	"github.com/elliotforbes/api.tutorialedge.net/auth"
 	"github.com/elliotforbes/api.tutorialedge.net/code"
 )
 
@@ -15,11 +14,11 @@ func handler(request events.APIGatewayProxyRequest) (events.APIGatewayProxyRespo
 
 	switch request.HTTPMethod {
 	case "POST":
-		if ok, _ := auth.Authenticate(request); ok {
-			response, _ := code.ExecuteCode(request)
-			return response, nil
-		}
-		return auth.UnauthorizedResponse(), nil
+		// if ok, _ := auth.Authenticate(request); ok {
+		response, _ := code.ExecuteCode(request)
+		return response, nil
+		// }
+		// return auth.UnauthorizedResponse(), nil
 	default:
 		return events.APIGatewayProxyResponse{
 			Body:       "Invalid HTTP Method",
