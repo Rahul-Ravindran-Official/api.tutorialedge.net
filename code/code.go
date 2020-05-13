@@ -30,7 +30,7 @@ func setupGoEnvironment() error {
 	if err != nil {
 		fmt.Println("Failed to Execute tar command")
 		fmt.Println(err.Error())
-		fmt.Println(output)
+		fmt.Println(string(output))
 		return err
 	}
 
