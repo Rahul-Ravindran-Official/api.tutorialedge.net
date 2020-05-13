@@ -29,7 +29,7 @@ func ExtractTarGz(gzipStream io.Reader) {
 
 	tarReader := tar.NewReader(uncompressedStream)
 
-	for true {
+	for {
 		header, err := tarReader.Next()
 
 		if err == io.EOF {
@@ -56,10 +56,7 @@ func ExtractTarGz(gzipStream io.Reader) {
 			outFile.Close()
 
 		default:
-			log.Fatalf(
-				"ExtractTarGz: uknown type: %s in %s",
-				header.Typeflag,
-				header.Name)
+			log.Fatalf("ExtractTarGz: uknown type")
 		}
 
 	}
