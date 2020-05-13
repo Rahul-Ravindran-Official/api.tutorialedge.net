@@ -98,7 +98,7 @@ func ExecuteCode(request events.APIGatewayProxyRequest) (events.APIGatewayProxyR
 		return events.APIGatewayProxyResponse{
 			Body:       string(out),
 			Headers:    map[string]string{"Content-Type": "application/json", "Access-Control-Allow-Origin": "*"},
-			StatusCode: 503,
+			StatusCode: 200,
 		}, nil
 	}
 
