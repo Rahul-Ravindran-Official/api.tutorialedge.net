@@ -17,11 +17,14 @@ package:
   include:
   - ./code/**
   - ./bin/**
+  - ./go-bin/**
 
 functions:
 
   health:
     handler: bin/health
+    exclude:
+      - ./go-bin/**
     environment:
         TRAVIS_BUILD_NUMBER: ${env:TRAVIS_BUILD_NUMBER}
     events:
@@ -31,6 +34,8 @@ functions:
 
   achievements:
     handler: bin/achievements
+    exclude:
+      - ./go-bin/**
     events:
     - http:
         path: /achievements
@@ -38,6 +43,8 @@ functions:
 
   comments:
     handler: bin/comments
+    exclude:
+      - ./go-bin/**
     environment:
         API_AUDIENCE_ID: ${env:API_AUDIENCE_ID}
         AUTH0_SIGNING_KEY: ${env:AUTH0_SIGNING_KEY}
