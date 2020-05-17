@@ -9,7 +9,7 @@ provider:
 
 layers:
   go:
-    path: go-bin
+    path: ./go-bin/**
 
 package:
   exclude:
@@ -17,14 +17,11 @@ package:
   include:
   - ./code/**
   - ./bin/**
-  - ./go-bin/**
 
 functions:
 
   health:
     handler: bin/health
-    exclude:
-      - ./go-bin/**
     environment:
         TRAVIS_BUILD_NUMBER: ${env:TRAVIS_BUILD_NUMBER}
     events:
