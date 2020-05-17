@@ -7,6 +7,10 @@ provider:
   region: eu-west-1
   memorySize: 512
 
+layers:
+  go:
+    path: go-bin
+
 package:
   exclude:
   - ./**
@@ -98,7 +102,9 @@ functions:
   
   execute-go:
     handler: bin/code
-    timeout: 900
+    timeout: 30
+    layers:
+      - { Ref: GoLambdaLayer }
     vpc:
       securityGroupIds:
         - sg-0f7b6fded566b53bf

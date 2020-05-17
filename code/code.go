@@ -19,25 +19,16 @@ type CodeResponse struct {
 
 func setupGoEnvironment() error {
 	path := os.Getenv("PATH")
-	os.Setenv("PATH", path+":/tmp/go/bin")
-	os.Setenv("GOROOT", "/tmp/go")
+	os.Setenv("PATH", path+":/opt/go/bin")
+	os.Setenv("GOROOT", "/opt/go")
 	os.Setenv("GOPATH", "/tmp")
 	os.Setenv("GOCACHE", "/tmp/go-cache")
 
-	if _, err := os.Stat("/tmp/go"); os.IsNotExist(err) {
-		err := os.Mkdir("/tmp/go", 0777)
-		if err != nil {
-			fmt.Println(err)
-		}
-
-		// untar ./code/go.tar.gz -> /tmp/go
-		output, err := exec.Command("tar", "-xzf", "./code/go.tar.gz", "-C", "/tmp").CombinedOutput()
-		if err != nil {
-			fmt.Println("Failed to Execute tar command")
-			fmt.Println(err.Error())
-			fmt.Println(string(output))
-			return err
-		}
+	if _, err := os.Stat("/opt/go"); os.IsNotExist(err) {
+		fmt.Println("/opt/go does not exist")
+	}
+	if _, err := os.Stat("/opt/go/bin"); os.IsNotExist(err) {
+		fmt.Println("/opt/go does not exist")
 	}
 	return nil
 }
