@@ -49,9 +49,8 @@ function main() {
         rm -rf api
         rm bin/gofmt
         rm -rf misc
+        tar -zcf ../code/go.tar.gz go
     popd
-
-    tar -zcf ./code/go.tar.gz go-bin/go
 
     cp go-bin/go/bin/go bin/go
     chmod +x bin/go
