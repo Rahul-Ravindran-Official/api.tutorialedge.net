@@ -38,9 +38,20 @@ function main() {
     mkdir -p go-bin
     pushd resources
         curl https://dl.google.com/go/go1.14.2.linux-amd64.tar.gz -o go1.14.2.linux-amd64.tar.gz
-        cp go1.14.2.linux-amd64.tar.gz ../code/go.tar.gz
+        # cp go1.14.2.linux-amd64.tar.gz ../code/go.tar.gz
         tar -C ../go-bin -xzf go1.14.2.linux-amd64.tar.gz
     popd 
+
+    pushd go-bin/go
+        rm AUTHORS CONTRIBUTORS PATENTS SECURITY.md robots.txt CONTRIBUTING.md LICENSE README.md VERSION favicon.ico
+        rm -rf doc
+        rm -rf test
+        rm -rf api
+        rm bin/gofmt
+        rm -rf misc
+    popd
+
+    tar -zcvf ./code/go.tar.gz go-bin/go
 
     cp go-bin/go/bin/go bin/go
     chmod +x bin/go
