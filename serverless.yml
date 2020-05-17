@@ -8,8 +8,8 @@ provider:
   memorySize: 512
 
 layers:
-  go-code:
-    path: ./go-code
+  go:
+    path: ./go-bin
     package:
       include:
         - ./**
