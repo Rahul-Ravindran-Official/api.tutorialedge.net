@@ -37,13 +37,13 @@ function main() {
     mkdir -p resources
     mkdir -p go-bin
     pushd resources
-        curl https://dl.google.com/go/go1.14.2.linux-amd64.tar.gz -o go1.14.2.linux-amd64.tar.gz
-        cp go1.14.2.linux-amd64.tar.gz ../code/go.tar.gz
-        tar -C ../go-bin -xzf go1.14.2.linux-amd64.tar.gz
+        curl https://dl.google.com/go/go1.14.2.linux-amd64.tar.gz -o go.tar.gz
+        # cp go.tar.gz ../code/go.tar.g/z
+        tar -C ../go-bin -xzf go.tar.gz
     popd 
 
-    cp go-bin/go/bin/go bin/go
-    chmod +x bin/go
+    # cp go-bin/go/bi n/go bin/go
+    # chmod +x bin/go
     echo "downloaded go"
 
     export AUTH0_SIGNING_KEY=$(curl https://tutorialedge.eu.auth0.com/pem)
