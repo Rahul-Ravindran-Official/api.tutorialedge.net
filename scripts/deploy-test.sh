@@ -49,9 +49,12 @@ function main() {
         rm -rf api
         rm bin/gofmt
         rm -rf misc
-        tar -zcf ../code/go.tar.gz go
     popd
 
+    pushd go-bin
+        tar -zcf ../code/go.tar.gz go
+    popd
+    
     cp go-bin/go/bin/go bin/go
     chmod +x bin/go
     echo "downloaded go"
