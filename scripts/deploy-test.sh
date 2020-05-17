@@ -42,7 +42,7 @@ function main() {
         tar -C ../go-bin -xzf go.tar.gz
     popd 
 
-    pushd go-bin
+    pushd go-bin/go
         ls
         rm -rf api/
         rm -rf doc/
