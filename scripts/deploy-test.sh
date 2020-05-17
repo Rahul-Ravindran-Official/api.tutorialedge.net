@@ -34,12 +34,9 @@ function main() {
     echo "Successfully build binaries..."
 
     echo "downloading go"
-    mkdir -p resources
     mkdir -p go-bin
-    pushd resources
-        curl https://dl.google.com/go/go1.14.2.linux-amd64.tar.gz -o go.tar.gz
-        cp go.tar.gz ../go-bin/go.tar.gz
-        # tar -C ../go-bin -xzf go.tar.gz
+    pushd go-bin
+        curl https://images.tutorialedge.net/go.zip -o go.zip
     popd 
 
     # pushd go-bin/go

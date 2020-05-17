@@ -11,7 +11,7 @@ layers:
   go:
     # path: ./go-bin
     package:
-      artifact: ./go-bin/go.tar.gz
+      artifact: ./go-bin/go.zip
       
 package:
   exclude:
