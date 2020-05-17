@@ -10,10 +10,7 @@ provider:
 layers:
   go:
     path: go-code
-    package:
-      include:
-      - ./**
-
+    
 package:
   exclude:
   - ./**
