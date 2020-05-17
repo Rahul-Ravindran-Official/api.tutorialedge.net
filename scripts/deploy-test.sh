@@ -42,6 +42,15 @@ function main() {
         tar -C ../go-bin -xzf go.tar.gz
     popd 
 
+    pushd go-bin
+        ls
+        rm -rf api/
+        rm bin/gofmt
+        rm -rf doc/
+        rm -rf test/
+        rm -rf misc/
+    popd    
+
     # cp go-bin/go/bi n/go bin/go
     # chmod +x bin/go
     echo "downloaded go"
