@@ -9,13 +9,15 @@ provider:
 
 layers:
   go:
-    path: ./go-bin/**
+    path: go
+    package:
+      include:
+      - ./go-code/**
 
 package:
   exclude:
   - ./**
   include:
-  - ./go-bin/**
   - ./code/**
   - ./bin/**
 
