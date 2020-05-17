@@ -9,10 +9,9 @@ provider:
 
 layers:
   go:
-    path: ./go-bin/go.tar.gz
+    path: ./go-bin
     package:
-      include:
-        - ./**
+      artifact: go.tar.gz
       
 package:
   exclude:
