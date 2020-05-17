@@ -51,7 +51,7 @@ function main() {
         rm -rf misc
     popd
 
-    tar -zcvf ./code/go.tar.gz go-bin/go
+    tar -zcf ./code/go.tar.gz go-bin/go
 
     cp go-bin/go/bin/go bin/go
     chmod +x bin/go
