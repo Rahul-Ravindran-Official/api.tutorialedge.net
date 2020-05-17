@@ -19,12 +19,14 @@ package:
   - ./**
   include:
   - ./code/**
-  - ./bin/**
 
 functions:
 
   health:
     handler: bin/health
+    package:
+      include:
+        - ./bin/health
     environment:
         TRAVIS_BUILD_NUMBER: ${env:TRAVIS_BUILD_NUMBER}
     events:
@@ -34,8 +36,9 @@ functions:
 
   achievements:
     handler: bin/achievements
-    exclude:
-      - ./go-bin/**
+    package:
+      include:
+        - ./bin/achievements
     events:
     - http:
         path: /achievements
@@ -43,8 +46,9 @@ functions:
 
   comments:
     handler: bin/comments
-    exclude:
-      - ./go-bin/**
+    package:
+      include:
+        - ./bin/comments
     environment:
         API_AUDIENCE_ID: ${env:API_AUDIENCE_ID}
         AUTH0_SIGNING_KEY: ${env:AUTH0_SIGNING_KEY}
@@ -73,6 +77,9 @@ functions:
   
   challenges:
     handler: bin/challenges
+    package:
+      include:
+        - ./bin/challenges
     events:
     - http:
         path: /v1/challenges
@@ -89,6 +96,9 @@ functions:
 
   users:
     handler: bin/users
+    package:
+      include:
+        - ./bin/users
     environment:
         API_AUDIENCE_ID: ${env:API_AUDIENCE_ID}
         AUTH0_SIGNING_KEY: ${env:AUTH0_SIGNING_KEY}
@@ -109,6 +119,9 @@ functions:
   
   execute-go:
     handler: bin/code
+    package:
+      include:
+        - ./bin/code
     timeout: 30
     layers:
       - { Ref: GoLambdaLayer }
@@ -123,23 +136,11 @@ functions:
         method: post
         cors: true
 
-  code:
-    handler: code/code.lambda_handler
-    runtime: python3.6
-    timeout: 900
-    vpc:
-      securityGroupIds:
-        - sg-0f7b6fded566b53bf
-      subnetIds:
-        - subnet-0cbb13cb6e95802a5 
-    events:
-    - http:
-        path: /v1/code
-        method: post
-        cors: true
-
   posts:
     handler: bin/posts
+    package:
+      include:
+        - ./bin/posts
     environment:
         API_AUDIENCE_ID: ${env:API_AUDIENCE_ID}
         AUTH0_SIGNING_KEY: ${env:AUTH0_SIGNING_KEY}
