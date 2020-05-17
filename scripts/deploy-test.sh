@@ -45,7 +45,6 @@ function main() {
     pushd go-bin
         ls
         rm -rf api/
-        rm bin/gofmt
         rm -rf doc/
         rm -rf test/
         rm -rf misc/
