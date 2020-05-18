@@ -110,6 +110,20 @@ functions:
         method: post
         cors: true
 
+  challenge-go:
+    handler: bin/challenge
+    timeout: 30
+    vpc:
+      securityGroupIds:
+        - sg-0f7b6fded566b53bf
+      subnetIds:
+        - subnet-0cbb13cb6e95802a5 
+    events:
+    - http:
+        path: /v1/challenge
+        method: post
+        cors: true      
+
   code:
     handler: code/code.lambda_handler
     runtime: python3.6
