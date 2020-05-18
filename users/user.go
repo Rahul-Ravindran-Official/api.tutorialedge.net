@@ -29,15 +29,15 @@ type User struct {
 // user has posted to the site
 func GetUser(request events.APIGatewayProxyRequest, db *gorm.DB) (events.APIGatewayProxyResponse, error) {
 	fmt.Println("Retrieving all Comments by User")
-	fmt.Println(request.QueryStringParameters["name"])
-	name := request.QueryStringParameters["name"]
+	fmt.Println(request.QueryStringParameters["sub"])
+	sub := request.QueryStringParameters["sub"]
 
 	var comments []comments.Comment
 
-	db.Where("author = ?", name).Find(&comments)
+	db.Where("sub = ?", sub).Find(&comments)
 
 	var user User
-	user.Name = name
+	user.Sub = sub
 	user.Comments = comments
 
 	jsonResults, err := json.Marshal(user)
