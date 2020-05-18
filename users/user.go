@@ -25,6 +25,15 @@ type User struct {
 	Comments   []comments.Comment `json:"comments"`
 }
 
+type Result struct {
+	Field   string
+	Type    string
+	Null    string
+	Key     string
+	Default string
+	Extra   string
+}
+
 // GetComments - returns all the comments that a
 // user has posted to the site
 func GetUser(request events.APIGatewayProxyRequest, db *gorm.DB) (events.APIGatewayProxyResponse, error) {
@@ -34,7 +43,8 @@ func GetUser(request events.APIGatewayProxyRequest, db *gorm.DB) (events.APIGate
 
 	var comments []comments.Comment
 
-	db.Where("sub = ?", sub).Find(&comments)
+	db.Where("author_id = ?", sub).Find(&comments)
+	fmt.Printf("%+v\n", comments)
 
 	var user User
 	user.Sub = sub
