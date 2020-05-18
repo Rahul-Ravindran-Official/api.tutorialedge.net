@@ -22,7 +22,7 @@ func TestGetUser(t *testing.T) {
 
 	request := events.APIGatewayProxyRequest{}
 	request.QueryStringParameters = make(map[string]string)
-	request.QueryStringParameters["name"] = "Elliot Forbes"
+	request.QueryStringParameters["sub"] = "google-oauth2|117485170028729319988"
 
 	response, err := users.GetUser(request, db)
 	if err != nil {
