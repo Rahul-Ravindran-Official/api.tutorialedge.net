@@ -30,7 +30,7 @@ func ExecutePython(request events.APIGatewayProxyRequest) (events.APIGatewayProx
 		log.Fatal(err)
 	}
 
-	out, err := exec.Command("python", tmpfile.Name()).CombinedOutput()
+	out, err := exec.Command("python36", tmpfile.Name()).CombinedOutput()
 	if err != nil {
 		fmt.Println(err)
 		return events.APIGatewayProxyResponse{
