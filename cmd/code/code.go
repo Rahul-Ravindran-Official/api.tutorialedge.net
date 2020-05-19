@@ -12,13 +12,20 @@ func handler(request events.APIGatewayProxyRequest) (events.APIGatewayProxyRespo
 
 	fmt.Printf("%+v\n", request)
 
-	switch request.HTTPMethod {
-	case "POST":
-		// if ok, _ := auth.Authenticate(request); ok {
+	if request.HTTPMethod != "POST" {
+		return events.APIGatewayProxyResponse{
+			Body:       "Not Found",
+			StatusCode: 404,
+		}, nil
+	}
+
+	switch request.Path {
+	case "/v1/executego":
 		response, _ := code.ExecuteCode(request)
 		return response, nil
-		// }
-		// return auth.UnauthorizedResponse(), nil
+	case "/v1/executepython":
+		response, _ := code.ExecutePython(request)
+		return response, nil
 	default:
 		return events.APIGatewayProxyResponse{
 			Body:       "Invalid HTTP Method",
