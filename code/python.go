@@ -10,7 +10,6 @@ import (
 	"github.com/aws/aws-lambda-go/events"
 )
 
-
 // ExecutePython takes in a request, retreives the python code
 // from the body of that request and then executes it.
 func ExecutePython(request events.APIGatewayProxyRequest) (events.APIGatewayProxyResponse, error) {
@@ -30,7 +29,6 @@ func ExecutePython(request events.APIGatewayProxyRequest) (events.APIGatewayProx
 	if err := tmpfile.Close(); err != nil {
 		log.Fatal(err)
 	}
-
 
 	out, err := exec.Command("python", tmpfile.Name()).CombinedOutput()
 	if err != nil {
