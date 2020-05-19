@@ -48,11 +48,6 @@ func setupGoEnvironment() error {
 func ExecuteCode(request events.APIGatewayProxyRequest) (events.APIGatewayProxyResponse, error) {
 
 	fmt.Println("Received body: ", request.Body)
-	// body, err := base64.StdEncoding.DecodeString(request.Body)
-	// if err != nil {
-	// 	fmt.Println("Issue decoding request body from base64")
-	// }
-	// fmt.Println(string(body))
 
 	err := setupGoEnvironment()
 	if err != nil {

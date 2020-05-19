@@ -98,7 +98,7 @@ functions:
   
   execute-go:
     handler: bin/code
-    timeout: 900
+    timeout: 30
     vpc:
       securityGroupIds:
         - sg-0f7b6fded566b53bf
@@ -107,6 +107,20 @@ functions:
     events:
     - http:
         path: /v1/executego
+        method: post
+        cors: true
+
+  execute-python:
+    handler: bin/code
+    timeout: 30
+    vpc:
+      securityGroupIds:
+        - sg-0f7b6fded566b53bf
+      subnetIds:
+        - subnet-0cbb13cb6e95802a5 
+    events:
+    - http:
+        path: /v1/executepython
         method: post
         cors: true
 
