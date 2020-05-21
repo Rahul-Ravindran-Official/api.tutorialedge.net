@@ -7,6 +7,20 @@ provider:
   region: eu-west-1
   memorySize: 512
 
+plugins:
+  - serverless-prune-plugin
+custom:
+  # This prunes the storage buckets to ensure that we
+  # don't face bucket size issues
+  prune:
+    automatic: true
+    includeLayers: true
+    number: 3
+
+# What to include in the deployed package
+# for each lambda
+# TODO: Trim the deployed artefacts down
+# for each lambda function
 package:
   exclude:
   - ./**
@@ -15,7 +29,8 @@ package:
   - ./bin/**
 
 functions:
-
+  # health endpoint which allows us to verify what version
+  # of the service is deployed based on Travis Build Number
   health:
     handler: bin/health
     environment:
@@ -25,13 +40,17 @@ functions:
         path: /
         method: get
 
+  # achievements endpoint which allows a user to retrieve their 
+  # achievements on the site
   achievements:
     handler: bin/achievements
     events:
     - http:
         path: /achievements
         method: get
-
+  
+  # comments endpoints which allow users to post comments
+  # to the site
   comments:
     handler: bin/comments
     environment:
@@ -60,6 +79,8 @@ functions:
         method: delete
         cors: true
   
+  # challenges endpoint allows us to update a user
+  # profile and highlight what challenges they have finished
   challenges:
     handler: bin/challenge
     events:
@@ -76,8 +97,10 @@ functions:
         path: /v1/challenges
         method: delete
 
+  # users endpoints which return the user details for the 
+  # profile page. 
   users:
-    handler: bin/users
+    handler: bin/users 
     environment:
         API_AUDIENCE_ID: ${env:API_AUDIENCE_ID}
         AUTH0_SIGNING_KEY: ${env:AUTH0_SIGNING_KEY}
@@ -96,6 +119,9 @@ functions:
         method: post
         cors: true
   
+  # execute-go endpoint allows the execution of go code
+  # within the snippets portion of the site. This is executed 
+  # in a private VPC to disable network connectivity
   execute-go:
     handler: bin/code
     timeout: 30
@@ -110,6 +136,9 @@ functions:
         method: post
         cors: true
 
+  # execute-python endpoint allows the execution of python code
+  # within the snippets portion of the site. This is executed 
+  # in a private VPC to disable network connectivity
   execute-python:
     handler: bin/code
     timeout: 30
@@ -124,6 +153,9 @@ functions:
         method: post
         cors: true
 
+  # challenge-go endpoint takes in the code and the object containing
+  # the tests which are to be executed against the code and returns
+  # the response
   challenge-go:
     handler: bin/challenge
     timeout: 30
@@ -138,6 +170,7 @@ functions:
         method: post
         cors: true      
 
+  # TODO: Deprecate
   code:
     handler: code/code.lambda_handler
     runtime: python3.6
@@ -152,7 +185,8 @@ functions:
         path: /v1/code
         method: post
         cors: true
-
+  
+  # TODO: needs implemented for the forum system
   posts:
     handler: bin/posts
     environment:

@@ -5,6 +5,7 @@ echo "Deploying Production"
 
 function setup() {
     npm install -g serverless
+    sls plugin install -n serverless-prune-plugin
     serverless version
 }
 
