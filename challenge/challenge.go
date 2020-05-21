@@ -54,14 +54,6 @@ func setupGoEnvironment() error {
 		if err != nil {
 			fmt.Println(err.Error())
 		}
-
-		// output, err := exec.Command("tar", "-xzf", "./code/go.tar.gz", "-C", "/tmp").CombinedOutput()
-		// if err != nil {
-		// 	fmt.Println("Failed to Execute tar command")
-		// 	fmt.Println(err.Error())
-		// 	fmt.Println(string(output))
-		// 	return err
-		// }
 	}
 	return nil
 }
