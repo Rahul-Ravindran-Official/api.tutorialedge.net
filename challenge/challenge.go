@@ -103,7 +103,7 @@ func ExecuteGoChallenge(request events.APIGatewayProxyRequest) (events.APIGatewa
 		log.Fatal(err)
 	}
 
-	out, err = exec.Command("go", "run", tmpfile.Name()).CombinedOutput()
+	out, err = exec.Command("go", "run", tmpfile).CombinedOutput()
 	if err != nil {
 		fmt.Println(err)
 		return events.APIGatewayProxyResponse{
@@ -113,13 +113,13 @@ func ExecuteGoChallenge(request events.APIGatewayProxyRequest) (events.APIGatewa
 		}, nil
 	}
 
-	for test := range challenge.Tests {
+	for _, test := range challenge.Tests {
 		tmpfn := filepath.Join(dir, test.Name+".go")
 		if err := ioutil.WriteFile(tmpfn, []byte(test.Code), 0666); err != nil {
 			log.Fatal(err)
 		}
 
-		out, err := exec.Command("go", "test", tmpfn.Name()).CombinedOutput()
+		out, err := exec.Command("go", "test", tmpfn).CombinedOutput()
 		if err != nil {
 			fmt.Println(err)
 			return events.APIGatewayProxyResponse{
