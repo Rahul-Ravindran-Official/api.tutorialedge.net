@@ -1,7 +1,6 @@
 package challenge
 
 import (
-	"encoding/base64"
 	"encoding/json"
 	"fmt"
 	"io/ioutil"
@@ -63,11 +62,9 @@ func setupGoEnvironment() error {
 // returning the response
 func ExecuteGoChallenge(request events.APIGatewayProxyRequest) (events.APIGatewayProxyResponse, error) {
 	fmt.Println("Received body: ", request.Body)
-	body, _ := base64.StdEncoding.DecodeString(request.Body)
-	fmt.Println(string(body))
 
 	var challenge ChallengeRequest
-	err := json.Unmarshal(body, &challenge)
+	err := json.Unmarshal(request.Body, &challenge)
 	if err != nil {
 		fmt.Println("Could not unmarshal challenge")
 	}
