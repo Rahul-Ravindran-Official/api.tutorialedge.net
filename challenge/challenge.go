@@ -35,13 +35,15 @@ type ChallengeTest struct {
 	Name   string `json:"name"`
 	Code   string `json:"code"`
 	Test   string `json:"test"`
+	Output string `json:"output"`
 	Passed bool   `json:"passed"`
 }
 
 // ChallengeResponse is the struct that contains the
 // response sent back when a challenge is attempted
 type ChallengeResponse struct {
-	Tests []ChallengeTest `json:"tests"`
+	Tests  []ChallengeTest `json:"tests"`
+	Output string          `json:"output"`
 }
 
 func setupGoEnvironment() error {
@@ -135,13 +137,11 @@ func ExecuteGoChallenge(request events.APIGatewayProxyRequest) (events.APIGatewa
 		out, err := cmd.CombinedOutput()
 		if err != nil {
 			fmt.Println(err)
-			return events.APIGatewayProxyResponse{
-				Body:       string(out),
-				Headers:    map[string]string{"Content-Type": "application/json", "Access-Control-Allow-Origin": "*"},
-				StatusCode: 200,
-			}, nil
+			test.Output = err.Error()
+			test.Passed = false
 		}
 
+		test.Output = string(out)
 		test.Passed = true
 		response.Tests = append(response.Tests, test)
 
