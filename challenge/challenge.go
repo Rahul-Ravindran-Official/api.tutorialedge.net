@@ -32,8 +32,15 @@ type ChallengeRequest struct {
 // the source code for a test file as well as
 // the metadata such as the test name
 type ChallengeTest struct {
-	Name string `json:"name"`
-	Code string `json:"code"`
+	Name   string `json:"name"`
+	Code   string `json:"code"`
+	Passed bool   `json:"passed"`
+}
+
+// ChallengeResponse is the struct that contains the
+// response sent back when a challenge is attempted
+type ChallengeResponse struct {
+	Tests []ChallengeTest `json:"tests"`
 }
 
 func setupGoEnvironment() error {
@@ -114,6 +121,8 @@ func ExecuteGoChallenge(request events.APIGatewayProxyRequest) (events.APIGatewa
 		}, nil
 	}
 
+	var response ChallengeResponse
+
 	for _, test := range challenge.Tests {
 		tmpfn := filepath.Join(dir, test.Name+".go")
 		if err := ioutil.WriteFile(tmpfn, []byte(test.Code), 0666); err != nil {
@@ -130,14 +139,23 @@ func ExecuteGoChallenge(request events.APIGatewayProxyRequest) (events.APIGatewa
 			}, nil
 		}
 
+		test.Passed = true
+		response.Tests = append(response.Tests, test)
+
 		fmt.Printf("go test %s\n", tmpfn)
 		fmt.Printf("%+v\n", string(out))
 	}
 
 	fmt.Printf("go run output: %s\n", string(out))
+	jsonResults, err := json.Marshal(response)
+	if err != nil {
+		panic(err.Error())
+	}
+
+	fmt.Printf("%+v\n", string(jsonResults))
 
 	return events.APIGatewayProxyResponse{
-		Body:       string(out),
+		Body:       string(jsonResults),
 		Headers:    map[string]string{"Content-Type": "application/json", "Access-Control-Allow-Origin": "*"},
 		StatusCode: 200,
 	}, nil
