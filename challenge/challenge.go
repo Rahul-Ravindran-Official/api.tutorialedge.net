@@ -111,7 +111,7 @@ func ExecuteGoChallenge(request events.APIGatewayProxyRequest) (events.APIGatewa
 
 	defer os.Remove(tmpfile.Name()) // clean up
 
-	if _, err := tmpfile.Write([]byte(request.Body)); err != nil {
+	if _, err := tmpfile.Write([]byte(challenge.Code)); err != nil {
 		log.Fatal(err)
 	}
 	if err := tmpfile.Close(); err != nil {
