@@ -1,4 +1,4 @@
-package code_test
+package challenge_test
 
 // func TestExecuteCode(t *testing.T) {
 // 	body := []byte(`package main

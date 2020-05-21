@@ -1,6 +1,8 @@
-package code
+package challenge
 
 import (
+	"encoding/base64"
+	"encoding/json"
 	"fmt"
 	"io/ioutil"
 	"log"
@@ -8,54 +10,23 @@ import (
 	"os/exec"
 
 	"github.com/aws/aws-lambda-go/events"
-	"github.com/mholt/archiver"
 )
 
-// CodeResponse contains the response from
-// executing the Go code
-type CodeResponse struct {
-	ExitCode string `json:"exit_code"`
-	Output   string `json:"output"`
-}
-
-func setupGoEnvironment() error {
-	path := os.Getenv("PATH")
-	os.Setenv("PATH", path+":/tmp/go/bin")
-	os.Setenv("GOROOT", "/tmp/go")
-	os.Setenv("GOPATH", "/tmp")
-	os.Setenv("GOCACHE", "/tmp/go-cache")
-
-	if _, err := os.Stat("/tmp/go"); os.IsNotExist(err) {
-		err := os.Mkdir("/tmp/go", 0777)
-		if err != nil {
-			fmt.Println(err)
-		}
-
-		// untar ./code/go.tar.gz -> /tmp/go
-		err = archiver.Unarchive("./code/go.tar.gz", "/tmp")
-		if err != nil {
-			fmt.Println(err.Error())
-		}
-
-		// output, err := exec.Command("tar", "-xzf", "./code/go.tar.gz", "-C", "/tmp").CombinedOutput()
-		// if err != nil {
-		// 	fmt.Println("Failed to Execute tar command")
-		// 	fmt.Println(err.Error())
-		// 	fmt.Println(string(output))
-		// 	return err
-		// }
-	}
-	return nil
-}
-
-// ExecuteCode does the job of taking the Go code that has
+// ExecutePythonChallenge does the job of taking the Go code that has
 // been sent to API from a snippet and executing it before
 // returning the response
-func ExecuteCode(request events.APIGatewayProxyRequest) (events.APIGatewayProxyResponse, error) {
-
+func ExecutePythonChallenge(request events.APIGatewayProxyRequest) (events.APIGatewayProxyResponse, error) {
 	fmt.Println("Received body: ", request.Body)
+	body, _ := base64.StdEncoding.DecodeString(request.Body)
+	fmt.Println(string(body))
 
-	err := setupGoEnvironment()
+	var challenge ChallengeRequest
+	err := json.Unmarshal(body, &challenge)
+	if err != nil {
+		fmt.Println("Could not unmarshal challenge")
+	}
+
+	err = setupGoEnvironment()
 	if err != nil {
 		log.Fatalf("Setting up Go Env Failed")
 		return events.APIGatewayProxyResponse{
