@@ -64,7 +64,7 @@ func ExecuteGoChallenge(request events.APIGatewayProxyRequest) (events.APIGatewa
 	fmt.Println("Received body: ", request.Body)
 
 	var challenge ChallengeRequest
-	err := json.Unmarshal(request.Body, &challenge)
+	err := json.Unmarshal([]byte(request.Body), &challenge)
 	if err != nil {
 		fmt.Println("Could not unmarshal challenge")
 	}
