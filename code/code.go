@@ -8,6 +8,7 @@ import (
 	"os/exec"
 
 	"github.com/aws/aws-lambda-go/events"
+	"github.com/mholt/archiver"
 )
 
 // CodeResponse contains the response from
@@ -31,13 +32,18 @@ func setupGoEnvironment() error {
 		}
 
 		// untar ./code/go.tar.gz -> /tmp/go
-		output, err := exec.Command("tar", "-xzf", "./code/go.tar.gz", "-C", "/tmp").CombinedOutput()
+		err = archiver.Unarchive("./code/go.tar.gz", "/tmp")
 		if err != nil {
-			fmt.Println("Failed to Execute tar command")
 			fmt.Println(err.Error())
-			fmt.Println(string(output))
-			return err
 		}
+
+		// output, err := exec.Command("tar", "-xzf", "./code/go.tar.gz", "-C", "/tmp").CombinedOutput()
+		// if err != nil {
+		// 	fmt.Println("Failed to Execute tar command")
+		// 	fmt.Println(err.Error())
+		// 	fmt.Println(string(output))
+		// 	return err
+		// }
 	}
 	return nil
 }
