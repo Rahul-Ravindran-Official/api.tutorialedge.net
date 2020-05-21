@@ -1,6 +1,8 @@
 package code
 
 import (
+	"encoding/base64"
+	"encoding/json"
 	"fmt"
 	"io/ioutil"
 	"log"
@@ -8,6 +10,7 @@ import (
 	"os/exec"
 
 	"github.com/aws/aws-lambda-go/events"
+	"github.com/mholt/archiver/v3"
 )
 
 // CodeResponse contains the response from
@@ -15,6 +18,22 @@ import (
 type CodeResponse struct {
 	ExitCode string `json:"exit_code"`
 	Output   string `json:"output"`
+}
+
+// ChallengeRequest takes in the source code
+// from the editor as well as a number of tests
+// which are written into a file and ran
+type ChallengeRequest struct {
+	Code  string          `json:"code"`
+	Tests []ChallengeTest `json:"tests"`
+}
+
+// ChallengeTest is a struct which contains
+// the source code for a test file as well as
+// the metadata such as the test name
+type ChallengeTest struct {
+	Name string `json:"name"`
+	Code string `json:"code"`
 }
 
 func setupGoEnvironment() error {
@@ -31,13 +50,18 @@ func setupGoEnvironment() error {
 		}
 
 		// untar ./code/go.tar.gz -> /tmp/go
-		output, err := exec.Command("tar", "-xzf", "./code/go.tar.gz", "-C", "/tmp").CombinedOutput()
+		err = archiver.Unarchive("./code/go.tar.gz", "/tmp")
 		if err != nil {
-			fmt.Println("Failed to Execute tar command")
 			fmt.Println(err.Error())
-			fmt.Println(string(output))
-			return err
 		}
+
+		// output, err := exec.Command("tar", "-xzf", "./code/go.tar.gz", "-C", "/tmp").CombinedOutput()
+		// if err != nil {
+		// 	fmt.Println("Failed to Execute tar command")
+		// 	fmt.Println(err.Error())
+		// 	fmt.Println(string(output))
+		// 	return err
+		// }
 	}
 	return nil
 }
@@ -46,13 +70,12 @@ func setupGoEnvironment() error {
 // been sent to API from a snippet and executing it before
 // returning the response
 func ExecuteCode(request events.APIGatewayProxyRequest) (events.APIGatewayProxyResponse, error) {
-
 	fmt.Println("Received body: ", request.Body)
-	// body, err := base64.StdEncoding.DecodeString(request.Body)
-	// if err != nil {
-	// 	fmt.Println("Issue decoding request body from base64")
-	// }
-	// fmt.Println(string(body))
+	body, _ := base64.StdEncoding.DecodeString(request.Body)
+	fmt.Println(string(body))
+
+	var challenge ChallengeRequest
+	err := json.Unmarshal(body, &challenge)
 
 	err := setupGoEnvironment()
 	if err != nil {

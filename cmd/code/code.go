@@ -20,10 +20,10 @@ func handler(request events.APIGatewayProxyRequest) (events.APIGatewayProxyRespo
 	}
 
 	switch request.Path {
-	case "/api/v1/executego":
+	case "/api/v1/executego", "/v1/executego":
 		response, _ := code.ExecuteCode(request)
 		return response, nil
-	case "/api/v1/executepython":
+	case "/api/v1/executepython", "/v1/executepython":
 		response, _ := code.ExecutePython(request)
 		return response, nil
 	default:
