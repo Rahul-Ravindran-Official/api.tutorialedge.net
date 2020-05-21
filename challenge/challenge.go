@@ -130,7 +130,7 @@ func ExecuteGoChallenge(request events.APIGatewayProxyRequest) (events.APIGatewa
 			}, nil
 		}
 
-		fmt.Println("go test %s", tmpfn)
+		fmt.Printf("go test %s\n", tmpfn)
 		fmt.Printf("%+v\n", string(out))
 	}
 
