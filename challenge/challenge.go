@@ -68,6 +68,7 @@ func ExecuteGoChallenge(request events.APIGatewayProxyRequest) (events.APIGatewa
 	err := json.Unmarshal([]byte(request.Body), &challenge)
 	if err != nil {
 		fmt.Println("Could not unmarshal challenge")
+		fmt.Println(err.Error())
 	}
 
 	err = setupGoEnvironment()
@@ -128,6 +129,9 @@ func ExecuteGoChallenge(request events.APIGatewayProxyRequest) (events.APIGatewa
 				StatusCode: 200,
 			}, nil
 		}
+
+		fmt.Println("go test %s", tmpfn)
+		fmt.Printf("%+v\n", string(out))
 	}
 
 	fmt.Printf("go run output: %s\n", string(out))
