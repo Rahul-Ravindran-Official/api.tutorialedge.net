@@ -61,7 +61,7 @@ functions:
         cors: true
   
   challenges:
-    handler: bin/challenges
+    handler: bin/challenge
     events:
     - http:
         path: /v1/challenges
@@ -134,7 +134,7 @@ functions:
         - subnet-0cbb13cb6e95802a5 
     events:
     - http:
-        path: /v1/challenge
+        path: /v1/challengego
         method: post
         cors: true      
 
