@@ -130,7 +130,9 @@ func ExecuteGoChallenge(request events.APIGatewayProxyRequest) (events.APIGatewa
 			log.Fatal(err)
 		}
 
-		out, err := exec.Command("go", "test", "-run", test.Test).CombinedOutput()
+		cmd := exec.Command("go", "test", "-run", test.Test)
+		cmd.Dir = dir
+		out, err := cmd.CombinedOutput()
 		if err != nil {
 			fmt.Println(err)
 			return events.APIGatewayProxyResponse{
