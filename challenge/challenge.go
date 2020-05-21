@@ -139,12 +139,12 @@ func ExecuteGoChallenge(request events.APIGatewayProxyRequest) (events.APIGatewa
 			fmt.Println(err)
 			test.Output = err.Error()
 			test.Passed = false
+		} else {
+			test.Output = string(out)
+			test.Passed = true
 		}
 
-		test.Output = string(out)
-		test.Passed = true
 		response.Tests = append(response.Tests, test)
-
 		fmt.Printf("go test %s\n", tmpfn)
 		fmt.Printf("%+v\n", string(out))
 	}
