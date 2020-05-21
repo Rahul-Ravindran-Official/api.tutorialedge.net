@@ -34,6 +34,7 @@ type ChallengeRequest struct {
 type ChallengeTest struct {
 	Name   string `json:"name"`
 	Code   string `json:"code"`
+	Test   string `json:"test"`
 	Passed bool   `json:"passed"`
 }
 
@@ -129,7 +130,7 @@ func ExecuteGoChallenge(request events.APIGatewayProxyRequest) (events.APIGatewa
 			log.Fatal(err)
 		}
 
-		out, err := exec.Command("go", "test", tmpfn).CombinedOutput()
+		out, err := exec.Command("go", "test", "-run", test.Test).CombinedOutput()
 		if err != nil {
 			fmt.Println(err)
 			return events.APIGatewayProxyResponse{
