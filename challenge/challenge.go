@@ -7,6 +7,7 @@ import (
 	"log"
 	"os"
 	"os/exec"
+	"path/filepath"
 
 	"github.com/aws/aws-lambda-go/events"
 	"github.com/mholt/archiver/v3"
@@ -92,18 +93,13 @@ func ExecuteGoChallenge(request events.APIGatewayProxyRequest) (events.APIGatewa
 	}
 	fmt.Printf("Go Version Output: %s", string(out))
 
-	tmpfile, err := ioutil.TempFile("/tmp", "main.*.go")
+	dir, err := ioutil.TempDir("/tmp", "challenge*")
 	if err != nil {
 		log.Fatal(err)
 	}
-	fmt.Println("Created File: " + tmpfile.Name())
 
-	defer os.Remove(tmpfile.Name()) // clean up
-
-	if _, err := tmpfile.Write([]byte(challenge.Code)); err != nil {
-		log.Fatal(err)
-	}
-	if err := tmpfile.Close(); err != nil {
+	tmpfn := filepath.Join(dir, "main.go")
+	if err := ioutil.WriteFile(tmpfn, []byte(challenge.Code), 0666); err != nil {
 		log.Fatal(err)
 	}
 
@@ -115,6 +111,23 @@ func ExecuteGoChallenge(request events.APIGatewayProxyRequest) (events.APIGatewa
 			Headers:    map[string]string{"Content-Type": "application/json", "Access-Control-Allow-Origin": "*"},
 			StatusCode: 200,
 		}, nil
+	}
+
+	for test := range challenge.Tests {
+		tmpfn := filepath.Join(dir, test.Name+".go")
+		if err := ioutil.WriteFile(tmpfn, []byte(test.Code), 0666); err != nil {
+			log.Fatal(err)
+		}
+
+		out, err := exec.Command("go", "test", tmpfn.Name()).CombinedOutput()
+		if err != nil {
+			fmt.Println(err)
+			return events.APIGatewayProxyResponse{
+				Body:       string(out),
+				Headers:    map[string]string{"Content-Type": "application/json", "Access-Control-Allow-Origin": "*"},
+				StatusCode: 200,
+			}, nil
+		}
 	}
 
 	fmt.Printf("go run output: %s\n", string(out))
