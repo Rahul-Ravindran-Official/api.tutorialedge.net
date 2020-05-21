@@ -50,6 +50,7 @@ function main() {
     echo "downloaded go"
 
     echo "Deploying Production API..."
+    sls plugin install -n serverless-prune-plugin
     serverless deploy --stage=production
     echo "Successfully Deployed Production Stage"
 }
