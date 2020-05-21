@@ -1,4 +1,4 @@
-package code
+package challenge
 
 import (
 	"encoding/base64"
