@@ -5,6 +5,7 @@ echo "Deploying Production"
 
 function setup() {
     npm install -g serverless
+    sls plugin install -n serverless-prune-plugin
     serverless version
 }
 
@@ -50,7 +51,6 @@ function main() {
     echo "downloaded go"
 
     echo "Deploying Production API..."
-    sls plugin install -n serverless-prune-plugin
     serverless deploy --stage=production
     echo "Successfully Deployed Production Stage"
 }

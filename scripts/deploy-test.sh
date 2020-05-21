@@ -5,6 +5,7 @@ echo "Deploying Test"
 
 function setup() {
     npm install -g serverless
+    sls plugin install -n serverless-prune-plugin
     serverless version
 }
 
@@ -62,7 +63,6 @@ function main() {
     export AUTH0_SIGNING_KEY=$(curl https://tutorialedge.eu.auth0.com/pem)
 
     echo "Deploying Test API..."
-    sls plugin install -n serverless-prune-plugin
     serverless deploy --stage=development --force
     echo "Successfully Deployed Test Stage"
 }
