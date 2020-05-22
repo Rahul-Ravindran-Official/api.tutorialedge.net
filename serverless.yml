@@ -145,8 +145,6 @@ functions:
       include:
         - ./bin/code
         - ./code/go.tar.gz
-    layers:
-      - { Ref: GoLambdaLayer }
     timeout: 30
     vpc:
       securityGroupIds:
@@ -184,8 +182,6 @@ functions:
   # the response
   challenge-go:
     handler: bin/challenge
-    layers:
-      - { Ref: GoLambdaLayer }
     package:
       include:
         - ./bin/challenge
