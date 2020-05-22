@@ -92,7 +92,7 @@ func ExecuteGoChallenge(request events.APIGatewayProxyRequest) (events.APIGatewa
 		}, nil
 	}
 
-	out, err := exec.Command("go", "version").CombinedOutput()
+	out, err := exec.Command("./bin/go", "version").CombinedOutput()
 	if err != nil {
 		fmt.Println(err.Error())
 
@@ -116,7 +116,7 @@ func ExecuteGoChallenge(request events.APIGatewayProxyRequest) (events.APIGatewa
 	}
 	var response ChallengeResponse
 
-	out, err = exec.Command("go", "run", tmpfn).CombinedOutput()
+	out, err = exec.Command("./bin/go", "run", tmpfn).CombinedOutput()
 	if err != nil {
 		fmt.Println(err)
 		response.Output = string(out)
@@ -144,7 +144,7 @@ func ExecuteGoChallenge(request events.APIGatewayProxyRequest) (events.APIGatewa
 			log.Fatal(err)
 		}
 
-		cmd := exec.Command("go", "test", "-run", test.Test)
+		cmd := exec.Command("./bin/go", "test", "-run", test.Test)
 		cmd.Dir = dir
 		out, err := cmd.CombinedOutput()
 		if err != nil {
