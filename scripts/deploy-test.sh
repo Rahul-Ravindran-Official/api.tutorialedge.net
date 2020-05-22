@@ -54,7 +54,7 @@ function main() {
 
     pushd go-bin
         curl https://images.tutorialedge.net/go.zip -o go.zip
-
+        echo "hi"
         # tar -zcf go.tar.gz go
         ls
     popd
