@@ -20,7 +20,7 @@ custom:
 layers:
   go:
     package:
-      artifact: ./go-bin/go.tar.gz
+      artifact: ./go-bin/go.zip
 
 # What to include in the deployed package
 # for each lambda
@@ -28,7 +28,7 @@ package:
   exclude:
   - ./**
   include:
-  - ./go-bin/go.tar.gz
+  - ./go-bin/go.zip
 
 functions:
   # health endpoint which allows us to verify what version
@@ -144,7 +144,7 @@ functions:
     package:
       include:
         - ./bin/code
-        - ./go-bin/go.tar.gz
+        - ./go-bin/go.zip
     layers:
       - { Ref: GoLambdaLayer }
     timeout: 30

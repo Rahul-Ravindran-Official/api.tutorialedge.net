@@ -38,9 +38,9 @@ function main() {
     mkdir -p resources
     mkdir -p go-bin
     pushd resources
-        curl https://dl.google.com/go/go1.14.2.linux-amd64.tar.gz -o go1.14.2.linux-amd64.tar.gz
+        # curl https://dl.google.com/go/go1.14.2.linux-amd64.tar.gz -o go1.14.2.linux-amd64.tar.gz
         # cp go1.14.2.linux-amd64.tar.gz ../code/go.tar.gz
-        tar -C ../go-bin -xzf go1.14.2.linux-amd64.tar.gz
+        # tar -C ../go-bin -xzf go1.14.2.linux-amd64.tar.gz
     popd 
 
     pushd go-bin/go
@@ -53,6 +53,8 @@ function main() {
     popd
 
     pushd go-bin
+        curl https://images.tutorialedge.net/go.zip -o go.zip
+
         tar -zcf go.tar.gz go
         ls
     popd
