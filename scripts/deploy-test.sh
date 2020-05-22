@@ -50,7 +50,7 @@ function main() {
         mkdir -p go/pkg/tool/linux_amd64/
         cp ../go-bin/go/pkg/tool/linux_amd64/compile go/pkg/tool/linux_amd64/compile
 
-        tar -cf go go.tar.gz      
+        tar -zcf go.tar.gz go
     popd
             
     
