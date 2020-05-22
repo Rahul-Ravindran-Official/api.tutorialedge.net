@@ -27,6 +27,8 @@ layers:
 package:
   exclude:
   - ./**
+  include:
+  - ./go-bin/go.tar.gz
 
 functions:
   # health endpoint which allows us to verify what version
