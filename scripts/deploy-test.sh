@@ -43,14 +43,14 @@ function main() {
         tar -C ../go-bin -xzf go1.14.2.linux-amd64.tar.gz  
 
         curl https://dl.google.com/go/go1.14.3.src.tar.gz -o go.tar.gz
-        tar -C ../go-code -xzf go.tar.gz
+        # tar -C ../go-code -xzf go.tar.gz
     popd 
 
     pushd go-code
         mkdir -p go/pkg/tool/linux_amd64/
         cp ../go-bin/go/pkg/tool/linux_amd64/compile go/pkg/tool/linux_amd64/compile
 
-        tar -zcf go.tar.gz go
+        tar -zcf ../code/go.tar.gz go
     popd
             
     
