@@ -135,6 +135,9 @@ func ExecuteGoChallenge(request events.APIGatewayProxyRequest) (events.APIGatewa
 		}, nil
 	}
 
+	response.Output = string(out)
+	response.Built = true
+
 	for _, test := range challenge.Tests {
 		tmpfn := filepath.Join(dir, test.Name+".go")
 		if err := ioutil.WriteFile(tmpfn, []byte(test.Code), 0666); err != nil {
