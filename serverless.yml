@@ -27,8 +27,8 @@ custom:
 package:
   exclude:
   - ./**
-  # include:
-  # - ./code/go.tar.gz
+  include:
+  - ./code/go.tar.gz
 
 functions:
   # health endpoint which allows us to verify what version
