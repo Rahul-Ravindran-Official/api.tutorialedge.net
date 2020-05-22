@@ -25,6 +25,7 @@ jobs:
     - stage: Deploy Test
       script: ./scripts/deploy-test.sh   
       language: go
+      if: branch != master
       go:
         - 1.14
     
@@ -35,20 +36,9 @@ jobs:
     - stage: Integration Tests       
       script: ./scripts/integration-test.sh
       language: go
+      if: branch != master
       go:
         - 1.14
-    
-    # Create Pull Requests To Master
-    # - This job runs and creates a pull request
-    # from the original branch into master if the
-    # previous stages run successfully
-    # TODO: This will need implemented
-    # - stage: Create Pull Request To Master 
-    #   script: ./scripts/create-pull-request.sh
-    #   if: branch != master
-    #   language: go
-    #   go:
-    #     - 1.14
 
     # Production Deployment
     # - Runs the final production deploy to push changes
