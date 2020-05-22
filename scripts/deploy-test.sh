@@ -53,12 +53,12 @@ function main() {
     popd
 
     pushd go-bin
-        tar -zcf ../code/go.tar.gz go
+        tar -zcf go.tar.gz go
     popd
     
-    cp go-bin/go/bin/go bin/go
-    chmod +x bin/go
-    echo "downloaded go"
+    # cp go-bin/go/bin/go bin/go
+    # chmod +x bin/go
+    # echo "downloaded go"
 
     export AUTH0_SIGNING_KEY=$(curl https://tutorialedge.eu.auth0.com/pem)
 
