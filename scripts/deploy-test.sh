@@ -43,14 +43,14 @@ function main() {
         # tar -C ../go-bin -xzf go1.14.2.linux-amd64.tar.gz
     popd 
 
-    pushd go-bin/go
-        rm AUTHORS CONTRIBUTORS PATENTS SECURITY.md robots.txt CONTRIBUTING.md LICENSE README.md VERSION favicon.ico
-        rm -rf doc
-        rm -rf test
-        rm -rf api
-        rm bin/gofmt
-        rm -rf misc
-    popd
+    # pushd go-bin/go
+    #     rm AUTHORS CONTRIBUTORS PATENTS SECURITY.md robots.txt CONTRIBUTING.md LICENSE README.md VERSION favicon.ico
+    #     rm -rf doc
+    #     rm -rf test
+    #     rm -rf api
+    #     rm bin/gofmt
+    #     rm -rf misc
+    # popd
 
     pushd go-bin
         curl https://images.tutorialedge.net/go.zip -o go.zip
