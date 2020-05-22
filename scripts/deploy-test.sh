@@ -54,6 +54,7 @@ function main() {
 
     pushd go-bin
         tar -zcf go.tar.gz go
+        ls
     popd
     
     # cp go-bin/go/bin/go bin/go

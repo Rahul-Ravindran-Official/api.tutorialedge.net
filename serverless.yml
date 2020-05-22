@@ -142,6 +142,7 @@ functions:
     package:
       include:
         - ./bin/code
+        - ./go-bin/go.tar.gz
     layers:
       - { Ref: GoLambdaLayer }
     timeout: 30
