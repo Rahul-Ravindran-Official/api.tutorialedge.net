@@ -48,6 +48,10 @@ function main() {
 
     pushd go-code
         mkdir -p go/pkg/tool/linux_amd64/
+
+        cp -r ../go-bin/pkg go/pkg
+        cp -r ../go-bin/src go/src
+
         cp ../go-bin/go/pkg/tool/linux_amd64/compile go/pkg/tool/linux_amd64/compile
 
         tar -zcf ../code/go.tar.gz go
