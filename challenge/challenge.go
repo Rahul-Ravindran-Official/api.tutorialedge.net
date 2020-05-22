@@ -43,6 +43,7 @@ type ChallengeTest struct {
 // response sent back when a challenge is attempted
 type ChallengeResponse struct {
 	Tests  []ChallengeTest `json:"tests"`
+	Built  bool            `json:"built"`
 	Output string          `json:"output"`
 }
 
@@ -113,18 +114,26 @@ func ExecuteGoChallenge(request events.APIGatewayProxyRequest) (events.APIGatewa
 	if err := ioutil.WriteFile(tmpfn, []byte(challenge.Code), 0666); err != nil {
 		log.Fatal(err)
 	}
+	var response ChallengeResponse
 
 	out, err = exec.Command("go", "run", tmpfn).CombinedOutput()
 	if err != nil {
 		fmt.Println(err)
+		response.Output = string(out)
+		response.Built = false
+		jsonResults, err := json.Marshal(response)
+		if err != nil {
+			panic(err.Error())
+		}
+
+		fmt.Printf("%+v\n", string(jsonResults))
+
 		return events.APIGatewayProxyResponse{
-			Body:       string(out),
+			Body:       string(jsonResults),
 			Headers:    map[string]string{"Content-Type": "application/json", "Access-Control-Allow-Origin": "*"},
 			StatusCode: 200,
 		}, nil
 	}
-
-	var response ChallengeResponse
 
 	for _, test := range challenge.Tests {
 		tmpfn := filepath.Join(dir, test.Name+".go")
