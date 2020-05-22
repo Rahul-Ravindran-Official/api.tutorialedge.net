@@ -29,7 +29,7 @@ package:
   - ./**
   include:
   - ./bin/**
-  - ./code/go.tar.gz
+  - ./code/**
 
 functions:
   # health endpoint which allows us to verify what version
