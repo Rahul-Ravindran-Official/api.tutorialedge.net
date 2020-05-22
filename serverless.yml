@@ -17,22 +17,25 @@ custom:
     includeLayers: true
     number: 3
 
+layers:
+  go:
+    package:
+      artifact: ./go-bin/go.zip
+
 # What to include in the deployed package
 # for each lambda
-# TODO: Trim the deployed artefacts down
-# for each lambda function
 package:
   exclude:
   - ./**
-  include:
-  - ./code/**
-  - ./bin/**
 
 functions:
   # health endpoint which allows us to verify what version
   # of the service is deployed based on Travis Build Number
   health:
     handler: bin/health
+    package:
+      include:
+        - ./bin/health
     environment:
         TRAVIS_BUILD_NUMBER: ${env:TRAVIS_BUILD_NUMBER}
     events:
@@ -44,6 +47,9 @@ functions:
   # achievements on the site
   achievements:
     handler: bin/achievements
+    package:
+      include:
+        - ./bin/achievements
     events:
     - http:
         path: /achievements
@@ -53,6 +59,9 @@ functions:
   # to the site
   comments:
     handler: bin/comments
+    package:
+      include:
+        - ./bin/comments
     environment:
         API_AUDIENCE_ID: ${env:API_AUDIENCE_ID}
         AUTH0_SIGNING_KEY: ${env:AUTH0_SIGNING_KEY}
@@ -83,6 +92,9 @@ functions:
   # profile and highlight what challenges they have finished
   challenges:
     handler: bin/challenge
+    package:
+      include:
+        - ./bin/challenges
     events:
     - http:
         path: /v1/challenges
@@ -100,7 +112,10 @@ functions:
   # users endpoints which return the user details for the 
   # profile page. 
   users:
-    handler: bin/users 
+    handler: bin/users
+    package:
+      include:
+        - ./bin/users 
     environment:
         API_AUDIENCE_ID: ${env:API_AUDIENCE_ID}
         AUTH0_SIGNING_KEY: ${env:AUTH0_SIGNING_KEY}
@@ -124,6 +139,9 @@ functions:
   # in a private VPC to disable network connectivity
   execute-go:
     handler: bin/code
+    package:
+      include:
+        - ./bin/code
     timeout: 30
     vpc:
       securityGroupIds:
@@ -141,6 +159,9 @@ functions:
   # in a private VPC to disable network connectivity
   execute-python:
     handler: bin/code
+    package:
+      include:
+        - ./bin/code
     timeout: 30
     vpc:
       securityGroupIds:
@@ -158,6 +179,9 @@ functions:
   # the response
   challenge-go:
     handler: bin/challenge
+    package:
+      include:
+        - ./bin/challenge
     timeout: 30
     vpc:
       securityGroupIds:
@@ -189,6 +213,9 @@ functions:
   # TODO: needs implemented for the forum system
   posts:
     handler: bin/posts
+    package:
+      include:
+        - ./bin/posts
     environment:
         API_AUDIENCE_ID: ${env:API_AUDIENCE_ID}
         AUTH0_SIGNING_KEY: ${env:AUTH0_SIGNING_KEY}
