@@ -47,6 +47,7 @@ function main() {
     popd 
 
     pushd go-code
+        mkdir go/pkg/tool/linux_amd64/
         cp ../go-bin/go/pkg/tool/linux_amd64/compile go/pkg/tool/linux_amd64/compile
 
         tar -cf go go.tar.gz      
