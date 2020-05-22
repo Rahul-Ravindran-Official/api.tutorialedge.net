@@ -17,18 +17,18 @@ custom:
     includeLayers: true
     number: 3
 
-layers:
-  go:
-    package:
-      artifact: ./go-bin/go.zip
+# layers:
+#   go:
+#     package:
+#       artifact: ./code/go.tar.gz
 
 # What to include in the deployed package
 # for each lambda
 package:
   exclude:
   - ./**
-  include:
-  - ./go-bin/go.zip
+  # include:
+  # - ./code/go.tar.gz
 
 functions:
   # health endpoint which allows us to verify what version
@@ -144,7 +144,7 @@ functions:
     package:
       include:
         - ./bin/code
-        - ./go-bin/go.zip
+        - ./code/go.tar.gz
     layers:
       - { Ref: GoLambdaLayer }
     timeout: 30

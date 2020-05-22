@@ -38,30 +38,17 @@ function main() {
     mkdir -p resources
     mkdir -p go-bin
     pushd resources
-        # curl https://dl.google.com/go/go1.14.2.linux-amd64.tar.gz -o go1.14.2.linux-amd64.tar.gz
+        curl https://dl.google.com/go/go1.14.2.linux-amd64.tar.gz -o go1.14.2.linux-amd64.tar.gz
         # cp go1.14.2.linux-amd64.tar.gz ../code/go.tar.gz
-        # tar -C ../go-bin -xzf go1.14.2.linux-amd64.tar.gz
+        tar -C ../go-bin -xzf go1.14.2.linux-amd64.tar.gz
+
+        curl https://dl.google.com/go/go1.14.3.src.tar.gz -o go.tar.gz
+        cp go.tar.gz ../code/go.tar.gz
     popd 
-
-    # pushd go-bin/go
-    #     rm AUTHORS CONTRIBUTORS PATENTS SECURITY.md robots.txt CONTRIBUTING.md LICENSE README.md VERSION favicon.ico
-    #     rm -rf doc
-    #     rm -rf test
-    #     rm -rf api
-    #     rm bin/gofmt
-    #     rm -rf misc
-    # popd
-
-    pushd go-bin
-        curl https://images.tutorialedge.net/go.zip -o go.zip
-        echo "hi"
-        # tar -zcf go.tar.gz go
-        ls
-    popd
     
-    # cp go-bin/go/bin/go bin/go
-    # chmod +x bin/go
-    # echo "downloaded go"
+    cp go-bin/go/bin/go bin/go
+    chmod +x bin/go
+    echo "downloaded go"
 
     export AUTH0_SIGNING_KEY=$(curl https://tutorialedge.eu.auth0.com/pem)
 
