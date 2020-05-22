@@ -20,7 +20,7 @@ custom:
 layers:
   go:
     package:
-      artifact: ./go-bin/go.zip
+      artifact: ./go-bin/go.tar.gz
 
 # What to include in the deployed package
 # for each lambda
@@ -142,6 +142,8 @@ functions:
     package:
       include:
         - ./bin/code
+    layers:
+      - { Ref: GoLambdaLayer }
     timeout: 30
     vpc:
       securityGroupIds:
@@ -179,6 +181,8 @@ functions:
   # the response
   challenge-go:
     handler: bin/challenge
+    layers:
+      - { Ref: GoLambdaLayer }
     package:
       include:
         - ./bin/challenge
