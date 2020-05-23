@@ -128,6 +128,8 @@ functions:
   execute-go:
     handler: bin/code
     timeout: 30
+    layers:
+      - { Ref: GoLambdaLayer }
     vpc:
       securityGroupIds:
         - sg-0f7b6fded566b53bf
@@ -162,6 +164,8 @@ functions:
   challenge-go:
     handler: bin/challenge
     timeout: 30
+    layers:
+      - { Ref: GoLambdaLayer }
     vpc:
       securityGroupIds:
         - sg-0f7b6fded566b53bf
