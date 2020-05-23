@@ -55,12 +55,18 @@ function main() {
         rm -rf src/net/
         rm -rf src/archive/
         rm -rf src/syscall/
+        rm -rf src/vendor/
+        rm -rf src/crypto/
         rm -rf src/cmd/
         rm -rf src/image/
         rm -rf src/debug/
         rm -rf src/compress/
         rm -rf src/cmd/vendor/
         rm -rf misc/
+
+        rm -rf pkg/linux_amd64/debug
+        rm -rf pkg/linux_amd64/vendor
+        rm -rf pkg/linux_amd64/text
 
         rm -rf pkg/tool/linux_amd64/doc
         rm -rf pkg/tool/linux_amd64/asm
