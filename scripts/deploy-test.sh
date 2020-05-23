@@ -54,6 +54,7 @@ function main() {
         rm -rf src/net/
         rm -rf src/compress/
         rm -rf src/cmd/vendor/
+        rm -rf misc/
     popd   
     
     pushd go-bin
