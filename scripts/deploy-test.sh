@@ -53,6 +53,8 @@ function main() {
         rm -rf pkg/linux_amd64_race/
         rm -rf src/database/
         rm -rf src/net/
+        rm -rf src/archive/
+        rm -rf src/syscall/
         rm -rf src/cmd/
         rm -rf src/image/
         rm -rf src/debug/
