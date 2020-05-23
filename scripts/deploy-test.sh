@@ -45,6 +45,7 @@ function main() {
     popd 
 
     pushd go-bin/go
+        rm -rf bin/gofmt
         rm -rf lib/
         rm -rf test/
         rm -rf api/
@@ -55,6 +56,40 @@ function main() {
         rm -rf src/compress/
         rm -rf src/cmd/vendor/
         rm -rf misc/
+
+        rm -rf pkg/tool/linux_amd64/doc
+        rm -rf pkg/tool/linux_amd64/asm
+        rm -rf pkg/tool/linux_amd64/addr2line
+        rm -rf pkg/tool/linux_amd64/test2json
+        rm -rf pkg/tool/linux_amd64/buildid
+        rm -rf pkg/tool/linux_amd64/pprof
+        rm -rf pkg/tool/linux_amd64/cgo
+        rm -rf pkg/tool/linux_amd64/trace
+        rm -rf pkg/tool/linux_amd64/cover
+        rm -rf pkg/tool/linux_amd64/pack
+        rm -rf pkg/tool/linux_amd64/vet
+        rm -rf pkg/tool/linux_amd64/dist
+        rm -rf pkg/tool/linux_amd64/link
+
+        # adding: go/pkg/tool/ (stored 0%)
+        # adding: go/pkg/tool/linux_amd64/ (stored 0%)
+        # adding: go/pkg/tool/linux_amd64/buildid (deflated 47%)
+        # adding: go/pkg/tool/linux_amd64/test2json (deflated 47%)
+        # adding: go/pkg/tool/linux_amd64/doc (deflated 47%)
+        # adding: go/pkg/tool/linux_amd64/fix (deflated 47%)
+        # adding: go/pkg/tool/linux_amd64/addr2line (deflated 51%)
+        # adding: go/pkg/tool/linux_amd64/asm (deflated 50%)
+        # adding: go/pkg/tool/linux_amd64/pprof (deflated 50%)
+        # adding: go/pkg/tool/linux_amd64/cgo (deflated 47%)
+        # adding: go/pkg/tool/linux_amd64/trace (deflated 48%)
+        # adding: go/pkg/tool/linux_amd64/cover (deflated 48%)
+        # adding: go/pkg/tool/linux_amd64/objdump (deflated 51%)
+        # adding: go/pkg/tool/linux_amd64/pack (deflated 47%)
+        # adding: go/pkg/tool/linux_amd64/vet (deflated 48%)
+        # adding: go/pkg/tool/linux_amd64/nm (deflated 51%)
+        # adding: go/pkg/tool/linux_amd64/link (deflated 47%)
+        # adding: go/pkg/tool/linux_amd64/compile (deflated 55%)
+        # adding: go/pkg/tool/linux_amd64/dist (deflated 46%)
     popd   
     
     pushd go-bin
