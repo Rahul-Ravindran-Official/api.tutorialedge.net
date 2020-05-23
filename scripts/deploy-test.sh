@@ -53,6 +53,9 @@ function main() {
         rm -rf pkg/linux_amd64_race/
         rm -rf src/database/
         rm -rf src/net/
+        rm -rf src/cmd/
+        rm -rf src/image/
+        rm -rf src/debug/
         rm -rf src/compress/
         rm -rf src/cmd/vendor/
         rm -rf misc/
@@ -70,26 +73,9 @@ function main() {
         rm -rf pkg/tool/linux_amd64/vet
         rm -rf pkg/tool/linux_amd64/dist
         rm -rf pkg/tool/linux_amd64/link
-
-        # adding: go/pkg/tool/ (stored 0%)
-        # adding: go/pkg/tool/linux_amd64/ (stored 0%)
-        # adding: go/pkg/tool/linux_amd64/buildid (deflated 47%)
-        # adding: go/pkg/tool/linux_amd64/test2json (deflated 47%)
-        # adding: go/pkg/tool/linux_amd64/doc (deflated 47%)
-        # adding: go/pkg/tool/linux_amd64/fix (deflated 47%)
-        # adding: go/pkg/tool/linux_amd64/addr2line (deflated 51%)
-        # adding: go/pkg/tool/linux_amd64/asm (deflated 50%)
-        # adding: go/pkg/tool/linux_amd64/pprof (deflated 50%)
-        # adding: go/pkg/tool/linux_amd64/cgo (deflated 47%)
-        # adding: go/pkg/tool/linux_amd64/trace (deflated 48%)
-        # adding: go/pkg/tool/linux_amd64/cover (deflated 48%)
-        # adding: go/pkg/tool/linux_amd64/objdump (deflated 51%)
-        # adding: go/pkg/tool/linux_amd64/pack (deflated 47%)
-        # adding: go/pkg/tool/linux_amd64/vet (deflated 48%)
-        # adding: go/pkg/tool/linux_amd64/nm (deflated 51%)
-        # adding: go/pkg/tool/linux_amd64/link (deflated 47%)
-        # adding: go/pkg/tool/linux_amd64/compile (deflated 55%)
-        # adding: go/pkg/tool/linux_amd64/dist (deflated 46%)
+        rm -rf pkg/tool/linux_amd64/objdump
+        rm -rf pkg/tool/linux_amd64/nm
+        rm -rf pkg/tool/linux_amd64/fix
     popd   
     
     pushd go-bin
