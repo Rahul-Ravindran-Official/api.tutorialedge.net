@@ -17,10 +17,10 @@ custom:
     includeLayers: true
     number: 3
 
-# layers:
-#   go:
-#     package:
-#       artifact: ./code/go.tar.gz
+layers:
+  go:
+    package:
+      artifact: ./code/go.zip
 
 # What to include in the deployed package
 # for each lambda

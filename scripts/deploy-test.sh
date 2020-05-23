@@ -40,22 +40,28 @@ function main() {
     mkdir -p go-code
     pushd resources
         curl https://dl.google.com/go/go1.14.2.linux-amd64.tar.gz -o go1.14.2.linux-amd64.tar.gz
+        
         tar -C ../go-bin -xzf go1.14.2.linux-amd64.tar.gz  
-
-        curl https://dl.google.com/go/go1.14.3.src.tar.gz -o go.tar.gz
-        # tar -C ../go-code -xzf go.tar.gz
     popd 
 
-    pushd go-code
-        mkdir -p go/pkg/tool/linux_amd64/
-
-        cp -r ../go-bin/go/pkg go/pkg
-        cp -r ../go-bin/go/src go/src
-
-        tar -zcf ../code/go.tar.gz go
-    popd
-            
+    pushd go-bin/go
+        rm -rf lib/
+        rm -rf test/
+        rm -rf api/
+        rm -rf doc/
+        rm -rf pkg/linux_amd64_race/
+        rm -rf src/database/
+        rm -rf src/net/
+        rm -rf src/compress/
+        rm -rf src/cmd/vendor/
+    popd   
     
+    pushd go-bin
+        zip -r ../code/go.zip go
+    popd
+
+    # final artefact = ./code/go.tar.gz
+
     cp go-bin/go/bin/go bin/go
     chmod +x bin/go
     echo "downloaded go"
