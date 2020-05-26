@@ -8,9 +8,9 @@ import (
 
 	"github.com/aws/aws-lambda-go/events"
 	"github.com/jinzhu/gorm"
-	"github.com/tutorialedge/api.tutorialedge.net/auth"
-	"github.com/tutorialedge/api.tutorialedge.net/email"
-	"github.com/tutorialedge/api.tutorialedge.net/user"
+	"github.com/Tutorialedge/api.tutorialedge.net/auth"
+	"github.com/Tutorialedge/api.tutorialedge.net/email"
+	"github.com/Tutorialedge/api.tutorialedge.net/user"
 )
 
 type Challenge struct {
