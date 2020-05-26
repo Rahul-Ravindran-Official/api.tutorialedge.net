@@ -5,9 +5,9 @@ import (
 	"fmt"
 
 	"github.com/aws/aws-lambda-go/events"
-	"github.com/elliotforbes/api.tutorialedge.net/comments"
-	"github.com/elliotforbes/api.tutorialedge.net/email"
 	"github.com/jinzhu/gorm"
+	"github.com/tutorialedge/api.tutorialedge.net/comments"
+	"github.com/tutorialedge/api.tutorialedge.net/email"
 )
 
 // User - A user on TutorialEdge! :D

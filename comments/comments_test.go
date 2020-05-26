@@ -8,9 +8,9 @@ import (
 
 	"github.com/aws/aws-lambda-go/events"
 
-	"github.com/elliotforbes/api.tutorialedge.net/auth"
-	"github.com/elliotforbes/api.tutorialedge.net/comments"
-	"github.com/elliotforbes/api.tutorialedge.net/database"
+	"github.com/tutorialedge/api.tutorialedge.net/auth"
+	"github.com/tutorialedge/api.tutorialedge.net/comments"
+	"github.com/tutorialedge/api.tutorialedge.net/database"
 )
 
 func TestGetComments(t *testing.T) {

@@ -6,9 +6,9 @@ import (
 	"fmt"
 
 	"github.com/aws/aws-lambda-go/events"
-	"github.com/elliotforbes/api.tutorialedge.net/auth"
-	"github.com/elliotforbes/api.tutorialedge.net/email"
 	"github.com/jinzhu/gorm"
+	"github.com/tutorialedge/api.tutorialedge.net/auth"
+	"github.com/tutorialedge/api.tutorialedge.net/email"
 )
 
 // Response a response object
