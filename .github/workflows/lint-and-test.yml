@@ -1,0 +1,12 @@
+name: Deploy Master Branch
+
+on: [push, pull_request]
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v2
+    - name: run unit tests
+      run: |
+        gofmt -d ../.

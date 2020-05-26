@@ -4,7 +4,6 @@ import (
 	"encoding/base64"
 	"encoding/json"
 	"fmt"
-	"os/user"
 
 	"github.com/TutorialEdge/api.tutorialedge.net/auth"
 	"github.com/TutorialEdge/api.tutorialedge.net/email"
