@@ -5,7 +5,7 @@ import (
 
 	"github.com/aws/aws-lambda-go/events"
 	"github.com/aws/aws-lambda-go/lambda"
-	"github.com/elliotforbes/api.tutorialedge.net/forum"
+	"github.com/tutorialedge/api.tutorialedge.net/forum"
 )
 
 func handler(request events.APIGatewayProxyRequest) (events.APIGatewayProxyResponse, error) {
