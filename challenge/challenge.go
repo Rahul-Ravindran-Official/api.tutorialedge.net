@@ -44,7 +44,7 @@ func PostChallenge(request events.APIGatewayProxyRequest, tokenInfo auth.TokenIn
 
 	user.Challenges = append(user.Challenges, challenge)
 
-	if er = db.Save(&user).Error; err != nil {
+	if err = db.Save(&user).Error; err != nil {
 		return events.APIGatewayProxyResponse{
 			Body:       "Could not save challenge for user",
 			Headers:    map[string]string{"Content-Type": "application/json", "Access-Control-Allow-Origin": "*"},
