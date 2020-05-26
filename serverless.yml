@@ -17,11 +17,6 @@ custom:
     includeLayers: true
     number: 3
 
-layers:
-  go:
-    package:
-      artifact: ./code/go.zip
-
 # What to include in the deployed package
 # for each lambda
 package:
@@ -29,7 +24,6 @@ package:
   - ./**
   include:
   - ./bin/**
-  - ./code/**
 
 functions:
   # health endpoint which allows us to verify what version
@@ -120,100 +114,3 @@ functions:
     - http:
         path: /v1/user
         method: post
-        cors: true
-  
-  # execute-go endpoint allows the execution of go code
-  # within the snippets portion of the site. This is executed 
-  # in a private VPC to disable network connectivity
-  execute-go:
-    handler: bin/code
-    timeout: 30
-    layers:
-      - { Ref: GoLambdaLayer }
-    vpc:
-      securityGroupIds:
-        - sg-0f7b6fded566b53bf
-      subnetIds:
-        - subnet-0cbb13cb6e95802a5 
-    events:
-    - http:
-        path: /v1/executego
-        method: post
-        cors: true
-
-  # execute-python endpoint allows the execution of python code
-  # within the snippets portion of the site. This is executed 
-  # in a private VPC to disable network connectivity
-  execute-python:
-    handler: bin/code
-    timeout: 30
-    vpc:
-      securityGroupIds:
-        - sg-0f7b6fded566b53bf
-      subnetIds:
-        - subnet-0cbb13cb6e95802a5 
-    events:
-    - http:
-        path: /v1/executepython
-        method: post
-        cors: true
-
-  # challenge-go endpoint takes in the code and the object containing
-  # the tests which are to be executed against the code and returns
-  # the response
-  challenge-go:
-    handler: bin/challenge
-    timeout: 30
-    layers:
-      - { Ref: GoLambdaLayer }
-    vpc:
-      securityGroupIds:
-        - sg-0f7b6fded566b53bf
-      subnetIds:
-        - subnet-0cbb13cb6e95802a5 
-    events:
-    - http:
-        path: /v1/challengego
-        method: post
-        cors: true      
-
-  # TODO: Deprecate
-  code:
-    handler: code/code.lambda_handler
-    runtime: python3.6
-    timeout: 900
-    vpc:
-      securityGroupIds:
-        - sg-0f7b6fded566b53bf
-      subnetIds:
-        - subnet-0cbb13cb6e95802a5 
-    events:
-    - http:
-        path: /v1/code
-        method: post
-        cors: true
-  
-  # TODO: needs implemented for the forum system
-  posts:
-    handler: bin/posts
-    environment:
-        API_AUDIENCE_ID: ${env:API_AUDIENCE_ID}
-        AUTH0_SIGNING_KEY: ${env:AUTH0_SIGNING_KEY}
-        DB_USERNAME: ${env:DB_USERNAME}
-        DB_PASSWORD: ${env:DB_PASSWORD}
-        DB_HOST: ${env:DB_HOST}
-        DB_TABLE: ${env:DB_TABLE}
-        MAILGUN_API_KEY: ${env:MAILGUN_API_KEY}
-    events:
-    - http:
-        path: /v1/posts
-        method: get
-    - http:
-        path: /v1/posts
-        method: post
-    - http:
-        path: /v1/posts
-        method: put
-    - http:
-        path: /v1/posts
-        method: delete
