@@ -8,6 +8,7 @@ import (
 	"github.com/TutorialEdge/api.tutorialedge.net/email"
 	"github.com/aws/aws-lambda-go/events"
 	"github.com/jinzhu/gorm"
+	"github.com/tutorialedge/api.tutorialedge.net/challenge"
 )
 
 // User - A user on TutorialEdge! :D
@@ -46,11 +47,10 @@ func GetUser(request events.APIGatewayProxyRequest, db *gorm.DB) (events.APIGate
 	db.Where("author_id = ?", sub).Find(&comments)
 	fmt.Printf("%+v\n", comments)
 
-
 	var challenges []challenge.Challenge
 	db.Where("author_id = ?", sub).Find(&challenges)
 	fmt.Printf("%+v\n", challenges)
-)
+
 	var user User
 	user.Sub = sub
 	user.Comments = comments
