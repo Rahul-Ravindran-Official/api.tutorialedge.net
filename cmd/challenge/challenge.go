@@ -5,9 +5,9 @@ import (
 
 	"github.com/TutorialEdge/api.tutorialedge.net/auth"
 	"github.com/TutorialEdge/api.tutorialedge.net/challenge"
+	"github.com/TutorialEdge/api.tutorialedge.net/database"
 	"github.com/aws/aws-lambda-go/events"
 	"github.com/aws/aws-lambda-go/lambda"
-	"github.com/tutorialedge/api.tutorialedge.net/database"
 )
 
 func handler(request events.APIGatewayProxyRequest) (events.APIGatewayProxyResponse, error) {
