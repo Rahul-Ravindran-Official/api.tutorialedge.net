@@ -12,15 +12,6 @@ import (
 	"github.com/jinzhu/gorm"
 )
 
-type Challenge struct {
-	gorm.Model
-	Slug          string `json:"slug"`
-	Code          string `json:"code"`
-	Score         int    `json:"score"`
-	Passed        bool   `json:"passed"`
-	ExecutionTime string `json:"execution_time"`
-}
-
 // PostChallenge - Adds a challenge to a User entry in the database
 //
 func PostChallenge(request events.APIGatewayProxyRequest, tokenInfo auth.TokenInfo, db *gorm.DB) (events.APIGatewayProxyResponse, error) {
@@ -45,7 +36,7 @@ func PostChallenge(request events.APIGatewayProxyRequest, tokenInfo auth.TokenIn
 	var user users.User
 	db.Where(users.User{Sub: tokenInfo.Sub}).FirstOrCreate(&user)
 
-	var challenge Challenge
+	var challenge users.Challenge
 	err = json.Unmarshal([]byte(request.Body), &challenge)
 	if err != nil {
 		panic(err.Error())
@@ -61,7 +52,7 @@ func PostChallenge(request events.APIGatewayProxyRequest, tokenInfo auth.TokenIn
 		}, nil
 	}
 
-	err = email.SendEmail("A User Has Completed A Challenge!", comment.Slug, "admin@tutorialedge.net")
+	err = email.SendEmail("A User Has Completed A Challenge!", challenge.Slug, "admin@tutorialedge.net")
 	if err != nil {
 		fmt.Println("Error Sending Comment Notification Email...")
 	}
