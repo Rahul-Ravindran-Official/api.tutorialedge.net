@@ -8,7 +8,7 @@ import (
 	"github.com/TutorialEdge/api.tutorialedge.net/email"
 	"github.com/aws/aws-lambda-go/events"
 	"github.com/jinzhu/gorm"
-	"github.com/tutorialedge/api.tutorialedge.net/challenge"
+	"github.com/tutorialEdge/api.tutorialedge.net/challenge"
 )
 
 // User - A user on TutorialEdge! :D

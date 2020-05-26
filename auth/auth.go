@@ -97,68 +97,6 @@ func Authenticate(request events.APIGatewayProxyRequest) (bool, TokenInfo) {
 	return token.Valid, tokenInfo
 }
 
-func Auth(endpoint func(http.ResponseWriter, *http.Request)) http.Handler {
-	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
-
-		fmt.Println("Attempting to Authenticate Incoming Request...")
-		var tokenInfo TokenInfo
-
-		header := r.Header["Authorization"]
-		if header == "" {
-			fmt.Fprintf(w, "Not Authorized")
-			return
-		}
-
-		tokenString := strings.Split(string(header), " ")[1]
-		token, err := jwt.Parse(tokenString, func(token *jwt.Token) (interface{}, error) {
-
-			// Verify 'aud' claim
-			aud := os.Getenv("API_AUDIENCE_ID")
-			checkAud := token.Claims.(jwt.MapClaims).VerifyAudience(aud, false)
-			if !checkAud {
-				return token, errors.New("Invalid audience")
-			}
-
-			iss := "https://tutorialedge.eu.auth0.com/"
-			checkIss := token.Claims.(jwt.MapClaims).VerifyIssuer(iss, false)
-			if !checkIss {
-				return token, errors.New("Invalid issuer")
-			}
-
-			cert, err := getPemCert(token)
-			if err != nil {
-				panic(err.Error())
-			}
-
-			verifyKey, err := jwt.ParseRSAPublicKeyFromPEM([]byte(cert))
-			if err != nil {
-				panic(err.Error())
-			}
-
-			return verifyKey, nil
-		})
-
-		if err != nil {
-			fmt.Println(err.Error())
-			fmt.Fprintf(w, err.Error())
-			return
-		}
-
-		if claims, ok := token.Claims.(jwt.MapClaims); ok && token.Valid {
-			tokenInfo.Sub = claims["sub"].(string)
-			tokenInfo.Iss = claims["iss"].(string)
-		} else {
-			fmt.Println("Failed to parse token information properly...")
-			fmt.Fprintf(w, "Claims are not valid")
-		}
-
-		if token.Valid {
-			endpoint(w, r)
-		}
-
-	})
-}
-
 // getPemCert retrieves the most up-to-date JWK.json file for
 // tutorialedge so that we can validate the JWT using the correct certs
 func getPemCert(token *jwt.Token) (string, error) {
