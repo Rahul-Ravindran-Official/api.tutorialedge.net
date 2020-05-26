@@ -19,7 +19,7 @@ func handler(request events.APIGatewayProxyRequest) (events.APIGatewayProxyRespo
 		}, nil
 	}
 
-	response, _ := challenge.ExecuteGoChallenge(request)
+	response, _ := challenge.PostChallenge(request)
 	return response, nil
 
 	// switch request.Path {
