@@ -7,7 +7,7 @@ import (
 
 	"github.com/TutorialEdge/api.tutorialedge.net/auth"
 	"github.com/TutorialEdge/api.tutorialedge.net/email"
-	"github.com/TutorialEdge/api.tutorialedge.net/user"
+	"github.com/TutorialEdge/api.tutorialedge.net/users"
 	"github.com/aws/aws-lambda-go/events"
 	"github.com/jinzhu/gorm"
 )
@@ -42,8 +42,8 @@ func PostChallenge(request events.APIGatewayProxyRequest, tokenInfo auth.TokenIn
 		}, nil
 	}
 
-	var user user.User
-	db.Where(User{Sub: tokenInfo.Sub}).FirstOrCreate(&user)
+	var user users.User
+	db.Where(users.User{Sub: tokenInfo.Sub}).FirstOrCreate(&user)
 
 	var challenge Challenge
 	err = json.Unmarshal([]byte(request.Body), &challenge)
