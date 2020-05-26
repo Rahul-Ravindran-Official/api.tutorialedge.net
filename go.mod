@@ -1,4 +1,4 @@
-module github.com/elliotforbes/api.tutorialedge.net
+module github.com/tutorialedge/api.tutorialedge.net
 
 go 1.13
 

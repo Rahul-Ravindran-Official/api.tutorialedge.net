@@ -17,16 +17,19 @@ custom:
     includeLayers: true
     number: 3
 
+layers:
+  go:
+    package:
+      artifact: ./code/go.zip
+
 # What to include in the deployed package
 # for each lambda
-# TODO: Trim the deployed artefacts down
-# for each lambda function
 package:
   exclude:
   - ./**
   include:
-  - ./code/**
   - ./bin/**
+  - ./code/**
 
 functions:
   # health endpoint which allows us to verify what version
@@ -100,7 +103,7 @@ functions:
   # users endpoints which return the user details for the 
   # profile page. 
   users:
-    handler: bin/users 
+    handler: bin/users
     environment:
         API_AUDIENCE_ID: ${env:API_AUDIENCE_ID}
         AUTH0_SIGNING_KEY: ${env:AUTH0_SIGNING_KEY}
@@ -125,6 +128,8 @@ functions:
   execute-go:
     handler: bin/code
     timeout: 30
+    layers:
+      - { Ref: GoLambdaLayer }
     vpc:
       securityGroupIds:
         - sg-0f7b6fded566b53bf
@@ -159,6 +164,8 @@ functions:
   challenge-go:
     handler: bin/challenge
     timeout: 30
+    layers:
+      - { Ref: GoLambdaLayer }
     vpc:
       securityGroupIds:
         - sg-0f7b6fded566b53bf
