@@ -6,11 +6,11 @@ import (
 	"fmt"
 	"os/user"
 
+	"github.com/TutorialEdge/api.tutorialedge.net/auth"
+	"github.com/TutorialEdge/api.tutorialedge.net/email"
+	"github.com/TutorialEdge/api.tutorialedge.net/user"
 	"github.com/aws/aws-lambda-go/events"
 	"github.com/jinzhu/gorm"
-	"github.com/Tutorialedge/api.tutorialedge.net/auth"
-	"github.com/Tutorialedge/api.tutorialedge.net/email"
-	"github.com/Tutorialedge/api.tutorialedge.net/user"
 )
 
 type Challenge struct {
