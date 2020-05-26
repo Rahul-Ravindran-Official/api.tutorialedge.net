@@ -13,16 +13,17 @@ import (
 // User - A user on TutorialEdge! :D
 type User struct {
 	gorm.Model
-	Name       string             `json:"name"`
-	Sub        string             `json:"sub"`
-	GivenName  string             `json:"given_name"`
-	FamilyName string             `json:"family_name"`
-	Nickname   string             `json:"nickname"`
-	Picture    string             `json:"picture"`
-	Aud        string             `json:"aud"`
-	Locale     string             `json:"locale"`
-	UpdatedAt  string             `json:"update_at"`
-	Comments   []comments.Comment `json:"comments"`
+	Name       string                `json:"name"`
+	Sub        string                `json:"sub"`
+	GivenName  string                `json:"given_name"`
+	FamilyName string                `json:"family_name"`
+	Nickname   string                `json:"nickname"`
+	Picture    string                `json:"picture"`
+	Aud        string                `json:"aud"`
+	Locale     string                `json:"locale"`
+	UpdatedAt  string                `json:"update_at"`
+	Comments   []comments.Comment    `json:"comments"`
+	Challenge  []challenge.Challenge `json:"challenges"`
 }
 
 type Result struct {
@@ -42,13 +43,18 @@ func GetUser(request events.APIGatewayProxyRequest, db *gorm.DB) (events.APIGate
 	sub := request.QueryStringParameters["sub"]
 
 	var comments []comments.Comment
-
 	db.Where("author_id = ?", sub).Find(&comments)
 	fmt.Printf("%+v\n", comments)
 
+
+	var challenges []challenge.Challenge
+	db.Where("author_id = ?", sub).Find(&challenges)
+	fmt.Printf("%+v\n", challenges)
+)
 	var user User
 	user.Sub = sub
 	user.Comments = comments
+	user.Challenges = challenges
 
 	jsonResults, err := json.Marshal(user)
 	if err != nil {

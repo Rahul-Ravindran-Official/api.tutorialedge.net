@@ -1,176 +1,74 @@
 package challenge
 
 import (
+	"encoding/base64"
 	"encoding/json"
 	"fmt"
-	"io/ioutil"
-	"log"
-	"os"
-	"os/exec"
-	"path/filepath"
+	"os/user"
 
 	"github.com/aws/aws-lambda-go/events"
-	"github.com/mholt/archiver/v3"
+	"github.com/jinzhu/gorm"
+	"github.com/tutorialedge/api.tutorialedge.net/auth"
+	"github.com/tutorialedge/api.tutorialedge.net/email"
+	"github.com/tutorialedge/api.tutorialedge.net/user"
 )
 
-// CodeResponse contains the response from
-// executing the Go code
-type CodeResponse struct {
-	ExitCode string `json:"exit_code"`
-	Output   string `json:"output"`
+type Challenge struct {
+	gorm.Model
+	Slug          string `json:"slug"`
+	Code          string `json:"code"`
+	Score         int    `json:"score"`
+	Passed        bool   `json:"passed"`
+	ExecutionTime string `json:"execution_time"`
 }
 
-// ChallengeRequest takes in the source code
-// from the editor as well as a number of tests
-// which are written into a file and ran
-type ChallengeRequest struct {
-	Code  string          `json:"code"`
-	Tests []ChallengeTest `json:"tests"`
-}
+// PostChallenge - Adds a challenge to a User entry in the database
+//
+func PostChallenge(request events.APIGatewayProxyRequest, tokenInfo auth.TokenInfo, db *gorm.DB) (events.APIGatewayProxyResponse, error) {
 
-// ChallengeTest is a struct which contains
-// the source code for a test file as well as
-// the metadata such as the test name
-type ChallengeTest struct {
-	Name   string `json:"name"`
-	Code   string `json:"code"`
-	Test   string `json:"test"`
-	Output string `json:"output"`
-	Passed bool   `json:"passed"`
-}
-
-// ChallengeResponse is the struct that contains the
-// response sent back when a challenge is attempted
-type ChallengeResponse struct {
-	Tests  []ChallengeTest `json:"tests"`
-	Built  bool            `json:"built"`
-	Output string          `json:"output"`
-}
-
-func setupGoEnvironment() error {
-	path := os.Getenv("PATH")
-	os.Setenv("PATH", path+":/tmp/go/bin")
-	os.Setenv("GOROOT", "/tmp/go")
-	os.Setenv("GOPATH", "/tmp")
-	os.Setenv("GOCACHE", "/tmp/go-cache")
-
-	if _, err := os.Stat("/tmp/go"); os.IsNotExist(err) {
-		err := os.Mkdir("/tmp/go", 0777)
-		if err != nil {
-			fmt.Println(err)
-		}
-
-		// untar ./code/go.tar.gz -> /tmp/go
-		err = archiver.Unarchive("./code/go.tar.gz", "/tmp")
-		if err != nil {
-			fmt.Println(err.Error())
-		}
-	}
-	return nil
-}
-
-// ExecuteGoChallenge does the job of taking the Go code that has
-// been sent to API from a snippet and executing it before
-// returning the response
-func ExecuteGoChallenge(request events.APIGatewayProxyRequest) (events.APIGatewayProxyResponse, error) {
+	fmt.Println("Posting a Challenge")
 	fmt.Println("Received body: ", request.Body)
 
-	var challenge ChallengeRequest
-	err := json.Unmarshal([]byte(request.Body), &challenge)
+	body, err := base64.StdEncoding.DecodeString(request.Body)
 	if err != nil {
-		fmt.Println("Could not unmarshal challenge")
 		fmt.Println(err.Error())
 	}
+	fmt.Println(string(body))
 
-	err = setupGoEnvironment()
-	if err != nil {
-		log.Fatalf("Setting up Go Env Failed")
+	if tokenInfo.Sub == "" {
 		return events.APIGatewayProxyResponse{
-			Body:       "Failed to setup Go Environment",
+			Body:       "Could not post challenge with no Sub",
 			Headers:    map[string]string{"Content-Type": "application/json", "Access-Control-Allow-Origin": "*"},
 			StatusCode: 503,
 		}, nil
 	}
 
-	out, err := exec.Command("./bin/go", "version").CombinedOutput()
-	if err != nil {
-		fmt.Println(err.Error())
+	var user user.User
+	db.Where(User{Sub: tokenInfo.Sub}).FirstOrCreate(&user)
 
-		log.Fatalf("executing go version failed %s\n", err)
-		return events.APIGatewayProxyResponse{
-			Body:       "Failed to run go version",
-			Headers:    map[string]string{"Content-Type": "application/json", "Access-Control-Allow-Origin": "*"},
-			StatusCode: 503,
-		}, nil
-	}
-	fmt.Printf("Go Version Output: %s", string(out))
-
-	dir, err := ioutil.TempDir("/tmp", "challenge*")
-	if err != nil {
-		log.Fatal(err)
-	}
-
-	tmpfn := filepath.Join(dir, "main.go")
-	if err := ioutil.WriteFile(tmpfn, []byte(challenge.Code), 0666); err != nil {
-		log.Fatal(err)
-	}
-	var response ChallengeResponse
-
-	out, err = exec.Command("./bin/go", "run", tmpfn).CombinedOutput()
-	if err != nil {
-		fmt.Println(err)
-		response.Output = string(out)
-		response.Built = false
-		jsonResults, err := json.Marshal(response)
-		if err != nil {
-			panic(err.Error())
-		}
-
-		fmt.Printf("%+v\n", string(jsonResults))
-
-		return events.APIGatewayProxyResponse{
-			Body:       string(jsonResults),
-			Headers:    map[string]string{"Content-Type": "application/json", "Access-Control-Allow-Origin": "*"},
-			StatusCode: 200,
-		}, nil
-	}
-
-	response.Output = string(out)
-	response.Built = true
-
-	for _, test := range challenge.Tests {
-		tmpfn := filepath.Join(dir, test.Name+".go")
-		if err := ioutil.WriteFile(tmpfn, []byte(test.Code), 0666); err != nil {
-			log.Fatal(err)
-		}
-
-		cmd := exec.Command("./bin/go", "test", "-run", test.Test)
-		cmd.Dir = dir
-		out, err := cmd.CombinedOutput()
-		if err != nil {
-			fmt.Println(err)
-			test.Output = err.Error()
-			test.Passed = false
-		} else {
-			test.Output = string(out)
-			test.Passed = true
-		}
-
-		response.Tests = append(response.Tests, test)
-		fmt.Printf("go test %s\n", tmpfn)
-		fmt.Printf("%+v\n", string(out))
-	}
-
-	fmt.Printf("go run output: %s\n", string(out))
-	jsonResults, err := json.Marshal(response)
+	var challenge Challenge
+	err = json.Unmarshal([]byte(request.Body), &challenge)
 	if err != nil {
 		panic(err.Error())
 	}
 
-	fmt.Printf("%+v\n", string(jsonResults))
+	user.Challenges = append(user.Challenges, challenge)
+
+	if er = db.Save(&user).Error; err != nil {
+		return events.APIGatewayProxyResponse{
+			Body:       "Could not save challenge for user",
+			Headers:    map[string]string{"Content-Type": "application/json", "Access-Control-Allow-Origin": "*"},
+			StatusCode: 503,
+		}, nil
+	}
+
+	err = email.SendEmail("A User Has Completed A Challenge!", comment.Slug, "admin@tutorialedge.net")
+	if err != nil {
+		fmt.Println("Error Sending Comment Notification Email...")
+	}
 
 	return events.APIGatewayProxyResponse{
-		Body:       string(jsonResults),
+		Body:       "Post Request!",
 		Headers:    map[string]string{"Content-Type": "application/json", "Access-Control-Allow-Origin": "*"},
 		StatusCode: 200,
 	}, nil
