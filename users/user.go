@@ -4,10 +4,10 @@ import (
 	"encoding/json"
 	"fmt"
 
+	"github.com/TutorialEdge/api.tutorialedge.net/comments"
+	"github.com/TutorialEdge/api.tutorialedge.net/email"
 	"github.com/aws/aws-lambda-go/events"
 	"github.com/jinzhu/gorm"
-	"github.com/tutorialedge/api.tutorialedge.net/comments"
-	"github.com/tutorialedge/api.tutorialedge.net/email"
 )
 
 // User - A user on TutorialEdge! :D

@@ -3,9 +3,9 @@ package main
 import (
 	"fmt"
 
+	"github.com/TutorialEdge/api.tutorialedge.net/code"
 	"github.com/aws/aws-lambda-go/events"
 	"github.com/aws/aws-lambda-go/lambda"
-	"github.com/tutorialedge/api.tutorialedge.net/code"
 )
 
 func handler(request events.APIGatewayProxyRequest) (events.APIGatewayProxyResponse, error) {
