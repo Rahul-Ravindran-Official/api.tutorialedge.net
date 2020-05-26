@@ -1,7 +1,7 @@
 TutorialEdge API
 ==================
 
-![Build Status](https://travis-ci.org/elliotforbes/api.tutorialedge.net.svg?branch=master)
+![Build Status](https://travis-ci.org/elliotforbes/api.tutorialedge.net.svg?branch=master) ![Lint and Test](https://github.com/TutorialEdge/api.tutorialedge.net/workflows/Lint%20and%20Test/badge.svg?branch=master)
 
 # TODO
 
