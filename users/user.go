@@ -35,7 +35,7 @@ type Challenge struct {
 	ExecutionTime string `json:"execution_time"`
 }
 
-// Result 
+// Result
 type Result struct {
 	Field   string
 	Type    string
@@ -56,7 +56,7 @@ func GetUser(request events.APIGatewayProxyRequest, db *gorm.DB) (events.APIGate
 	db.Where("author_id = ?", sub).Find(&comments)
 	fmt.Printf("%+v\n", comments)
 
-	var challenges []challenge.Challenge
+	var challenges []Challenge
 	db.Where("author_id = ?", sub).Find(&challenges)
 	fmt.Printf("%+v\n", challenges)
 
