@@ -5,6 +5,7 @@ import (
 	"os"
 
 	"github.com/TutorialEdge/api.tutorialedge.net/comments"
+	"github.com/TutorialEdge/api.tutorialedge.net/users"
 
 	"github.com/jinzhu/gorm"
 	_ "github.com/jinzhu/gorm/dialects/postgres"
@@ -30,6 +31,7 @@ func GetDBConn() (*gorm.DB, error) {
 	}
 
 	db.AutoMigrate(&comments.Comment{})
+	db.AutoMigrate(&users.User{})
 
 	return db, nil
 }
