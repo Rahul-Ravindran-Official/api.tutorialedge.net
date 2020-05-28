@@ -8,8 +8,8 @@ import (
 
 	"github.com/aws/aws-lambda-go/events"
 
-	"github.com/tutorialedge/api.tutorialedge.net/database"
-	"github.com/tutorialedge/api.tutorialedge.net/users"
+	"github.com/TutorialEdge/api.tutorialedge.net/database"
+	"github.com/TutorialEdge/api.tutorialedge.net/users"
 )
 
 func TestGetUser(t *testing.T) {

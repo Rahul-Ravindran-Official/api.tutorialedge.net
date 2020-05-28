@@ -1,4 +1,4 @@
-module github.com/tutorialedge/api.tutorialedge.net
+module github.com/TutorialEdge/api.tutorialedge.net
 
 go 1.13
 

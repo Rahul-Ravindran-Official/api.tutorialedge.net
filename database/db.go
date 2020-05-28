@@ -4,7 +4,7 @@ import (
 	"fmt"
 	"os"
 
-	"github.com/tutorialedge/api.tutorialedge.net/comments"
+	"github.com/TutorialEdge/api.tutorialedge.net/comments"
 
 	"github.com/jinzhu/gorm"
 	_ "github.com/jinzhu/gorm/dialects/postgres"

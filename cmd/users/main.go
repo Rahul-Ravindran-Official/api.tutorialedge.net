@@ -1,10 +1,10 @@
 package main
 
 import (
+	"github.com/TutorialEdge/api.tutorialedge.net/database"
+	"github.com/TutorialEdge/api.tutorialedge.net/users"
 	"github.com/aws/aws-lambda-go/events"
 	"github.com/aws/aws-lambda-go/lambda"
-	"github.com/tutorialedge/api.tutorialedge.net/database"
-	"github.com/tutorialedge/api.tutorialedge.net/users"
 )
 
 func handler(request events.APIGatewayProxyRequest) (events.APIGatewayProxyResponse, error) {

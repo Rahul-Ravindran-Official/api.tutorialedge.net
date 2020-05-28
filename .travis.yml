@@ -5,11 +5,11 @@ jobs:
     
     # Go Format
     # - Runs gofmt
-    - stage: gofmt
-      script: ./scripts/gofmt-and-lint.sh
-      language: go
-      go:
-        - 1.14
+    # - stage: gofmt
+    #   script: ./scripts/gofmt-and-lint.sh
+    #   language: go
+    #   go:
+    #     - 1.14
 
     # Unit Test
     # - Runs any unit tests for the API
