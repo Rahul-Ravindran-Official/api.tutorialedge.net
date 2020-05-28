@@ -62,7 +62,7 @@ func PostChallenge(request events.APIGatewayProxyRequest, tokenInfo auth.TokenIn
 		panic(err.Error())
 	}
 
-	if db.Where("author_id = ? AND slug = ?", tokenInfo.sub, challenge.slug).Find(&challenge).RecordNotFound() {
+	if db.Where("author_id = ? AND slug = ?", tokenInfo.Sub, challenge.Slug).Find(&challenge).RecordNotFound() {
 		fmt.Println("Challenge not already completed, progressing")
 
 		challenge.AuthorID = tokenInfo.Sub
