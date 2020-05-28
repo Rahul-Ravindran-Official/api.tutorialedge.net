@@ -22,18 +22,14 @@ type Challenge struct {
 	ExecutionTime string `json:"execution_time"`
 }
 
-func GetChallenge(request events.APIGatewayProxyRequest, tokenInfo auth.TokenInfo, db *gorm.DB) (events.APIGatewayProxyRequest, error) {
+// GetChallenge - Retrieves a challenge
+func GetChallenge(request events.APIGatewayProxyRequest, tokenInfo auth.TokenInfo, db *gorm.DB) (events.APIGatewayProxyResponse, error) {
 	fmt.Println("Retrieving Challenge State for User")
-	sub := request.QueryStringParameters["sub"]
-	slug := request.QueryStringParameters["slug"]
-
-	jsonResult, err := json.Marshal(challenge)
-	if err != nil {
-		panic(err.Error())
-	}
+	// sub := request.QueryStringParameters["sub"]
+	// slug := request.QueryStringParameters["slug"]
 
 	return events.APIGatewayProxyResponse{
-		Body:       string(jsonResults),
+		Body:       "gets stuff",
 		Headers:    map[string]string{"Content-Type": "application/json", "Access-Control-Allow-Origin": "*"},
 		StatusCode: 200,
 	}, nil
