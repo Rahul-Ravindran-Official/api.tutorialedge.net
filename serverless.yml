@@ -80,12 +80,21 @@ functions:
   # profile and highlight what challenges they have finished
   challenges:
     handler: bin/challenge
+    environment:
+      API_AUDIENCE_ID: ${env:API_AUDIENCE_ID}
+      AUTH0_SIGNING_KEY: ${env:AUTH0_SIGNING_KEY}
+      DB_USERNAME: ${env:DB_USERNAME}
+      DB_PASSWORD: ${env:DB_PASSWORD}
+      DB_HOST: ${env:DB_HOST}
+      DB_TABLE: ${env:DB_TABLE}
+      MAILGUN_API_KEY: ${env:MAILGUN_API_KEY}
     events:
     - http:
         path: /v1/challenges
         method: get
     - http:
         path: /v1/challenges
+        cors: true
         method: post
     - http:
         path: /v1/challenges

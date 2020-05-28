@@ -4,6 +4,7 @@ import (
 	"encoding/json"
 	"fmt"
 
+	"github.com/TutorialEdge/api.tutorialedge.net/challenge"
 	"github.com/TutorialEdge/api.tutorialedge.net/comments"
 	"github.com/TutorialEdge/api.tutorialedge.net/email"
 	"github.com/aws/aws-lambda-go/events"
@@ -13,26 +14,16 @@ import (
 // User - A user on TutorialEdge! :D
 type User struct {
 	gorm.Model
-	Name       string             `json:"name"`
-	Sub        string             `json:"sub"`
-	GivenName  string             `json:"given_name"`
-	FamilyName string             `json:"family_name"`
-	Nickname   string             `json:"nickname"`
-	Picture    string             `json:"picture"`
-	Aud        string             `json:"aud"`
-	Locale     string             `json:"locale"`
-	UpdatedAt  string             `json:"update_at"`
-	Comments   []comments.Comment `json:"comments"`
-	Challenges []Challenge        `json:"challenges"`
-}
-
-// Challenge - holds the users challenges
-type Challenge struct {
-	Slug          string `json:"slug"`
-	Code          string `json:"code"`
-	Score         int    `json:"score"`
-	Passed        bool   `json:"passed"`
-	ExecutionTime string `json:"execution_time"`
+	Name       string                `json:"name"`
+	Sub        string                `json:"sub"`
+	GivenName  string                `json:"given_name"`
+	FamilyName string                `json:"family_name"`
+	Nickname   string                `json:"nickname"`
+	Picture    string                `json:"picture"`
+	Aud        string                `json:"aud"`
+	Locale     string                `json:"locale"`
+	Comments   []comments.Comment    `json:"comments"`
+	Challenges []challenge.Challenge `json:"challenges"`
 }
 
 // Result
@@ -56,7 +47,7 @@ func GetUser(request events.APIGatewayProxyRequest, db *gorm.DB) (events.APIGate
 	db.Where("author_id = ?", sub).Find(&comments)
 	fmt.Printf("%+v\n", comments)
 
-	var challenges []Challenge
+	var challenges []challenge.Challenge
 	db.Where("author_id = ?", sub).Find(&challenges)
 	fmt.Printf("%+v\n", challenges)
 
