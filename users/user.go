@@ -25,15 +25,6 @@ type User struct {
 	Challenges []Challenge        `json:"challenges"`
 }
 
-// Challenge - holds the users challenges
-type Challenge struct {
-	gorm.Model
-	Slug          string `json:"slug"`
-	Code          string `json:"code"`
-	Score         int    `json:"score"`
-	Passed        bool   `json:"passed"`
-	ExecutionTime string `json:"execution_time"`
-}
 
 // Result
 type Result struct {

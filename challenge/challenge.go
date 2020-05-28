@@ -7,10 +7,20 @@ import (
 
 	"github.com/TutorialEdge/api.tutorialedge.net/auth"
 	"github.com/TutorialEdge/api.tutorialedge.net/email"
-	"github.com/TutorialEdge/api.tutorialedge.net/users"
 	"github.com/aws/aws-lambda-go/events"
 	"github.com/jinzhu/gorm"
 )
+
+// Challenge - holds the users challenges
+type Challenge struct {
+	gorm.Model
+	Slug          string `json:"slug"`
+	AuthorID      string `json:"sub"`
+	Code          string `json:"code"`
+	Score         int    `json:"score"`
+	Passed        bool   `json:"passed"`
+	ExecutionTime string `json:"execution_time"`
+}
 
 // PostChallenge - Adds a challenge to a User entry in the database
 //
@@ -33,18 +43,15 @@ func PostChallenge(request events.APIGatewayProxyRequest, tokenInfo auth.TokenIn
 		}, nil
 	}
 
-	var user users.User
-	db.Where(users.User{Sub: tokenInfo.Sub}).FirstOrCreate(&user)
-
-	var challenge users.Challenge
+	var challenge Challenge
 	err = json.Unmarshal([]byte(request.Body), &challenge)
 	if err != nil {
 		panic(err.Error())
 	}
 
-	user.Challenges = append(user.Challenges, challenge)
+	challenge.AuthorID = tokenInfo.Sub
 
-	if err = db.Save(&user).Error; err != nil {
+	if err = db.Create(&challenge).Error; err != nil {
 		return events.APIGatewayProxyResponse{
 			Body:       "Could not save challenge for user",
 			Headers:    map[string]string{"Content-Type": "application/json", "Access-Control-Allow-Origin": "*"},
