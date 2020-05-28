@@ -27,6 +27,7 @@ type User struct {
 
 // Challenge - holds the users challenges
 type Challenge struct {
+	gorm.Model
 	Slug          string `json:"slug"`
 	Code          string `json:"code"`
 	Score         int    `json:"score"`
