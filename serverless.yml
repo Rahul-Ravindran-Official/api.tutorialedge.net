@@ -92,6 +92,7 @@ functions:
         method: get
     - http:
         path: /v1/challenges
+        cors: true
         method: post
     - http:
         path: /v1/challenges
