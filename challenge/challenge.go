@@ -22,6 +22,12 @@ type Challenge struct {
 	ExecutionTime string `json:"execution_time"`
 }
 
+// Response a response object
+// used for returning an array of challenges
+type Response struct {
+	Challenges []Challenge `json:"challenges"`
+}
+
 // GetChallenge - Retrieves a challenge
 func GetChallenge(request events.APIGatewayProxyRequest, tokenInfo auth.TokenInfo, db *gorm.DB) (events.APIGatewayProxyResponse, error) {
 	fmt.Println("Retrieving Challenge State for User")
