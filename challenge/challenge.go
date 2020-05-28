@@ -25,11 +25,32 @@ type Challenge struct {
 // GetChallenge - Retrieves a challenge
 func GetChallenge(request events.APIGatewayProxyRequest, tokenInfo auth.TokenInfo, db *gorm.DB) (events.APIGatewayProxyResponse, error) {
 	fmt.Println("Retrieving Challenge State for User")
-	// sub := request.QueryStringParameters["sub"]
-	// slug := request.QueryStringParameters["slug"]
+
+	fmt.Println(request.QueryStringParameters["slug"])
+	slug := request.QueryStringParameters["slug"]
+
+	var challenges []Challenge
+	if slug == "" {
+		db.Find(&challenges)
+	} else {
+		db.Where("slug = ?", slug).Find(&challenges)
+	}
+
+	response := Response{
+		challenges: challenges,
+	}
+
+	fmt.Printf("%+v\n", challenges)
+
+	jsonResults, err := json.Marshal(response)
+	if err != nil {
+		panic(err.Error())
+	}
+
+	fmt.Printf("%+v\n", string(jsonResults))
 
 	return events.APIGatewayProxyResponse{
-		Body:       "gets stuff",
+		Body:       string(jsonResults),
 		Headers:    map[string]string{"Content-Type": "application/json", "Access-Control-Allow-Origin": "*"},
 		StatusCode: 200,
 	}, nil
