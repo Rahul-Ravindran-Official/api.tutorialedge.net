@@ -4,7 +4,7 @@ import (
 	"fmt"
 	"os"
 
-	"github.com/TutorialEdge/api.tutorialedge.net/challenges"
+	"github.com/TutorialEdge/api.tutorialedge.net/challenge"
 	"github.com/TutorialEdge/api.tutorialedge.net/comments"
 
 	"github.com/jinzhu/gorm"
@@ -31,7 +31,7 @@ func GetDBConn() (*gorm.DB, error) {
 	}
 
 	db.AutoMigrate(&comments.Comment{})
-	db.AutoMigrate(&challenges.Challenge{})
+	db.AutoMigrate(&challenge.Challenge{})
 
 	return db, nil
 }
