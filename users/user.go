@@ -21,7 +21,6 @@ type User struct {
 	Picture    string             `json:"picture"`
 	Aud        string             `json:"aud"`
 	Locale     string             `json:"locale"`
-	UpdatedAt  string             `json:"update_at"`
 	Comments   []comments.Comment `json:"comments"`
 	Challenges []Challenge        `json:"challenges"`
 }
