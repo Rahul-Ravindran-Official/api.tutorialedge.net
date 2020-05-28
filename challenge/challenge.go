@@ -43,7 +43,7 @@ func GetChallenge(request events.APIGatewayProxyRequest, tokenInfo auth.TokenInf
 	}
 
 	response := Response{
-		challenges: challenges,
+		Challenges: challenges,
 	}
 
 	fmt.Printf("%+v\n", challenges)
