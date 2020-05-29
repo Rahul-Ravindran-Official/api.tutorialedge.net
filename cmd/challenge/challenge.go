@@ -22,11 +22,11 @@ func handler(request events.APIGatewayProxyRequest) (events.APIGatewayProxyRespo
 
 	switch request.HTTPMethod {
 	case "GET":
-		if ok, tokenInfo := auth.Authenticate(request); ok {
-			response, _ := challenge.GetChallenge(request, tokenInfo, db)
-			return response, nil
-		}
-		return auth.UnauthorizedResponse(), nil
+		// if ok, tokenInfo := auth.Authenticate(request); ok {
+		response, _ := challenge.GetChallenge(request, tokenInfo, db)
+		return response, nil
+		// }
+		// return auth.UnauthorizedResponse(), nil
 	case "POST":
 		if ok, tokenInfo := auth.Authenticate(request); ok {
 			response, _ := challenge.PostChallenge(request, tokenInfo, db)
