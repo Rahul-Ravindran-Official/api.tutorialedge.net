@@ -23,7 +23,7 @@ func handler(request events.APIGatewayProxyRequest) (events.APIGatewayProxyRespo
 	switch request.HTTPMethod {
 	case "GET":
 		// if ok, tokenInfo := auth.Authenticate(request); ok {
-		response, _ := challenge.GetChallenge(request, tokenInfo, db)
+		response, _ := challenge.GetChallenge(request, db)
 		return response, nil
 		// }
 		// return auth.UnauthorizedResponse(), nil

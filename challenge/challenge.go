@@ -29,7 +29,7 @@ type Response struct {
 }
 
 // GetChallenge - Retrieves a challenge
-func GetChallenge(request events.APIGatewayProxyRequest, tokenInfo auth.TokenInfo, db *gorm.DB) (events.APIGatewayProxyResponse, error) {
+func GetChallenge(request events.APIGatewayProxyRequest, db *gorm.DB) (events.APIGatewayProxyResponse, error) {
 	fmt.Println("Retrieving Challenge State for User")
 
 	fmt.Println(request.QueryStringParameters["slug"])
